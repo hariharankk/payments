@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payment/global.dart';
-
+import 'package:sizer/sizer.dart';
 
 class custominkwell extends StatelessWidget {
   Widget? icon;

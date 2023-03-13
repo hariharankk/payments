@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
-TextStyle iconunder = const TextStyle(color: Colors.black, fontSize: 15);
+TextStyle iconunder = TextStyle(color: Colors.black, fontSize: 10.sp);
 
-TextStyle payment = const TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.white);
+TextStyle payment = TextStyle(fontWeight: FontWeight.bold,fontSize: 8.sp,color: Colors.white);
 
-TextStyle ledger = const TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.black);
+TextStyle ledger = TextStyle(fontWeight: FontWeight.bold,fontSize: 12.sp,color: Colors.black);
 
-TextStyle innerstyle = const TextStyle(color: Colors.white, fontSize: 20);
+TextStyle innerstyle = TextStyle(color: Colors.white, fontSize: 7.sp);
 
-TextStyle amountstyle = const TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.bold);
+TextStyle ledgertextstyle = TextStyle(color: Colors.black,fontSize: 10.sp,fontWeight: FontWeight.bold);
 
-TextStyle outerheader = const TextStyle(color: Colors.white,fontSize: 25,);
+TextStyle ledgertimestyle = TextStyle(color: Colors.grey,fontSize: 8.sp,);
+
+TextStyle amountstyle = TextStyle(color: Colors.white,fontSize: 12.sp,fontWeight: FontWeight.bold);
+
+TextStyle outerheader = TextStyle(color: Colors.white,fontSize: 10.sp,);
 
 Decoration paymentbor = BoxDecoration(borderRadius: BorderRadius.circular(20.0),color: Colors.blue);
+
+Decoration ledgerbor = BoxDecoration(borderRadius: BorderRadius.circular(10.0),border: Border.all(color: Colors.black, style: BorderStyle.solid, width: 3.0,), color: Colors.transparent,);
 
 Decoration mainbox = BoxDecoration(borderRadius: BorderRadius.circular(30.0),color: Colors.white);
 

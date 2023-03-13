@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:payment/global.dart';
 import 'package:payment/widgets/custom icon.dart';
 import 'package:payment/widgets/custom inkwell.dart';
+import 'package:sizer/sizer.dart';
+import 'package:payment/widgets/Ledger list.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,13 +14,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'payments',
-      home: payments(),
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-    );
+    return Sizer(
+        builder: (context, orientation, deviceType) {
+          return GetMaterialApp(
+        title: 'payments',
+        home: payments(),
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+      );
+    });
   }
 }
 
@@ -67,20 +72,21 @@ class _paymentsState extends State<payments> {
                     mainAxisSize: MainAxisSize.max,
                     children:<Widget>[
                       Column(
-                        mainAxisSize: MainAxisSize.max,
+                        mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Text('Total pending/advance for March 2023', style: outerheader),
+                          Text('Total pending/advance for March 2023', style:  outerheader),
+                          SizedBox(width: 2,),
                           Text('2000', style: amountstyle),
                         ],
                       ),
                       Container(
+                        width: MediaQuery.of(context).size.width * 0.15,
+                        height: MediaQuery.of(context).size.height * 0.15,
                         padding: EdgeInsets.all(20.0),
                         decoration: innerbox,
-                        child: Text('Report ->', style: innerstyle
-                        )
-                      ),
+                           child: Center(child: Text('Report', style: innerstyle))),
 
                     ]
                     ),
@@ -139,6 +145,7 @@ class _paymentsState extends State<payments> {
                      onTap: (){},
                      child: Container(
                        width: MediaQuery.of(context).size.width * 0.90,
+                       height: MediaQuery.of(context).size.height * 0.1,
                        padding: EdgeInsets.all(20),
                        decoration: paymentbor,
                        child: Center(
@@ -158,19 +165,31 @@ class _paymentsState extends State<payments> {
 
                 child: Column(
                   children: <Widget>[
-                    Divider(color: Colors.black,),
-                    SizedBox(height: 10,),
-                    Text('Ledger',style: ledger,),
-                    SizedBox(height: 10,),
-                    Divider(color: Colors.black,),
+
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.90,
+                      padding: EdgeInsets.all(30),
+                      margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      child: Center(child: Text('Ledger',style: ledger,)),
+                      decoration: ledgerbor,),
+
+                    Row(
+                      children: [
+                        Text('Entries'),
+                        SizedBox(width: MediaQuery.of(context).size.width*0.4,),
+                        Text('you gave'),
+                        SizedBox(width: MediaQuery.of(context).size.width*0.1,),
+                        Text('you got'),
+                      ],
+                    ),
+                    SizedBox(height: 5,),
                     ListView.separated(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            height: MediaQuery.of(context).size.height * 0.05,decoration: mainbox,child: Text('hari'),);
+                          return ledgertile();
                         },
-                        separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20,child: ColoredBox(color: Colors.grey),),
+                        separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 10,child: ColoredBox(color: Colors.transparent),),
                         itemCount: 5
                     )
 
@@ -185,3 +204,5 @@ class _paymentsState extends State<payments> {
     );
   }
 }
+
+
