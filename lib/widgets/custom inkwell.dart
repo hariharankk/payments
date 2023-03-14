@@ -5,15 +5,17 @@ import 'package:sizer/sizer.dart';
 class custominkwell extends StatelessWidget {
   Widget? icon;
   String? text;
+  VoidCallback? onpress;
   custominkwell({
     this.icon,
-    this.text
+    this.text,
+    this.onpress
 });
 
   @override
   Widget build(BuildContext context) {
     return                       InkWell(
-      onTap: (){},
+      onTap: onpress,
       child: Column(
         children: <Widget>[
           icon!,

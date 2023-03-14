@@ -5,6 +5,7 @@ import 'package:payment/widgets/custom icon.dart';
 import 'package:payment/widgets/custom inkwell.dart';
 import 'package:sizer/sizer.dart';
 import 'package:payment/widgets/Ledger list.dart';
+import 'package:payment/widgets/allowance.dart';
 
 void main() {
   runApp(MyApp());
@@ -120,7 +121,11 @@ class _paymentsState extends State<payments> {
 
                        custominkwell(
                            icon :customicon(icon: Icons.electric_scooter_outlined),
-                           text : 'Allowance'),
+                           text : 'Allowance',
+                            onpress: (){
+                             Get.to(() => allowance());
+                            },
+                            ),
                      ],
                    ),
                    SizedBox(height: 20,),

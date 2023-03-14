@@ -26,3 +26,5 @@ Decoration mainbox = BoxDecoration(borderRadius: BorderRadius.circular(30.0),col
 Decoration upperbox =  BoxDecoration(borderRadius: BorderRadius.circular(20.0), color: Colors.yellowAccent[700],);
 
 Decoration innerbox = BoxDecoration(borderRadius: BorderRadius.circular(20.0),color: Colors.blue);
+
+List<Widget> tabs= [Text('Add Allowance'),Text('Show History')];
