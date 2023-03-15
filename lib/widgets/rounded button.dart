@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:payment/GetX/allowance_getx.dart';
+import 'package:get/get.dart';
 
 class roundedtextbutton extends StatelessWidget {
   String text;
   double width;
   roundedtextbutton({required this.text,required this.width});
   TextEditingController cont = new TextEditingController();
+  final mycontroller = Get.find<allowanceController>();
   String? Payment;
   late double unitHeightValue, unitWidthValue;
 
@@ -27,7 +30,9 @@ class roundedtextbutton extends StatelessWidget {
               controller: cont,
               textAlign: TextAlign.center,
               keyboardType: TextInputType.name,
-              onChanged: (payment) => Payment,
+              onChanged: (payment) {
+                text=='Payment Amount'? mycontroller.paymenttext = payment.obs :mycontroller.notestext = payment.obs;
+                },
               decoration: InputDecoration(
                 constraints: BoxConstraints.tightFor(
                   width: width,

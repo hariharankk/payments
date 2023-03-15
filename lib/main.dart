@@ -4,8 +4,10 @@ import 'package:payment/global.dart';
 import 'package:payment/widgets/custom icon.dart';
 import 'package:payment/widgets/custom inkwell.dart';
 import 'package:sizer/sizer.dart';
-import 'package:payment/widgets/Ledger list.dart';
-import 'package:payment/widgets/allowance.dart';
+import 'package:payment/Screen/Ledger%20list.dart';
+import 'package:payment/Screen/allowance.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,6 +21,11 @@ class MyApp extends StatelessWidget {
         builder: (context, orientation, deviceType) {
           return GetMaterialApp(
         title: 'payments',
+            localizationsDelegates: [
+              GlobalWidgetsLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              MonthYearPickerLocalizations.delegate,
+            ],
         home: payments(),
         theme: ThemeData(
           primarySwatch: Colors.blue,

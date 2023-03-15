@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:payment/GetX/allowance_getx.dart';
+import 'package:get/get.dart';
 
 class ButtonHeaderWidget extends StatelessWidget {
   final String title;
-  final String text;
   final VoidCallback onClicked;
 
   const ButtonHeaderWidget({
 
     required this.title,
-    required this.text,
     required this.onClicked,
   });
 
@@ -16,23 +16,20 @@ class ButtonHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) => HeaderWidget(
     title: title,
     child: ButtonWidget(
-      text: text,
       onClicked: onClicked,
     ),
   );
 }
 
 class ButtonWidget extends StatelessWidget {
-  final String text;
   final VoidCallback onClicked;
   //final Icon icon;
 
-  const ButtonWidget({
-    required this.text,
+   ButtonWidget({
     //required this.icon,
     required this.onClicked,
   });
-
+  final mycontroller = Get.find<allowanceController>();
   @override
   Widget build(BuildContext context) => ElevatedButton(
     style: ElevatedButton.styleFrom(
@@ -43,10 +40,14 @@ class ButtonWidget extends StatelessWidget {
       fixedSize: Size(180,60),
       primary: Color.fromARGB(255, 255, 255, 255),
     ),
-    child: FittedBox(
-      child: Text(
-        text,
-        style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 5, 116, 176)),
+    child: Obx(
+
+      ()=> FittedBox(
+        child: Text(
+            mycontroller.date.value,
+            style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 5, 116, 176)),
+          ),
+
       ),
     ),
     onPressed: onClicked,
@@ -75,7 +76,7 @@ class HeaderWidget extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(left: 5),
           child: Text(
-            title,
+            title,style: TextStyle(fontSize: 10)
           ),
         ),
         SizedBox(height: 5,),

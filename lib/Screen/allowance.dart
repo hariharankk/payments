@@ -4,8 +4,13 @@ import 'package:payment/widgets/date picker.dart';
 import 'package:get/get.dart';
 import 'package:payment/widgets/rounded button.dart';
 import 'package:payment/global.dart';
+import 'package:payment/GetX/allowance_getx.dart';
+import 'package:payment/Screen/History.dart';
+
 
 class allowance extends StatelessWidget {
+  final mycontroller = Get.put(allowanceController());
+
   //allowance({}) ;
   @override
   Widget build(BuildContext context) {
@@ -38,7 +43,7 @@ class allowance extends StatelessWidget {
                         child: Column(
                           children: <Widget>[
                             SizedBox(height: 20,),
-                            roundedtextbutton(text: 'Payment Amount',width: MediaQuery.of(context).size  .width *0.90,),
+                            roundedtextbutton(text: 'Payment Amount',width: MediaQuery.of(context).size  .width *0.90),
                             Row(
                               children: <Widget>[
                                 SizedBox(width: 5,),
@@ -66,7 +71,7 @@ class allowance extends StatelessWidget {
                      ),
                    ]
                  ),
-                Container()
+                History()
               ]
             )
           ),

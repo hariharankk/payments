@@ -1,28 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:payment/widgets/Buttonheader.dart';
+import 'package:payment/GetX/allowance_getx.dart';
+import 'package:get/get.dart';
 
-class DatePickerWidget extends StatefulWidget {
-  @override
-  _DatePickerWidgetState createState() => _DatePickerWidgetState();
-}
 
-class _DatePickerWidgetState extends State<DatePickerWidget> {
-  DateTime? date;
+class DatePickerWidget extends StatelessWidget{
+  final mycontroller = Get.find<allowanceController>();
 
-  String getText() {
-    if (date == null) {
-      return 'Select Date';
-    } else {
-      return DateFormat('MM/dd/yyyy').format(date!);
-      // return '${date.month}/${date.day}/${date.year}';
-    }
-  }
 
   @override
   Widget build(BuildContext context) => ButtonHeaderWidget(
     title: 'Date of payment',
-    text: getText(),
     onClicked: () => pickDate(context),
   );
 
@@ -30,13 +19,15 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     final initialDate = DateTime.now();
     final newDate = await showDatePicker(
       context: context,
-      initialDate: date ?? initialDate,
+      initialDate: initialDate,
       firstDate: DateTime(DateTime.now().year - 5),
       lastDate: DateTime(DateTime.now().year + 5),
     );
 
-    if (newDate == null) return;
+    if (newDate != null) {
+      mycontroller.change( DateFormat('MM/dd/yyyy').format(newDate));
+    }
 
-    setState(() => date = newDate);
+
   }
 }
