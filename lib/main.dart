@@ -4,10 +4,14 @@ import 'package:payment/global.dart';
 import 'package:payment/widgets/custom icon.dart';
 import 'package:payment/widgets/custom inkwell.dart';
 import 'package:sizer/sizer.dart';
-import 'package:payment/Screen/Ledger%20list.dart';
 import 'package:payment/Screen/allowance.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:month_year_picker/month_year_picker.dart';
+import 'package:payment/Screen/Bonus_wage.dart';
+import 'package:payment/Screen/Deductions.dart';
+import 'package:payment/Screen/loans.dart';
+import 'package:payment/Screen/Ledger.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -43,6 +47,22 @@ class payments extends StatefulWidget {
 }
 
 class _paymentsState extends State<payments> {
+
+
+  Future pickDate(BuildContext context) async {
+    final _selected = await showMonthYearPicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime(2024),
+
+    );
+
+    if (_selected != null){
+      print('hari');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +75,10 @@ class _paymentsState extends State<payments> {
               ),
           actions: [
           IconButton(
-              onPressed: (){},
+              onPressed: (){
+
+                pickDate(context);
+              },
               icon: Icon(Icons.calendar_month),
           ),
           SizedBox(width: 20.0,)
@@ -143,12 +166,22 @@ class _paymentsState extends State<payments> {
                      children: <Widget>[
                        custominkwell(
                            icon :customicon(icon: Icons.healing_sharp),
-                           text : 'Deductions'),
+                           onpress: (){
+                             Get.to(() => deduction());
+                           },
+                           text : 'Deductions'
+                       ),
                        custominkwell(
                            icon :customicon(icon: Icons.monetization_on_sharp),
+                           onpress: (){
+                             Get.to(() => loan());
+                           },
                            text : 'Loans'),
                        custominkwell(
                            icon :customicon(icon: Icons.card_giftcard),
+                           onpress: (){
+                             Get.to(() => bonus());
+                           },
                            text : 'Bonus Wage'),
                      ],
                    ),
@@ -170,45 +203,8 @@ class _paymentsState extends State<payments> {
                 ),
               ),
               SizedBox(height: 20,),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.90,
-                padding: EdgeInsets.all(20),
-                decoration: mainbox,
+              Ledger()
 
-                child: Column(
-                  children: <Widget>[
-
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.90,
-                      padding: EdgeInsets.all(30),
-                      margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                      child: Center(child: Text('Ledger',style: ledger,)),
-                      decoration: ledgerbor,),
-
-                    Row(
-                      children: [
-                        Text('Entries'),
-                        SizedBox(width: MediaQuery.of(context).size.width*0.4,),
-                        Text('you gave'),
-                        SizedBox(width: MediaQuery.of(context).size.width*0.1,),
-                        Text('you got'),
-                      ],
-                    ),
-                    SizedBox(height: 5,),
-                    ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          return ledgertile();
-                        },
-                        separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 10,child: ColoredBox(color: Colors.transparent),),
-                        itemCount: 5
-                    )
-
-
-                  ],
-                ),
-              )
             ],
           ),
         ),

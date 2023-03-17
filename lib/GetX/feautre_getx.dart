@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 
 
-class allowanceController extends GetxController {
+class feautreController extends GetxController {
 
   var date = "Select Date".obs;
   var paymenttext = "".obs;

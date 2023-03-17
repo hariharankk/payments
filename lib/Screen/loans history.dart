@@ -5,24 +5,24 @@ import 'package:get/get.dart';
 import 'package:payment/GetX/history_getx.dart';
 
 class History extends StatelessWidget {
-   History({Key? key}) : super(key: key);
+  History({Key? key}) : super(key: key);
 
-   DateTime? _selected;
-   final mycontroller = Get.put(HistoryController());
+  DateTime? _selected;
+  final mycontroller = Get.put(HistoryController());
 
-   Future pickDate(BuildContext context) async {
-     final _selected = await showMonthYearPicker(
-       context: context,
-       initialDate: DateTime.now(),
-       firstDate: DateTime(2019),
-       lastDate: DateTime(2024),
+  Future pickDate(BuildContext context) async {
+    final _selected = await showMonthYearPicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime(2024),
 
-     );
+    );
 
-     if (_selected != null){
-       mycontroller.change(DateFormat("MMMM, yyyy").format(_selected));
-     }
-   }
+    if (_selected != null){
+      mycontroller.change(DateFormat("MMMM, yyyy").format(_selected));
+    }
+  }
 
 
   @override
@@ -38,7 +38,7 @@ class History extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Text('select month'),
-                  
+
                   GestureDetector(
                     onTap: (){
                       pickDate(context);
@@ -49,8 +49,8 @@ class History extends StatelessWidget {
                       margin: EdgeInsets.all(10),
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.blue
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.blue
                       ),
                       child: Row(
                         children: [
@@ -60,7 +60,7 @@ class History extends StatelessWidget {
                       ),
                     ),
                   )
-                  
+
                 ],
               ),
             ),
@@ -72,7 +72,7 @@ class History extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Total Allowance'),
+                  Text('Total Loans given'),
                   Text('amount'),
                 ],
               ),
@@ -84,9 +84,9 @@ class History extends StatelessWidget {
               return historylist();
             },
 
-            physics: NeverScrollableScrollPhysics(),
-            itemCount: 10,
-            shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: 10,
+              shrinkWrap: true,
             )
           ],
         ),

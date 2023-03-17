@@ -5,15 +5,17 @@ TextStyle iconunder = TextStyle(color: Colors.black, fontSize: 10.sp);
 
 TextStyle payment = TextStyle(fontWeight: FontWeight.bold,fontSize: 8.sp,color: Colors.white);
 
-TextStyle ledger = TextStyle(fontWeight: FontWeight.bold,fontSize: 12.sp,color: Colors.black);
+TextStyle ledger = TextStyle(fontWeight: FontWeight.bold,fontSize: 8.sp,color: Colors.black);
 
 TextStyle innerstyle = TextStyle(color: Colors.white, fontSize: 7.sp);
 
-TextStyle ledgertextstyle = TextStyle(color: Colors.black,fontSize: 10.sp,fontWeight: FontWeight.bold);
+TextStyle ledgertextstyle = TextStyle(color: Colors.black,fontSize: 8.sp,fontWeight: FontWeight.bold);
 
-TextStyle ledgertimestyle = TextStyle(color: Colors.grey,fontSize: 8.sp,);
+TextStyle ledgertimestyle = TextStyle(color: Colors.grey,fontSize: 6.sp,);
 
 TextStyle amountstyle = TextStyle(color: Colors.white,fontSize: 12.sp,fontWeight: FontWeight.bold);
+
+TextStyle ledgerheaderstyle = TextStyle(fontWeight: FontWeight.bold);
 
 TextStyle outerheader = TextStyle(color: Colors.white,fontSize: 10.sp,);
 

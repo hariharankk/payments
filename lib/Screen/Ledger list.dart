@@ -6,8 +6,8 @@ class ledgertile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width * 0.07;
-    double width1 = MediaQuery.of(context).size.width * 0.009;
+    double width = MediaQuery.of(context).size.width * 0.2;
+    double width1 = MediaQuery.of(context).size.width * 0.0075;
 
     return  Container(
       height: MediaQuery.of(context).size.height * 0.15,
@@ -38,14 +38,15 @@ class ledgertile extends StatelessWidget {
           ),
           Container(
             height: MediaQuery.of(context).size.height * 0.15,
-            padding: EdgeInsets.fromLTRB(width, 0, width, 0),
+            width: width,
             color: Colors.red,
             child: Center(child: Text('for',style: ledgertextstyle,)),
           ),
 
           Container(
             height: MediaQuery.of(context).size.height * 0.15,
-            padding: EdgeInsets.fromLTRB(width, 0, width, 0),
+            width: width,
+            //padding: EdgeInsets.fromLTRB(width, 0, width, 0),
             color: Colors.green,
             child: Center(child: Text('for',style: ledgertextstyle,)),
           ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:payment/GetX/allowance_getx.dart';
+import 'package:payment/GetX/feautre_getx.dart';
 import 'package:get/get.dart';
 
 class ButtonHeaderWidget extends StatelessWidget {
@@ -29,7 +29,7 @@ class ButtonWidget extends StatelessWidget {
     //required this.icon,
     required this.onClicked,
   });
-  final mycontroller = Get.find<allowanceController>();
+  final mycontroller = Get.find<feautreController>();
   @override
   Widget build(BuildContext context) => ElevatedButton(
     style: ElevatedButton.styleFrom(

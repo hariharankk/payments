@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:payment/widgets/Buttonheader.dart';
-import 'package:payment/GetX/allowance_getx.dart';
+import 'package:payment/GetX/feautre_getx.dart';
 import 'package:get/get.dart';
 
 
 class DatePickerWidget extends StatelessWidget{
-  final mycontroller = Get.find<allowanceController>();
+  final mycontroller = Get.find<feautreController>();
 
 
   @override
