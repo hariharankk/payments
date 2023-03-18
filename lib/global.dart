@@ -27,6 +27,12 @@ Decoration mainbox = BoxDecoration(borderRadius: BorderRadius.circular(30.0),col
 
 Decoration upperbox =  BoxDecoration(borderRadius: BorderRadius.circular(20.0), color: Colors.yellowAccent[700],);
 
+Decoration upperbox1 =  BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: Colors.yellowAccent[700],);
+
 Decoration innerbox = BoxDecoration(borderRadius: BorderRadius.circular(20.0),color: Colors.blue);
 
 List<Widget> tabs= [Text('Add Allowance'),Text('Show History')];
+
+TextStyle salarybox = TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 8.sp);
+
+TextStyle salarycal = TextStyle(color: Colors.black, fontSize: 5.sp);

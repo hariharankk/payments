@@ -11,6 +11,9 @@ import 'package:payment/Screen/Bonus_wage.dart';
 import 'package:payment/Screen/Deductions.dart';
 import 'package:payment/Screen/loans.dart';
 import 'package:payment/Screen/Ledger.dart';
+import 'package:payment/Screen/paymentscreen.dart';
+import 'package:payment/Screen/Salary.dart';
+import 'package:payment/Screen/overtime.dart';
 
 
 void main() {
@@ -143,10 +146,16 @@ class _paymentsState extends State<payments> {
 
                        custominkwell(
                             icon :customicon(icon: Icons.handyman_sharp),
+                           onpress: (){
+                             Get.to(() => Salary());
+                           },
                             text : 'Salary'),
 
                        custominkwell(
                            icon :customicon(icon: Icons.hourglass_bottom),
+                           onpress: (){
+                             Get.to(() => overtimescreen());
+                           },
                            text : 'Overtime Pay'),
 
                        custominkwell(
@@ -187,7 +196,10 @@ class _paymentsState extends State<payments> {
                    ),
                    SizedBox(height: 20,),
                    GestureDetector(
-                     onTap: (){},
+                     onTap: (){
+                       print('hari');
+                       Get.to(() => paymentscreen());
+                     },
                      child: Container(
                        width: MediaQuery.of(context).size.width * 0.90,
                        height: MediaQuery.of(context).size.height * 0.1,

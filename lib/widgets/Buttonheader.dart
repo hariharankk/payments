@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:payment/GetX/feautre_getx.dart';
 import 'package:get/get.dart';
+import 'package:payment/GetX/weekly_getx.dart';
 
 class ButtonHeaderWidget extends StatelessWidget {
   final String title;
@@ -83,5 +84,70 @@ class HeaderWidget extends StatelessWidget {
         child,
       ],
     ),
+  );
+}
+
+class weeklystartbutton extends StatelessWidget {
+  final VoidCallback onClicked;
+  //final Icon icon;
+
+  weeklystartbutton({
+    required this.onClicked,
+  });
+  final mycontroller = Get.find<WeekController>();
+  @override
+  Widget build(BuildContext context) => ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color:Colors.blue,width:1.4),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      fixedSize: Size(180,60),
+      primary: Color.fromARGB(255, 255, 255, 255),
+    ),
+    child: Obx(
+
+          ()=> FittedBox(
+        child: Text(
+          mycontroller.datestart.value,
+          style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 5, 116, 176)),
+        ),
+
+      ),
+    ),
+    onPressed: onClicked,
+  );
+}
+
+
+class weeklyendbutton extends StatelessWidget {
+  final VoidCallback onClicked;
+  //final Icon icon;
+
+  weeklyendbutton({
+    required this.onClicked,
+  });
+  final mycontroller = Get.find<WeekController>();
+  @override
+  Widget build(BuildContext context) => ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color:Colors.blue,width:1.4),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      fixedSize: Size(180,60),
+      primary: Color.fromARGB(255, 255, 255, 255),
+    ),
+    child: Obx(
+
+          ()=> FittedBox(
+        child: Text(
+          mycontroller.datesend.value,
+          style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 5, 116, 176)),
+        ),
+
+      ),
+    ),
+    onPressed: onClicked,
   );
 }

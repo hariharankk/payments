@@ -48,7 +48,7 @@ class loan extends StatelessWidget {
                               children: <Widget>[
                                 SizedBox(width: 5,),
                                 DatePickerWidget(),
-                                roundedtextbutton(text: 'Notes',width: MediaQuery.of(context).size  .width *0.65),
+                                roundedtextbutton1(text: 'Notes',width: MediaQuery.of(context).size  .width *0.65),
                               ],
                             ),
                           ],
