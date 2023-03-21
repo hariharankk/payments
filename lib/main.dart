@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:payment/global.dart';
-import 'package:payment/widgets/custom icon.dart';
-import 'package:payment/widgets/custom inkwell.dart';
 import 'package:sizer/sizer.dart';
-import 'package:payment/Screen/allowance.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:month_year_picker/month_year_picker.dart';
-import 'package:payment/Screen/Bonus_wage.dart';
-import 'package:payment/Screen/Deductions.dart';
-import 'package:payment/Screen/loans.dart';
-import 'package:payment/Screen/Ledger.dart';
-import 'package:payment/Screen/paymentscreen.dart';
-import 'package:payment/Screen/Salary.dart';
-import 'package:payment/Screen/overtime.dart';
+import 'dart:async';
+import 'package:payment/services/authentication.dart';
+import 'package:payment/ui/admin_side/admin_page.dart';
+import 'package:payment/ui/home_page.dart';
+import 'package:payment/ui/admin or user.dart';
+import 'package:payment/services/Bloc.dart';
+import 'package:payment/models/user.dart';
 
+//List<CameraDescription> cameras;
+//var frontCamera;
 
-void main() {
+Future<void> main() async{
+  //WidgetsFlutterBinding.ensureInitialized();
+  //cameras = await availableCameras();
+
   runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
               GlobalMaterialLocalizations.delegate,
               MonthYearPickerLocalizations.delegate,
             ],
-        home: payments(),
+        home: SplashScreen(),
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
@@ -42,187 +42,147 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class payments extends StatefulWidget {
-  const payments({Key? key}) : super(key: key);
 
-  @override
-  State<payments> createState() => _paymentsState();
+enum AuthStatus {
+  NOT_DETERMINED,
+  NOT_LOGGED_IN,
+  LOGGED_IN,
 }
 
-class _paymentsState extends State<payments> {
 
+class SplashScreen extends StatefulWidget {
 
-  Future pickDate(BuildContext context) async {
-    final _selected = await showMonthYearPicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2019),
-      lastDate: DateTime(2024),
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
 
-    );
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    startTime();
+  }
 
-    if (_selected != null){
-      print('hari');
-    }
+  // Set the timer duration for the splash screen
+  startTime() async {
+    var _duration = Duration(seconds: 2);
+    return Timer(_duration, navigationPage);
+  }
+
+  // Navigate to root page after splash screen
+  void navigationPage() {
+    Get.to(()=> RootPage());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Employee name'),
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                Get.back();
-               }
-              ),
-          actions: [
-          IconButton(
-              onPressed: (){
-
-                pickDate(context);
-              },
-              icon: Icon(Icons.calendar_month),
-          ),
-          SizedBox(width: 20.0,)
-         ],
-          ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Container(
-          padding: EdgeInsets.only(top: 30),
-          child: Column(
-            children: <Widget>[
-              GestureDetector(
-                onTap: (){},
-                child: Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.90,
-                    height: MediaQuery.of(context).size.height * 0.2,
-                    decoration: upperbox,
-                    child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children:<Widget>[
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text('Total pending/advance for March 2023', style:  outerheader),
-                          SizedBox(width: 2,),
-                          Text('2000', style: amountstyle),
-                        ],
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.15,
-                        height: MediaQuery.of(context).size.height * 0.15,
-                        padding: EdgeInsets.all(20.0),
-                        decoration: innerbox,
-                           child: Center(child: Text('Report', style: innerstyle))),
-
-                    ]
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 20.0,),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.90,
-                height: MediaQuery.of(context).size.height * 0.5,
-                padding: EdgeInsets.all(20),
-                decoration: mainbox,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                     crossAxisAlignment: CrossAxisAlignment.center,
-                     mainAxisSize: MainAxisSize.max,
-                     children: <Widget>[
-
-                       custominkwell(
-                            icon :customicon(icon: Icons.handyman_sharp),
-                           onpress: (){
-                             Get.to(() => Salary());
-                           },
-                            text : 'Salary'),
-
-                       custominkwell(
-                           icon :customicon(icon: Icons.hourglass_bottom),
-                           onpress: (){
-                             Get.to(() => overtimescreen());
-                           },
-                           text : 'Overtime Pay'),
-
-                       custominkwell(
-                           icon :customicon(icon: Icons.electric_scooter_outlined),
-                           text : 'Allowance',
-                            onpress: (){
-                             Get.to(() => allowance());
-                            },
-                            ),
-                     ],
-                   ),
-                   SizedBox(height: 20,),
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                     crossAxisAlignment: CrossAxisAlignment.center,
-                     mainAxisSize: MainAxisSize.max,
-                     children: <Widget>[
-                       custominkwell(
-                           icon :customicon(icon: Icons.healing_sharp),
-                           onpress: (){
-                             Get.to(() => deduction());
-                           },
-                           text : 'Deductions'
-                       ),
-                       custominkwell(
-                           icon :customicon(icon: Icons.monetization_on_sharp),
-                           onpress: (){
-                             Get.to(() => loan());
-                           },
-                           text : 'Loans'),
-                       custominkwell(
-                           icon :customicon(icon: Icons.card_giftcard),
-                           onpress: (){
-                             Get.to(() => bonus());
-                           },
-                           text : 'Bonus Wage'),
-                     ],
-                   ),
-                   SizedBox(height: 20,),
-                   GestureDetector(
-                     onTap: (){
-                       print('hari');
-                       Get.to(() => paymentscreen());
-                     },
-                     child: Container(
-                       width: MediaQuery.of(context).size.width * 0.90,
-                       height: MediaQuery.of(context).size.height * 0.1,
-                       padding: EdgeInsets.all(20),
-                       decoration: paymentbor,
-                       child: Center(
-                           child: Text('+ Make Payments',style: payment,)
-                         ),
-                     ),
-                   ),
-
-                  ],
-                ),
-              ),
-              SizedBox(height: 20,),
-              Ledger()
-
-            ],
-          ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(color: Colors.black,),
         ),
       ),
     );
   }
 }
+
+class RootPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => new _RootPageState();
+}
+
+//TODO: Change the Auth state management to StreamBuilder
+
+class _RootPageState extends State<RootPage> {
+  AuthStatus authStatus = AuthStatus.NOT_DETERMINED;
+  String _userId = "";
+  bool admin= false;
+
+  BaseAuth auth = Auth();
+  @override
+  void initState() {
+    super.initState();
+    print('hari');
+    userBloc.currentuser().then((_) {
+      setState(() {
+        if (userBloc.getUserObject() != null) {
+          //_userId = userBloc.getUserObject().username!;
+          authStatus = AuthStatus.LOGGED_IN;
+          //admin = userBloc.getUserObject().admin!;
+        }
+        else{authStatus = AuthStatus.NOT_LOGGED_IN;}
+      });
+    });
+  }
+
+
+  void loginCallback() {
+    auth.getCurrentUser().then((user) {
+      setState(() {
+        _userId = user.username;
+        admin = user.admin;
+      });
+    });
+    setState(() {
+      authStatus = AuthStatus.LOGGED_IN;
+    });
+  }
+  // Logout Callback
+  Future<void> logoutCallback() async {
+    await auth.signOut();
+    setState(() {
+      authStatus = AuthStatus.NOT_LOGGED_IN;
+      _userId = "";
+      admin=false;
+    });
+  }
+
+  // Waiting Screen Widget
+  Widget buildWaitingScreen() {
+    return Scaffold(
+      body: Container(
+        alignment: Alignment.center,
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    switch (authStatus) {
+      case AuthStatus.NOT_DETERMINED:
+        return buildWaitingScreen();
+        break;
+      case AuthStatus.NOT_LOGGED_IN:
+        return  //LoginPage(
+          UserorAdmin(
+            loginCallback: loginCallback,
+          );
+        break;
+      case AuthStatus.LOGGED_IN:
+        if (_userId.length > 0 && _userId != null) {
+          print(admin);
+          if (admin) {
+            return  AdminPage(
+              logoutCallback: logoutCallback,
+              userid: _userId,
+            );
+          } else {
+            // Employee
+            return  HomePage(
+              logoutCallback: logoutCallback,
+              userId: _userId,
+            );
+          }
+        }else
+          return buildWaitingScreen();
+        break;
+      default:
+        return buildWaitingScreen();
+    }
+  }
+}
+
 
 
