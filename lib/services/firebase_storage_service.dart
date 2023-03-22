@@ -9,7 +9,7 @@ import 'package:payment/utility/jwt.dart';
 
 class Imagestorage {
   // Uploads a file to Firebase Storage and returns the path to its location
-  String uploadURL = 'http://354f-34-91-11-234.ngrok.io';
+  String uploadURL = 'http://cdbd-34-70-244-240.ngrok.io';
   late String Token;
   JWT jwt = JWT();
   Future<dynamic> upload(File imageFile) async {

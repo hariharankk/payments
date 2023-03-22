@@ -5,13 +5,10 @@ import 'package:payment/services/firebase_service.dart';
 import 'package:payment/services/validate.dart';
 import 'package:flutter/material.dart';
 import 'package:payment/models/user.dart';
+import 'package:payment/services/Bloc.dart';
 
 
 class EmployeeForm extends StatefulWidget {
-  final List<Store> stores;
-  String userid;
-
-  EmployeeForm({ required this.stores, required this.userid});
 
   @override
   _EmployeeFormState createState() => _EmployeeFormState();
@@ -20,10 +17,11 @@ class EmployeeForm extends StatefulWidget {
 class _EmployeeFormState extends State<EmployeeForm> {
 
   late Store _dropdownValue; // Current dropdown value
-  late List<DropdownMenuItem<Store>> _items; // Store all the drop down menu items
+  late List<DropdownMenuItem<dynamic>> _items; // Store all the drop down menu items
   Validate validate = new Validate();
   bool _isUploading = false, _storelength = false ;
-
+  final apiProvider =  Auth();
+  late User dummyuser;
 
   late String firstName,
       lastName,
@@ -45,18 +43,18 @@ class _EmployeeFormState extends State<EmployeeForm> {
   @override
   void initState() {
     super.initState();
-    if(widget.stores.length > 0){
+    if(storeBloc.getUserObject().length > 0){
       _items = _buildDropdownMenuItem();
-      _dropdownValue = widget.stores[0];
+      _dropdownValue = storeBloc.getUserObject()[0];
     } else{
       _storelength = true;
     };
   }
 
   /// Build Drop Down Menu Item
-  List<DropdownMenuItem<Store>> _buildDropdownMenuItem() {
-    List<DropdownMenuItem<Store>> tempList = [];
-    tempList = widget.stores.map((Store store) {
+  List<DropdownMenuItem<dynamic>> _buildDropdownMenuItem() {
+    List<DropdownMenuItem<dynamic>> tempList = [];
+    tempList = storeBloc.getUserObject().map((var store) {
       return DropdownMenuItem<Store>(value: store, child: Text(store.name));
     }).toList();
     return tempList;
@@ -72,14 +70,14 @@ class _EmployeeFormState extends State<EmployeeForm> {
     User users = User(email: emailId, password: password,phonenumber:mobile,admin:false);
     // Create a user
     Map<dynamic, dynamic> user = users.toMap();
-    empId = await auth.signUp(user);
+     dummyuser = await apiProvider.signUp(user);
 
     latitude=_dropdownValue.lat.toString();
     longitude=_dropdownValue.longi.toString();
 
     // Create an employee and its map
     Employee emp = new Employee(
-      userId: empId,
+      userId: dummyuser.username,
       firstName: firstName,
       lastName: lastName,
       storeId: _dropdownValue.id,
@@ -93,7 +91,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
       radius: _dropdownValue.radius,
       longi: longitude,
       lat: latitude,
-      admin: widget.userid
+      admin: userBloc.getUserObject().user
     );
 
     //Create employee map

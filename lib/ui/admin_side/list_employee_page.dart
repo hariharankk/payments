@@ -6,11 +6,10 @@ import 'package:payment/services/employee_Socket.dart';
 import 'package:payment/services/exit socket.dart';
 import 'package:payment/services/employee socket exit.dart';
 import 'package:payment/services/history socket exit.dart';
+import 'package:payment/services/Bloc.dart';
+import 'package:payment/services/dummybloc.dart';
 
 class ListEmployeePage extends StatefulWidget {
-  final List<Store> stores;
-  String userid;
-  ListEmployeePage({ required this.stores, required this.userid});
 
   @override
   _ListEmployeePageState createState() => _ListEmployeePageState();
@@ -19,7 +18,7 @@ class ListEmployeePage extends StatefulWidget {
 class _ListEmployeePageState extends State<ListEmployeePage> {
   Map<String, String> storeNames = {};
 
-
+  bool loading = false;
   employee_StreamSocket employee2 = employee_StreamSocket();
   ApprovalExitSocket streamSocket = ApprovalExitSocket();
   EmployeeExitSocket employee = EmployeeExitSocket();
@@ -28,9 +27,12 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
   @override
   void initState() {
     print('empinit');
+    loading = true;
+    empadminBloc.employeeadmin_getdata();
+    loading = false;
     streamSocket.Stopthread();
     _initStoreName();
-    employee2.openingapprovalconnectAndListen(widget.userid);
+    employee2.openingapprovalconnectAndListen(userBloc.getUserObject().user);
     super.initState();
   }
 
@@ -43,7 +45,7 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
   /// Map [store.id] to [store.name] and save it
   _initStoreName() async {
     Map<String, String> map = {};
-    for (Store store in widget.stores) {
+    for (Store store in storeBloc.getUserObject()) {
       map[store.id] = store.name;
     }
     setState(() {
@@ -74,7 +76,7 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
                   appBarNeeded: true,
                 )));
           history.Stopthread();
-          employee2.openingapprovalconnectAndListen(widget.userid);
+          employee2.openingapprovalconnectAndListen(userBloc.getUserObject().user);
           },
         leading: CircleAvatar(
           radius: 25,
@@ -128,11 +130,16 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading?Center(child: CircularProgressIndicator()):Scaffold(
       body: StreamBuilder(
         stream: //_dropdownValue.id == null ?
-        employee2.getResponse, //: employee1.getResponse,
-          builder: (context,   snapshot) {
+        empadminBloc.getempadmin,//employee2.getResponse, //: employee1.getResponse,
+          builder: (context,  AsyncSnapshot snapshot) {
+
+      if (snapshot == null && snapshot.hasError) {
+        return Center(child: CircularProgressIndicator());
+      }
+
 
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());

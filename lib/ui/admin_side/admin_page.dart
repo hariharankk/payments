@@ -7,6 +7,7 @@ import 'package:payment/ui/admin_side/store_config_page.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:payment/services/Bloc.dart';
 
 
 class AdminPage extends StatefulWidget {
@@ -28,8 +29,6 @@ class _AdminPageState extends State<AdminPage> {
   int _currentIndex = 0; // stores the current index of page
   late PageController _pageController;
 
-  List<Store> allStores = []; // Store all the stores
-
   @override
   void initState() {
     _initStores();
@@ -48,16 +47,7 @@ class _AdminPageState extends State<AdminPage> {
 
   /// Fetch and store [stores] from firebase
   _initStores() async {
-    apirepository Apirepository = apirepository();
-    List<dynamic> store = await Apirepository.store_getdata(widget.userid);
-    List<Store> tempStore = [];
-    tempStore = store.map((snapshot) {
-      Store store = Store.fromMap(snapshot);
-      return store;
-    }).toList();
-    setState(() {
-      allStores = tempStore;
-    });
+    storeBloc.updateStore();
   }
 
   ///Generate routes depending on the state of the [stores]
@@ -66,11 +56,10 @@ class _AdminPageState extends State<AdminPage> {
     // 2 -> Store Configurator
     if (index == 1 ) {
       Get.to(() =>
-              EmployeeForm(stores: allStores,userid:widget.userid));
+              EmployeeForm());
     }
     else {
-      Get.to(() => StoreConfigPage(stores: allStores,userid:widget.userid));
-        await _initStores();
+      Get.to(() => StoreConfigPage());
     }
   }
 
@@ -99,11 +88,11 @@ class _AdminPageState extends State<AdminPage> {
         children: <Widget>[
           Column(
             children: <Widget>[
-              Container(
-                height: MediaQuery.of(context).size.height * 0.5,
-                width: MediaQuery.of(context).size.width * 0.75,
-                child: Image.asset('assets/logo.jpg'),
-              ),
+             // Container(
+             //   height: MediaQuery.of(context).size.height * 0.5,
+             //   width: MediaQuery.of(context).size.width * 0.75,
+             //   child: Image.asset('assets/logo.jpg'),
+              //),
               SizedBox(height: 25.0),
               Center(
                 child: MaterialButton(
@@ -125,7 +114,6 @@ class _AdminPageState extends State<AdminPage> {
                   padding: EdgeInsets.all(16.0),
                   onPressed: ()async{
                           _navigateTo(2);
-                          await _initStores();
                           },
                   child: Text(
                     "Store Config",
@@ -135,8 +123,8 @@ class _AdminPageState extends State<AdminPage> {
               ),
             ],
           ),
-          ListEmployeePage(stores: allStores,userid: widget.userid,),
-          ListApprovalPage(userid: widget.userid,),
+          ListEmployeePage(),
+          ListApprovalPage(),
         ],
       ),
       bottomNavigationBar: BottomNavyBar(

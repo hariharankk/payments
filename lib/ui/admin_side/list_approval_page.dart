@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:payment/services/socket.dart';
 import 'package:payment/services/employee socket exit.dart';
 import 'package:payment/services/exit socket.dart';
-
+import 'package:payment/services/Bloc.dart';
+import 'package:payment/services/dummybloc.dart';
 
 class ListApprovalPage extends StatefulWidget {
-  String userid;
-  ListApprovalPage({required this.userid});
+
   @override
   _ListApprovalPageState createState() => _ListApprovalPageState();
 }
@@ -25,7 +25,8 @@ class _ListApprovalPageState extends State<ListApprovalPage> {
     super.initState();
     print('init');
     employee2.Stopthread();
-    streamSocket.openingapprovalconnectAndListen(widget.userid);
+    approvalBloc.approval_getdata();
+    streamSocket.openingapprovalconnectAndListen(userBloc.getUserObject().user);
   }
 
 
@@ -86,14 +87,14 @@ class _ListApprovalPageState extends State<ListApprovalPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder(
-          stream: streamSocket.getResponse,
+          stream: approvalBloc.getapproval,//streamSocket.getResponse,
           builder: (context, snapshot) {
 
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
             }
 
-            if (snapshot.data == null || snapshot.data.length == 0) {
+            if (snapshot.data == null || snapshot.data!.length == 0) {
               return Center(
                 child: Text(
                   "No Approvals Found!",
@@ -104,7 +105,7 @@ class _ListApprovalPageState extends State<ListApprovalPage> {
             }
 
 
-            var _approvalList = _buildList(snapshot.data);
+            var _approvalList = _buildList(snapshot.data!);
 
             return ListView.builder(
               itemCount: _approvalList.length,

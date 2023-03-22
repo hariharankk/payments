@@ -107,9 +107,9 @@ class _RootPageState extends State<RootPage> {
     userBloc.currentuser().then((_) {
       setState(() {
         if (userBloc.getUserObject() != null) {
-          //_userId = userBloc.getUserObject().username!;
+          _userId = userBloc.getUserObject().username!;
           authStatus = AuthStatus.LOGGED_IN;
-          //admin = userBloc.getUserObject().admin!;
+          admin = userBloc.getUserObject().admin!;
         }
         else{authStatus = AuthStatus.NOT_LOGGED_IN;}
       });
@@ -120,8 +120,8 @@ class _RootPageState extends State<RootPage> {
   void loginCallback() {
     auth.getCurrentUser().then((user) {
       setState(() {
-        _userId = user.username;
-        admin = user.admin;
+        _userId = userBloc.getUserObject().username!;
+        admin = userBloc.getUserObject().admin!;
       });
     });
     setState(() {

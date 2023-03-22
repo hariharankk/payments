@@ -1,14 +1,17 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:payment/services/Bloc.dart';
 import 'package:payment/utility/jwt.dart';
+import 'package:payment/models/store.dart';
 
-class apirepository {
+class apirepository{
   late String Token;
-  String uploadURL = 'http://354f-34-91-11-234.ngrok.io';
+  String uploadURL = 'http://152c-35-193-19-190.ngrok.io';
   JWT jwt = JWT();
 
   /// Add a map to a firestore collection
   Future<dynamic> store_getdata(String id) async{
+    print(1);
     String URL = uploadURL+'/store/getdata/'+id;
     Token = await jwt.read_token();
     final response = await http.get(URL,
@@ -19,11 +22,19 @@ class apirepository {
     try {
       var responseData = json.decode(response.body);
       if(responseData['status']){//array, alternative empty string ''
-      return responseData['data'];}
-      else{return [];}
+        List<dynamic> tempStore = [];
+        tempStore = responseData['data'].map((snapshot) {
+          Store store = Store.fromMap(snapshot);
+          return store;
+        }).toList();
+      return tempStore;
+      }
+      else{
+        return [];
+      }
     } catch (e) {
       print(e);
-      return null;
+      return [];
     }
 
   }
@@ -135,9 +146,9 @@ class apirepository {
     }
   }
 
-  Future<dynamic> employee_getdata(String empid) async{
+  Future<dynamic> employee_getdata() async{
     Token = await jwt.read_token();
-    String URL = uploadURL+'/employee/getdata/'+empid;
+    String URL = uploadURL+'/employee/getdata/'+userBloc.getUserObject().user;
     final response = await http.get(URL,
       headers: <String, String>{
         'x-access-token': Token
@@ -146,15 +157,84 @@ class apirepository {
     try {
       var responseData = json.decode(response.body);
       if(responseData['status']){//list, alternative empty string " "
-      print(responseData['data']);
+        print(responseData['data']);
         return responseData['data'];}
-      else{return null;}
+      else{return [];}
     } catch (e) {
       print(e);
-      return null;
+      return [];
     }
 
   }
+
+
+  Future<dynamic> employeeadmin_getdata() async{
+    Token = await jwt.read_token();
+    String URL = uploadURL+'/employeeadmin/getdata/'+userBloc.getUserObject().user;
+    final response = await http.get(URL,
+      headers: <String, String>{
+        'x-access-token': Token
+      },
+    );
+    try {
+      var responseData = json.decode(response.body);
+      print((responseData['status']));
+      if(responseData['status']){//list, alternative empty string " "
+        print(responseData['data']);
+        return responseData['data'];}
+      else{return [];}
+    } catch (e) {
+      print(e);
+      return [];
+    }
+
+  }
+
+
+  Future<dynamic> history_getdata(String id) async{
+    Token = await jwt.read_token();
+    String URL = uploadURL+'/history/getdata/'+id;
+    final response = await http.get(URL,
+      headers: <String, String>{
+        'x-access-token': Token
+      },
+    );
+    try {
+      var responseData = json.decode(response.body);
+      if(responseData['status']){//list, alternative empty string " "
+        print(responseData['data']);
+        return responseData['data'];}
+      else{return [];}
+    } catch (e) {
+      print(e);
+      return [];
+    }
+
+  }
+
+
+  Future<dynamic> approval_getdata() async{
+    Token = await jwt.read_token();
+    String URL = uploadURL+'/approval/getdata/'+userBloc.getUserObject().user;
+    final response = await http.get(URL,
+      headers: <String, String>{
+        'x-access-token': Token
+      },
+    );
+    try {
+      var responseData = json.decode(response.body);
+      if(responseData['status']){//list, alternative empty string " "
+        print(responseData['data']);
+        return responseData['data'];}
+      else{return [];}
+    } catch (e) {
+      print(e);
+      return [];
+    }
+
+  }
+
+
 
   Future<dynamic> history_adddata(Map<String,dynamic> history) async{
     Token = await jwt.read_token();

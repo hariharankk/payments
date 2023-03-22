@@ -1,6 +1,7 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:payment/models/user.dart';
 import 'package:payment/services/Repository.dart';
+import 'package:payment/models/store.dart';
 
 class UserBloc {
   final PublishSubject<User> _userGetter = PublishSubject<User>();
@@ -66,4 +67,51 @@ class UserBloc {
   }
 }
 
+
+
+class StoreBloc {
+  final PublishSubject<List<dynamic>> _storeGetter = PublishSubject<List<dynamic>>();
+  List<dynamic> _store = [Store.blank()];
+
+  StoreBloc._privateConstructor();
+
+  static final StoreBloc _instance = StoreBloc._privateConstructor();
+
+  factory StoreBloc() {
+    return _instance;
+  }
+
+  Stream<List<dynamic>> get getStore => _storeGetter.stream;
+
+  List<dynamic> getUserObject() {
+    return _store;
+  }
+
+  Future<void>  updateStore() async {
+    try {
+      _store = await repository.store_getdata(userBloc.getUserObject().username!);
+      _storeGetter.sink.add(_store);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> addStore(Map<dynamic,dynamic> store) async {
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await repository.addStore(store);
+    await updateStore();
+  }
+
+
+  dispose() {
+    _storeGetter.close();
+  }
+}
+
+
+
+
+
 final userBloc = UserBloc();
+
+final storeBloc = StoreBloc();

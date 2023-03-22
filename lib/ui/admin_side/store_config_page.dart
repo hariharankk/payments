@@ -1,14 +1,10 @@
 import 'package:payment/models/store.dart';
-import 'package:payment/services/firebase_service.dart';
 import 'package:payment/services/validate.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:payment/services/Bloc.dart';
 
 class StoreConfigPage extends StatefulWidget {
-  final List<Store> stores;
-  String userid;
-
-  StoreConfigPage({ required this.stores, required this.userid});
 
   @override
   _StoreConfigPageState createState() => _StoreConfigPageState();
@@ -97,10 +93,10 @@ class _StoreConfigPageState extends State<StoreConfigPage> {
 
   /// Get Location
   _getLocation() async {
-    Position position = await Geolocator().getCurrentPosition();
-    print(position);
-    lat =  position.latitude.toString();
-    longi = position.longitude.toString();
+    //Position position = await Geolocator().getCurrentPosition();
+    //print(position);
+    lat =  '92';//position.latitude.toString();
+    longi = '72';//position.longitude.toString();
     print(lat);
   }
 
@@ -110,7 +106,7 @@ class _StoreConfigPageState extends State<StoreConfigPage> {
       _isUploading = true;
     });
 
-    apirepository Apirepository = apirepository();
+
 
     Store store = new Store(
       storeName: _name,
@@ -118,13 +114,13 @@ class _StoreConfigPageState extends State<StoreConfigPage> {
       lat: lat,
       longi: longi,
       radius: _radius,
-        admin: widget.userid
+        admin: userBloc.getUserObject().user
     );
 
     Map<dynamic, dynamic> storeMap = store.toMap();
     // Upload to firebase
-    print(storeMap);
-    bool result = await Apirepository.store_uploaddata(storeMap);
+
+    await storeBloc.addStore(storeMap);
     // Set [_isUploading] to false
     setState(() {
       _isUploading = false;
@@ -260,7 +256,6 @@ class _StoreConfigPageState extends State<StoreConfigPage> {
                   }
                    else
                    {
-                     print('haran');
                      await _uploadToFirebase();
                      return await Dialog(context);
                    }

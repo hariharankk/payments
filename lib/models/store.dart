@@ -7,8 +7,13 @@ class Store {
   String? longi;
   String? admin;
 
+
+
+
   Store({this.radius, this.storeId, this.lat,this.longi, this.storeName,this.admin});
 
+
+  Store.blank();
   Store.map(dynamic obj) {
     this.storeId = obj['storeId'];
     this.lat = obj['lat'];

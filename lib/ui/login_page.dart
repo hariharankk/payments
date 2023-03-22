@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
+import 'package:payment/ui/alreadyhaveaaccount.dart';
 import 'package:payment/services/validate.dart';
 import 'package:flutter/material.dart';
 import 'package:payment/services/authentication.dart';
 import 'package:payment/services/Bloc.dart';
+import 'package:payment/ui/register.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback loginCallback;
@@ -113,6 +115,13 @@ try {
                 height: 15.0,
               ),
               _codeSent ? Container() : showSecondaryButton(),
+              SizedBox(height: 10,),
+              AlreadyHaveAnAccountCheck(login: true,
+                press: () {
+                  Get.to(()=> register(loginCallback: widget.loginCallback));
+                  Get.back();
+                },
+              ),
             ],
           ),
         ));

@@ -4,6 +4,7 @@ import 'package:table_sticky_headers/table_sticky_headers.dart';
 import 'package:payment/services/history_socket.dart';
 import 'package:payment/services/history socket exit.dart';
 import 'package:payment/services/employee3_stop_thread.dart';
+import 'package:payment/services/dummybloc.dart';
 
 class AttendanceHistory extends StatefulWidget {
   final String userId;
@@ -28,6 +29,7 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
   void initState() {
     columnNames = ['Check In Time', 'Check Out Time', 'Hours Spent'];
     super.initState();
+    historyBloc.history_getdata(widget.userId);
     empexit.Stopthread();
     history_soc.openingapprovalconnectAndListen(widget.userId);
   }
@@ -92,7 +94,7 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
           ? AppBar(title: Text("Attendance History"))
           : null,
       body: StreamBuilder(
-        stream: history_soc.getResponse,
+        stream: historyBloc.gethistory,//history_soc.getResponse,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
