@@ -8,6 +8,9 @@ import 'package:payment/GetX/feautre_getx.dart';
 import 'package:payment/Screen/payments_history.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:payment/GetX/spinner widget getx.dart';
+import 'package:payment/models/Payments.dart';
+import 'package:payment/services/firebase_service.dart';
+
 
 
 class overtimescreen extends StatelessWidget {
@@ -125,6 +128,16 @@ class overtimescreen extends StatelessWidget {
                         SizedBox(height: 20,),
                             GestureDetector(
                               onTap: (){
+                                final apiProvider1 = apirepository();
+                                Payments payments = Payments(
+                                    ammount: int.parse(mycontroller.paymenttext.value),
+                                    notes: mycontroller.notestext.value,
+                                    category: 'Allowance',
+                                    type_of_note: '',
+                                    username: ''
+                                );
+                                Map<dynamic, dynamic> paymentsMap = payments.toMap();
+                                apiProvider1.Payments_adddata(paymentsMap);
                                 Get.back();
                               },
                               child: Container(

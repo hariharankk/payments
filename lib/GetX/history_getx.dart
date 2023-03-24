@@ -9,6 +9,7 @@ class HistoryController extends GetxController {
   void change(String dates)
   {
     date.value = dates;
+    print(dates);
   }
 
 

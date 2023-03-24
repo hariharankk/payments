@@ -3,7 +3,6 @@ import 'package:payment/services/firebase_service.dart';
 import 'package:payment/services/firebase_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:payment/services/socket.dart';
-import 'package:payment/services/employee socket exit.dart';
 import 'package:payment/services/exit socket.dart';
 import 'package:payment/services/Bloc.dart';
 import 'package:payment/services/dummybloc.dart';
@@ -17,7 +16,6 @@ class ListApprovalPage extends StatefulWidget {
 class _ListApprovalPageState extends State<ListApprovalPage> {
   /// Build List of Approvals
   StreamSocket streamSocket =StreamSocket();
-  EmployeeExitSocket employee2 = EmployeeExitSocket();
   ApprovalExitSocket streamsSocket = ApprovalExitSocket();
 
   void initState() {

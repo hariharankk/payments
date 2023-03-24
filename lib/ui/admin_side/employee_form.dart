@@ -6,6 +6,7 @@ import 'package:payment/services/validate.dart';
 import 'package:flutter/material.dart';
 import 'package:payment/models/user.dart';
 import 'package:payment/services/Bloc.dart';
+import 'package:payment/services/dummybloc.dart';
 
 
 class EmployeeForm extends StatefulWidget {
@@ -98,7 +99,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
     Map<dynamic, dynamic> empMap = emp.toMap();
 
     //Upload to firebase
-    await Apirepository.employee_uploaddata(empMap);
+    await empadminBloc.addemployee(empMap);
   }
 
   /// Submit form after validating it

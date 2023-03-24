@@ -7,7 +7,7 @@ import 'package:payment/GetX/history_getx.dart';
 class History extends StatelessWidget {
    History({Key? key}) : super(key: key);
 
-   DateTime? _selected;
+
    final mycontroller = Get.put(HistoryController());
 
    Future pickDate(BuildContext context) async {
@@ -21,6 +21,7 @@ class History extends StatelessWidget {
 
      if (_selected != null){
        mycontroller.change(DateFormat("MMMM, yyyy").format(_selected));
+
      }
    }
 
@@ -54,7 +55,8 @@ class History extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          Obx(()=> Text( mycontroller.date.value)),
+                          Obx(()=>
+                              Text( mycontroller.date.value)),
                           Icon(Icons.arrow_drop_down)
                         ],
                       ),

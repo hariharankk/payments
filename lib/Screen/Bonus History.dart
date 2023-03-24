@@ -10,6 +10,7 @@ class History extends StatelessWidget {
   DateTime? _selected;
   final mycontroller = Get.put(HistoryController());
 
+
   Future pickDate(BuildContext context) async {
     final _selected = await showMonthYearPicker(
       context: context,
@@ -27,70 +28,93 @@ class History extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
+    return FutureBuilder(
+        future: ,
+        initialData: 'Demo Name',
+        builder: (
+        BuildContext context,
+        AsyncSnapshot<String> snapshot,
+    ) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Text('Empty data');
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return const Text('Error');
+            } else if (snapshot.hasData) {
+              return
+                SingleChildScrollView(
+                  child: Container(
 
-        child: Column(
-          children: [
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.all(15),
-              child: Row(
-                children: <Widget>[
-                  Text('select month'),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          margin: EdgeInsets.all(15),
+                          child: Row(
+                            children: <Widget>[
+                              Text('select month'),
 
-                  GestureDetector(
-                    onTap: (){
-                      pickDate(context);
+                              GestureDetector(
+                                onTap: () {
+                                  pickDate(context);
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.blue
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Obx(() => Text(mycontroller.date.value)),
+                                      Icon(Icons.arrow_drop_down)
+                                    ],
+                                  ),
+                                ),
+                              )
 
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          margin: EdgeInsets.all(15),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Total Bonus'),
+                              Text('amount'),
+                            ],
+                          ),
+                        ),
+                        Divider(
+                          color: Colors.grey,
+                        ),
+                        ListView.builder(
+                          itemBuilder: (BuildContext context, int index) {
+                            return historylist();
+                          },
 
-                    },
-                    child: Container(
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.blue
-                      ),
-                      child: Row(
-                        children: [
-                          Obx(()=> Text( mycontroller.date.value)),
-                          Icon(Icons.arrow_drop_down)
-                        ],
-                      ),
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: 10,
+                          shrinkWrap: true,
+                        )
+                      ],
                     ),
-                  )
-
-                ],
-              ),
-            ),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.all(15),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Total Bonus'),
-                  Text('amount'),
-                ],
-              ),
-            ),
-            Divider(
-              color: Colors.grey,
-            ),
-            ListView.builder(itemBuilder: (BuildContext context, int index) {
-              return historylist();
-            },
-
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: 10,
-              shrinkWrap: true,
-            )
-          ],
-        ),
-      ),
+                  ),
+                );
+            }
+            else {
+              return Center(child: const Text('No data'));
+            }
+          }
+          else {
+            return Center(child: const Text('No data'));
+          }
+        }
     );
   }
 }

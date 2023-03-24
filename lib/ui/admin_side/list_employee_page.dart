@@ -2,9 +2,7 @@ import 'package:payment/models/employee.dart';
 import 'package:payment/models/store.dart';
 import 'package:payment/ui/admin_side/attendance history.dart';
 import 'package:flutter/material.dart';
-import 'package:payment/services/employee_Socket.dart';
 import 'package:payment/services/exit socket.dart';
-import 'package:payment/services/employee socket exit.dart';
 import 'package:payment/services/history socket exit.dart';
 import 'package:payment/services/Bloc.dart';
 import 'package:payment/services/dummybloc.dart';
@@ -22,9 +20,7 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
   Map<String, String> storeNames = {};
 
   bool loading = false;
-  employee_StreamSocket employee2 = employee_StreamSocket();
   ApprovalExitSocket streamSocket = ApprovalExitSocket();
-  EmployeeExitSocket employee = EmployeeExitSocket();
   HistoryExitSocket history = HistoryExitSocket();
 
   @override
@@ -132,10 +128,8 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
         onTap: () async{
-          employee.Stopthread();
           Get.to(()=>payments());
           history.Stopthread();
-          employee2.openingapprovalconnectAndListen(userBloc.getUserObject().user);
         },
         leading: CircleAvatar(
           radius: 25,
@@ -201,11 +195,9 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
           ),
         ),
         body:
-            //physics: BouncingScrollPhysics(),
-           // children: [
             StreamBuilder(
-            stream: //_dropdownValue.id == null ?
-            empadminBloc.getempadmin,//employee2.getResponse, //: employee1.getResponse,
+            stream:
+            empadminBloc.getempadmin,
               builder: (context,  AsyncSnapshot snapshot) {
 
           if (snapshot == null && snapshot.hasError) {

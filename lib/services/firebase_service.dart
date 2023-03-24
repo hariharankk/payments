@@ -3,10 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:payment/services/Bloc.dart';
 import 'package:payment/utility/jwt.dart';
 import 'package:payment/models/store.dart';
+import 'package:payment/models/Payments.dart';
 
 class apirepository{
   late String Token;
-  String uploadURL = 'http://1c3f-35-203-188-228.ngrok.io';
+  String uploadURL = 'http://c455-34-147-102-31.ngrok.io';
   JWT jwt = JWT();
 
   /// Add a map to a firestore collection
@@ -281,5 +282,83 @@ class apirepository{
       return false;
     }
   }
+
+
+  Future getPayments(String range, String category ,String userid) async {
+    final Token = await jwt.read_token();
+    final queryParameters = {
+      "category": category,
+      "userid": userid,
+      "range": range,
+    };
+    Uri getPaymentsURL = Uri.parse(uploadURL+'/api/payments-get').replace(queryParameters: queryParameters);
+    List<Payments> payments = [];
+    try {
+      final response = await http.get(
+        getPaymentsURL,
+        headers: {
+          'x-access-token': Token,
+        },
+      );
+      final Map result = json.decode(response.body);
+      if (response.statusCode == 200) {
+        // If the call to the server was successful, parse the JSON
+        for (Map<String, dynamic> json_ in result["data"]) {
+          Payments payment = Payments.fromMap(json_);
+          payments.add(payment);
+        }
+        return payments;
+      }
+    }catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<dynamic> Payments_adddata(Map<dynamic,dynamic> payments) async{
+    Token = await jwt.read_token();
+    String URL = uploadURL+'/api/payments-add';
+    try {
+      final response = await http.post(
+        Uri.parse(URL),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          'x-access-token': Token,
+        },
+        body: jsonEncode(payments),
+      );
+      var responseData = json.decode(response.body);
+      if(responseData['status']){
+        return responseData['status'];}
+      else{
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<dynamic> payments_delete(String payments) async{
+    Token = await jwt.read_token();
+    String URL = uploadURL+'/api/payments_delete/'+payments;
+    final response = await http.get(Uri.parse(URL),
+      headers: <String, String>{
+        'x-access-token': Token
+      },
+    );
+    try {
+      var responseData = json.decode(response.body);
+      print(responseData['status']);//bool
+      return responseData['status'];
+    } catch (e) {
+      print(e);
+      return false;
+
+    }
+
+  }
+
 
 }

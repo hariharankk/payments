@@ -105,8 +105,16 @@ class EmpadminBloc {
     }
   }
 
+  Future<void> addemployee(Map<dynamic,dynamic> empMap) async {
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await apiProvider1.employee_uploaddata(empMap);
+    await employeeadmin_getdata();
+  }
+
+
 
   dispose() {
+    print('dispose panni achu da baadu');
     _empadminGetter.close();
   }
 }
