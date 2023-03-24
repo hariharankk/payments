@@ -20,7 +20,7 @@ abstract class BaseAuth {
 
 class Auth implements BaseAuth {
   late String Token;
-  String uploadURL = 'http://152c-35-193-19-190.ngrok.io';
+  String uploadURL = 'http://1c3f-35-203-188-228.ngrok.io';
   JWT jwt= JWT();
 
 
@@ -55,20 +55,21 @@ class Auth implements BaseAuth {
       return null;
     }
     String URL = uploadURL+'/currentuser';
-    final response = await http.get(URL,
+    final response = await http.get(Uri.parse(URL),
       headers: <String, String>{
         'x-access-token': Token
       },
     );
-    try {
+    //try {
+      print(response.body);
       var responseData = json.decode(response.body);
       User user = User.fromMap(responseData);//list, alternative empty string " "
       return user;
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
+    } //catch (e) {
+      //print(e);
+      //return null;
+    //}
+  //}
 
   Future<void> signOut() async {
     await jwt.delete_token();
@@ -88,7 +89,6 @@ class Auth implements BaseAuth {
       );
       var responseData = json.decode(response.body);
       if(responseData['status']){
-        print(responseData['status']);
         await jwt.store_token(responseData['token']);
         return User.fromMap(responseData["data"]);
       }

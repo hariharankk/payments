@@ -103,7 +103,6 @@ class _RootPageState extends State<RootPage> {
   @override
   void initState() {
     super.initState();
-    print('hari');
     userBloc.currentuser().then((_) {
       setState(() {
         if (userBloc.getUserObject() != null) {

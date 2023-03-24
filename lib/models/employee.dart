@@ -58,7 +58,7 @@ class Employee {
   String get email => emailId!;
   String get expertise => specialization!;
   String get storeID => storeId!;
-  String get image => imageId!;
+  String get image => imageId ?? '';
   String get aadhar => aadharNumber!;
   String get addr => address!;
   String get exp => experience!;

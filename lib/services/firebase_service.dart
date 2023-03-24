@@ -6,15 +6,14 @@ import 'package:payment/models/store.dart';
 
 class apirepository{
   late String Token;
-  String uploadURL = 'http://152c-35-193-19-190.ngrok.io';
+  String uploadURL = 'http://1c3f-35-203-188-228.ngrok.io';
   JWT jwt = JWT();
 
   /// Add a map to a firestore collection
   Future<dynamic> store_getdata(String id) async{
-    print(1);
     String URL = uploadURL+'/store/getdata/'+id;
     Token = await jwt.read_token();
-    final response = await http.get(URL,
+    final response = await http.get(Uri.parse(URL),
       headers: <String, String>{
         'x-access-token': Token
     },
@@ -107,7 +106,7 @@ class apirepository{
   Future<dynamic> approval_delete(String empid) async{
     Token = await jwt.read_token();
     String URL = uploadURL+'/approval/delete/'+empid;
-    final response = await http.get(URL,
+    final response = await http.get(Uri.parse(URL),
       headers: <String, String>{
       'x-access-token': Token
     },
@@ -149,7 +148,7 @@ class apirepository{
   Future<dynamic> employee_getdata() async{
     Token = await jwt.read_token();
     String URL = uploadURL+'/employee/getdata/'+userBloc.getUserObject().user;
-    final response = await http.get(URL,
+    final response = await http.get(Uri.parse(URL),
       headers: <String, String>{
         'x-access-token': Token
       },
@@ -171,7 +170,7 @@ class apirepository{
   Future<dynamic> employeeadmin_getdata() async{
     Token = await jwt.read_token();
     String URL = uploadURL+'/employeeadmin/getdata/'+userBloc.getUserObject().user;
-    final response = await http.get(URL,
+    final response = await http.get(Uri.parse(URL),
       headers: <String, String>{
         'x-access-token': Token
       },
@@ -194,7 +193,7 @@ class apirepository{
   Future<dynamic> history_getdata(String id) async{
     Token = await jwt.read_token();
     String URL = uploadURL+'/history/getdata/'+id;
-    final response = await http.get(URL,
+    final response = await http.get(Uri.parse(URL),
       headers: <String, String>{
         'x-access-token': Token
       },
@@ -216,7 +215,7 @@ class apirepository{
   Future<dynamic> approval_getdata() async{
     Token = await jwt.read_token();
     String URL = uploadURL+'/approval/getdata/'+userBloc.getUserObject().user;
-    final response = await http.get(URL,
+    final response = await http.get(Uri.parse(URL),
       headers: <String, String>{
         'x-access-token': Token
       },

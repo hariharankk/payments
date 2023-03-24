@@ -1,6 +1,6 @@
 import 'package:payment/models/employee.dart';
 import 'package:payment/models/store.dart';
-import 'package:payment/ui/common/attendance_history.dart';
+import 'package:payment/ui/admin_side/attendance history.dart';
 import 'package:flutter/material.dart';
 import 'package:payment/services/employee_Socket.dart';
 import 'package:payment/services/exit socket.dart';
@@ -8,6 +8,9 @@ import 'package:payment/services/employee socket exit.dart';
 import 'package:payment/services/history socket exit.dart';
 import 'package:payment/services/Bloc.dart';
 import 'package:payment/services/dummybloc.dart';
+import 'package:payment/global.dart';
+import 'package:get/get.dart';
+import 'package:payment/Screen/Payments_frontscreen.dart';
 
 class ListEmployeePage extends StatefulWidget {
 
@@ -26,20 +29,14 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
 
   @override
   void initState() {
-    print('empinit');
-    loading = true;
     empadminBloc.employeeadmin_getdata();
-    loading = false;
     streamSocket.Stopthread();
     _initStoreName();
-    employee2.openingapprovalconnectAndListen(userBloc.getUserObject().user);
     super.initState();
   }
 
   void dispose() {
     super.dispose();
-    print('dispose emplooyee2');
-    employee.Stopthread();
   }
 
   /// Map [store.id] to [store.name] and save it
@@ -69,20 +66,14 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
         onTap: () async{
-          employee.Stopthread();
-          await Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => AttendanceHistory(
-                  userId: emp.id,
-                  appBarNeeded: true,
-                )));
+          Get.to(()=>AttendanceHistory(userId: emp.id,));
           history.Stopthread();
-          employee2.openingapprovalconnectAndListen(userBloc.getUserObject().user);
           },
         leading: CircleAvatar(
           radius: 25,
           child: ClipOval(
             child: Center(
-              child: emp.image == null
+              child: emp.image == ''
             ? Container(
             color: Colors.blue,
               child: Center(
@@ -128,47 +119,150 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return loading?Center(child: CircularProgressIndicator()):Scaffold(
-      body: StreamBuilder(
-        stream: //_dropdownValue.id == null ?
-        empadminBloc.getempadmin,//employee2.getResponse, //: employee1.getResponse,
-          builder: (context,  AsyncSnapshot snapshot) {
+  List<Widget> _buildList1(
+      BuildContext context, List<dynamic> snapshot) {
+    return snapshot.map((data) => _buildListItem1(context, data)).toList();
+  }
 
-      if (snapshot == null && snapshot.hasError) {
-        return Center(child: CircularProgressIndicator());
-      }
+  /// Build list item (employee)
+  Widget _buildListItem1(BuildContext context, Map<dynamic,dynamic> data) {
+    Employee emp = Employee.fromMap(data);
 
-
-            if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
-            }
-
-          if (snapshot.data == null || snapshot.data!.length == 0) {
-              return Center(
-                child: Text(
-                  "No Employees Found!",
-                  textScaleFactor: 1.3,
-                  maxLines: 2,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListTile(
+        onTap: () async{
+          employee.Stopthread();
+          Get.to(()=>payments());
+          history.Stopthread();
+          employee2.openingapprovalconnectAndListen(userBloc.getUserObject().user);
+        },
+        leading: CircleAvatar(
+          radius: 25,
+          child: ClipOval(
+            child: Center(
+              child: emp.image == ''
+                  ? Container(
+                color: Colors.blue,
+                child: Center(
+                  child: Text(
+                    "Add Image",
+                    textScaleFactor: 0.5,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    maxLines: 2,
+                  ),
                 ),
-              );
-            }
-
-    List<Widget> _empList = _buildList(context, snapshot.data!);
-    return
-    SingleChildScrollView(
-    child:Container(
-      margin: EdgeInsets.all(15.0),
-      child:
-      ListView.builder(
-        shrinkWrap: true,
-        itemBuilder: (context, index) => _empList[index],
-        itemCount: _empList.length,
-      ),
+              )
+                  :Image.network(
+                emp.image,
+                height: 100,
+                width: 100,
+                fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                        : null,
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+        title: Text(
+          "${emp.first} ${emp.last}",
+          textScaleFactor: 1.2,
+        ),
+        subtitle: Text(
+          "Store: ${storeNames[emp.storeID]}",
+          textScaleFactor: 1.1,
+        ),
+        trailing: Icon(Icons.chevron_right, size: 40.0),
       ),
     );
-    })
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          bottom: TabBar(
+            isScrollable: true,
+            tabs: employeetabs,
+            indicatorColor: Colors.white,
+          ),
+        ),
+        body:
+            //physics: BouncingScrollPhysics(),
+           // children: [
+            StreamBuilder(
+            stream: //_dropdownValue.id == null ?
+            empadminBloc.getempadmin,//employee2.getResponse, //: employee1.getResponse,
+              builder: (context,  AsyncSnapshot snapshot) {
+
+          if (snapshot == null && snapshot.hasError) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+
+                if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+              if (snapshot.data == null || snapshot.data!.length == 0) {
+                  return Center(
+                    child: Text(
+                      "No Employees Found!",
+                      textScaleFactor: 1.3,
+                      maxLines: 2,
+                    ),
+                  );
+                }
+
+      List<Widget> _empList = _buildList(context, snapshot.data!);
+      List<Widget> _empList1 = _buildList1(context, snapshot.data!);
+
+    return
+      TabBarView(
+        children: [
+          SingleChildScrollView(
+            child:Container(
+                margin: EdgeInsets.all(15.0),
+                child:
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) => _empList[index],
+                  itemCount: _empList.length,
+                ),
+                ),
+        ),
+          SingleChildScrollView(
+            child:Container(
+              margin: EdgeInsets.all(15.0),
+              child:
+              ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (context, index) => _empList1[index],
+                itemCount: _empList1.length,
+              ),
+            ),
+          ),
+
+        ]
+      );
+      }),
+
+
+
+      ),
     );
     }
   }

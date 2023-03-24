@@ -33,6 +33,8 @@ Decoration innerbox = BoxDecoration(borderRadius: BorderRadius.circular(20.0),co
 
 List<Widget> tabs= [Text('Add Allowance'),Text('Show History')];
 
+List<Widget> employeetabs = [Text('Attendance'),Text('payments')];
+
 TextStyle salarybox = TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 8.sp);
 
 TextStyle salarycal = TextStyle(color: Colors.black, fontSize: 5.sp);

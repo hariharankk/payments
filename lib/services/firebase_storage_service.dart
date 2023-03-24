@@ -70,7 +70,7 @@ class Imagestorage {
     var pos = imgurl.lastIndexOf('/');
     String img = (pos != -1)? imgurl.substring(pos+1, imgurl.length): imgurl;
     String imgURL = uploadURL+'/deletefile/'+img;
-    final response = await http.get(imgURL,
+    final response = await http.get(Uri.parse(imgURL),
        headers: <String, String>{
       'x-access-token': Token
     },
@@ -81,7 +81,7 @@ class Imagestorage {
   void delete(String user) async {
     Token = await jwt.read_token();
     String imgURL = uploadURL+'/delete/'+user;
-    final response = await http.get(imgURL,
+    final response = await http.get(Uri.parse(imgURL),
       headers: <String, String>{
       'x-access-token': Token
     },
@@ -119,7 +119,7 @@ class Imagestorage {
   Future<bool> getstatus(String empid) async{
     Token = await jwt.read_token();
     String imgURL = uploadURL+'/get_status/'+ empid ;
-    final response = await http.get(imgURL,
+    final response = await http.get(Uri.parse(imgURL),
       headers: <String, String>{
         'x-access-token': Token
       },
