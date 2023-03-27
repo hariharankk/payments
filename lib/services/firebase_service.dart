@@ -7,7 +7,7 @@ import 'package:payment/models/Payments.dart';
 
 class apirepository{
   late String Token;
-  String uploadURL = 'http://c455-34-147-102-31.ngrok.io';
+  String uploadURL = 'http://2a06-34-90-50-66.ngrok.io';
   JWT jwt = JWT();
 
   /// Add a map to a firestore collection
@@ -286,6 +286,7 @@ class apirepository{
 
   Future getPayments(String range, String category ,String userid) async {
     final Token = await jwt.read_token();
+    List data;
     final queryParameters = {
       "category": category,
       "userid": userid,
@@ -303,15 +304,19 @@ class apirepository{
       final Map result = json.decode(response.body);
       if (response.statusCode == 200) {
         // If the call to the server was successful, parse the JSON
-        for (Map<String, dynamic> json_ in result["data"]) {
-          Payments payment = Payments.fromMap(json_);
-          payments.add(payment);
-        }
-        return payments;
+        if (result["data"].length > 0) {
+          for (Map<String, dynamic> json_ in result["data"]) {
+            Payments payment = Payments.fromJson(json_);
+            payments.add(payment);
+          }
+          data = [payments, result["total"]];
+          return data;
+        }else
+          return [];
       }
     }catch (e) {
       print(e);
-      return false;
+      return [];
     }
   }
 

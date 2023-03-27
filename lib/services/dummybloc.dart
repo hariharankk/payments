@@ -120,3 +120,41 @@ class EmpadminBloc {
 }
 
 final empadminBloc = EmpadminBloc();
+
+
+class PaymentBloc {
+
+  final apiProvider1 = apirepository();
+  final PublishSubject<List<dynamic>> _paymentGetter = PublishSubject<List<dynamic>>();
+  List<dynamic> _payment = [];
+
+
+  Stream<List<dynamic>> get paymentadmin => _paymentGetter.stream;
+
+  List<dynamic> getObject() {
+    return _payment;
+  }
+
+  Future<void>  payment_getdata(String range, String category ,String userid) async {
+    try {
+      _payment = await apiProvider1.getPayments(range, category , userid);
+      _paymentGetter.sink.add(_payment);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> deletepayment(String payments, String range, String category ,String userid) async {
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await apiProvider1. payments_delete(payments);
+    await payment_getdata(range, category , userid);
+  }
+
+
+
+  dispose() {
+    print('dispose panni achu da baadu');
+    _paymentGetter.close();
+  }
+}
+

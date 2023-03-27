@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 
 class Payments extends Equatable {
 
@@ -8,7 +9,7 @@ class Payments extends Equatable {
   String? notes;
   String? category;
   int? ammount;
-  DateTime? time;
+  String? time;
   String? username;
   String? type_of_note;
 
@@ -43,14 +44,15 @@ class Payments extends Equatable {
   @override
   List<Object> get props => [payment];
 
-  Payments.fromMap(Map<dynamic,dynamic> map) {
-    this.ammount = map['ammount'];
-    this.notes = map['notes'];
-    this.category = map['category'];
-    this.payments_key = map['payments_key'];
-    this.time = map['time'];
-    this.username = map['userid'];
-    this.type_of_note = map['type_of_note'];
+  factory Payments.fromJson(Map<dynamic,dynamic> map) {
+    return Payments(
+    ammount : map['ammount'],
+    notes : map['notes'],
+    category : map['category'],
+    payments_key : map['payments_key'],
+    time : map['time'],
+    username : map['userid'],
+    type_of_note : map['type_of_note']);
   }
 
 }

@@ -128,7 +128,7 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
         onTap: () async{
-          Get.to(()=>payments());
+          Get.to(()=>payments(empid: emp.id,empname:emp.first ,));
           history.Stopthread();
         },
         leading: CircleAvatar(

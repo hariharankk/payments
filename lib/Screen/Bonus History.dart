@@ -3,12 +3,17 @@ import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:get/get.dart';
 import 'package:payment/GetX/history_getx.dart';
+import 'package:payment/GetX/payment_getx.dart';
+import 'package:payment/models/Payments.dart';
+import 'package:payment/services/dummybloc.dart';
 
 class History extends StatelessWidget {
   History({Key? key}) : super(key: key);
 
-  DateTime? _selected;
   final mycontroller = Get.put(HistoryController());
+  final mycontroller1 = Get.find<PaymentController>();
+  final paymentBloc = PaymentBloc();
+
 
 
   Future pickDate(BuildContext context) async {
@@ -20,107 +25,114 @@ class History extends StatelessWidget {
 
     );
 
-    if (_selected != null){
+    if (_selected != null) {
       mycontroller.change(DateFormat("MMMM, yyyy").format(_selected));
+      paymentBloc.payment_getdata(mycontroller.date.value, 'Bonus', mycontroller1.empidValue.value);
     }
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: ,
-        initialData: 'Demo Name',
-        builder: (
-        BuildContext context,
-        AsyncSnapshot<String> snapshot,
-    ) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text('Empty data');
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return const Text('Error');
-            } else if (snapshot.hasData) {
-              return
-                SingleChildScrollView(
-                  child: Container(
+    paymentBloc.payment_getdata(mycontroller.date.value, 'Bonus', mycontroller1.empidValue.value);
 
-                    child: Column(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.all(15),
-                          child: Row(
-                            children: <Widget>[
-                              Text('select month'),
+    return
+      StreamBuilder(
+        // Wrap our widget with a StreamBuilder
+        stream: paymentBloc.paymentadmin, // pass our Stream getter here
+        initialData: [], // provide an initial data
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              print("No data");
+              break;
+            case ConnectionState.active:
+              print(snapshot.data);
+              var data = snapshot.data != null ? snapshot.data![0]:[];
+              return       SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.all(15),
+                        child: Row(
+                          children: <Widget>[
+                            Text('select month'),
 
-                              GestureDetector(
-                                onTap: () {
-                                  pickDate(context);
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.all(10),
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.blue
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Obx(() => Text(mycontroller.date.value)),
-                                      Icon(Icons.arrow_drop_down)
-                                    ],
-                                  ),
+                            GestureDetector(
+                              onTap: () {
+                                pickDate(context);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(10),
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.blue
                                 ),
-                              )
+                                child: Row(
+                                  children: [
+                                    Obx(() => Text(mycontroller.date.value)),
+                                    Icon(Icons.arrow_drop_down)
+                                  ],
+                                ),
+                              ),
+                            )
 
-                            ],
-                          ),
+                          ],
                         ),
-                        Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.all(15),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('Total Bonus'),
-                              Text('amount'),
-                            ],
-                          ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.all(15),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('Total Bonus'),
+                            Text(snapshot.data != null?snapshot.data![1].toString():''),
+                          ],
                         ),
-                        Divider(
-                          color: Colors.grey,
-                        ),
-                        ListView.builder(
-                          itemBuilder: (BuildContext context, int index) {
-                            return historylist();
-                          },
+                      ),
+                      Divider(
+                        color: Colors.grey,
+                      ),
+                      ListView.builder(
+                        itemBuilder: (BuildContext context, int index) {
+                          return historylist('Bonus',data[index],paymentBloc,);
+                        },
 
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: 10,
-                          shrinkWrap: true,
-                        )
-                      ],
-                    ),
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: data.length,
+                        shrinkWrap: true,
+                      )
+                    ],
                   ),
-                );
-            }
-            else {
-              return Center(child: const Text('No data'));
-            }
+                ),
+              );
+
+            case ConnectionState.waiting:
+              return Center(
+                  child: CircularProgressIndicator(color: Colors.blue));
           }
-          else {
-            return Center(child: const Text('No data'));
-          }
-        }
-    );
+          return CircularProgressIndicator();
+        },
+      );
   }
-}
+
+
+  }
+
 
 class historylist extends StatelessWidget {
-  const historylist({Key? key}) : super(key: key);
+  historylist(this.Context,this.payments,this.paymentBloc);
+  Payments payments;
+  PaymentBloc paymentBloc;
+  String Context;
+  final mycontroller = Get.put(HistoryController());
+  final mycontroller1 = Get.find<PaymentController>();
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +140,7 @@ class historylist extends StatelessWidget {
       key: UniqueKey(),
       direction: DismissDirection.endToStart,
       onDismissed: (dissm){
-
+        paymentBloc.deletepayment(payments.payment,mycontroller.date.value, Context, mycontroller1.empidValue.value);
       },
       background: Container(
         alignment: AlignmentDirectional.centerEnd,
@@ -140,9 +152,9 @@ class historylist extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        title: Text('Date'),
-        subtitle: Text('Notes'),
-        trailing: Text('ammount'),
+        title: Text(payments.time!),
+        subtitle: Text(payments.notes!,style: TextStyle(fontWeight: FontWeight.bold),),
+        trailing: Text(payments.ammount!.toString()),
       ),
     );
   }

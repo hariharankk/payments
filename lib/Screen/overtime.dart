@@ -10,12 +10,16 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:payment/GetX/spinner widget getx.dart';
 import 'package:payment/models/Payments.dart';
 import 'package:payment/services/firebase_service.dart';
+import 'package:payment/GetX/payment_getx.dart';
 
 
 
 class overtimescreen extends StatelessWidget {
   final mycontroller = Get.put(feautreController());
   final mycontroller1 = Get.put(spinnerController());
+  final mycontroller2 = Get.find<PaymentController>();
+
+
 
 
 
@@ -130,11 +134,11 @@ class overtimescreen extends StatelessWidget {
                               onTap: (){
                                 final apiProvider1 = apirepository();
                                 Payments payments = Payments(
-                                    ammount: int.parse(mycontroller.paymenttext.value),
+                                    ammount: ((mycontroller1.currentIntValue1.value + (mycontroller1.currentIntValue2.value/60))*mycontroller.rate.value).toInt(),
                                     notes: mycontroller.notestext.value,
-                                    category: 'Allowance',
-                                    type_of_note: '',
-                                    username: ''
+                                    category: 'OverTime',
+                                    type_of_note: 'Debit',
+                                    username: mycontroller2.empidValue.value
                                 );
                                 Map<dynamic, dynamic> paymentsMap = payments.toMap();
                                 apiProvider1.Payments_adddata(paymentsMap);

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payment/global.dart';
@@ -13,17 +12,22 @@ import 'package:payment/Screen/Ledger.dart';
 import 'package:payment/Screen/paymentscreen.dart';
 import 'package:payment/Screen/Salary.dart';
 import 'package:payment/Screen/overtime.dart';
-
+import 'package:payment/GetX/payment_getx.dart';
 
 
 class payments extends StatefulWidget {
-  const payments({Key? key}) : super(key: key);
+  String empid;
+  String empname;
+
+  payments({required this.empid, required this.empname});
 
   @override
   State<payments> createState() => _paymentsState();
 }
 
 class _paymentsState extends State<payments> {
+
+  final mycontroller = Get.put(PaymentController());
 
 
   Future pickDate(BuildContext context) async {
@@ -42,8 +46,10 @@ class _paymentsState extends State<payments> {
 
   @override
   Widget build(BuildContext context) {
+    mycontroller.empidValuechange(widget.empid);
+    mycontroller.empnameValuechange(widget.empname);
     return Scaffold(
-      appBar: AppBar(title: Text('Employee name'),
+      appBar: AppBar(title: Obx(()=>Text(mycontroller.empnameValue.value)),
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

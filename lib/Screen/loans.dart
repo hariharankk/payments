@@ -7,13 +7,14 @@ import 'package:payment/global.dart';
 import 'package:payment/GetX/feautre_getx.dart';
 import 'package:payment/Screen/loans history.dart';
 import 'package:payment/models/Payments.dart';
+import 'package:payment/GetX/payment_getx.dart';
 import 'package:payment/services/firebase_service.dart';
 
 
 
 class loan extends StatelessWidget {
   final mycontroller = Get.put(feautreController());
-
+  final mycontroller1 = Get.find<PaymentController>();
   //allowance({}) ;
   @override
   Widget build(BuildContext context) {
@@ -63,9 +64,9 @@ class loan extends StatelessWidget {
                           Payments payments = Payments(
                               ammount: int.parse(mycontroller.paymenttext.value),
                               notes: mycontroller.notestext.value,
-                              category: 'Allowance',
-                              type_of_note: '',
-                              username: ''
+                              category: 'Loans',
+                              type_of_note: 'Debit',
+                              username: mycontroller1.empidValue.value
                           );
                           Map<dynamic, dynamic> paymentsMap = payments.toMap();
                           apiProvider1.Payments_adddata(paymentsMap);

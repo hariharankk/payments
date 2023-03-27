@@ -3,12 +3,18 @@ import 'package:intl/intl.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:get/get.dart';
 import 'package:payment/GetX/history_getx.dart';
+import 'package:payment/models/Payments.dart';
+import 'package:payment/services/dummybloc.dart';
+import 'package:payment/GetX/payment_getx.dart';
+
 
 class History extends StatelessWidget {
   History({Key? key}) : super(key: key);
 
   DateTime? _selected;
   final mycontroller = Get.put(HistoryController());
+  final mycontroller1 = Get.find<PaymentController>();
+  final paymentBloc = PaymentBloc();
 
   Future pickDate(BuildContext context) async {
     final _selected = await showMonthYearPicker(
@@ -21,13 +27,28 @@ class History extends StatelessWidget {
 
     if (_selected != null){
       mycontroller.change(DateFormat("MMMM, yyyy").format(_selected));
+      paymentBloc.payment_getdata(mycontroller.date.value, 'Payment', mycontroller1.empidValue.value);
     }
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    paymentBloc.payment_getdata(mycontroller.date.value, 'Payment', mycontroller1.empidValue.value);
+    return     StreamBuilder(
+        // Wrap our widget with a StreamBuilder
+        stream: paymentBloc.paymentadmin, // pass our Stream getter here
+        initialData: [], // provide an initial data
+        builder: (context, snapshot) {
+      switch (snapshot.connectionState) {
+        case ConnectionState.none:
+          print("No data");
+          break;
+        case ConnectionState.active:
+          print(snapshot.data);
+          var data = snapshot.data != null ? snapshot.data![0]:[];
+          return
+            SingleChildScrollView(
       child: Container(
 
         child: Column(
@@ -73,31 +94,39 @@ class History extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Total Payments'),
-                  Text('amount'),
+              Text(snapshot.data != null?snapshot.data![1].toString():''),
                 ],
               ),
             ),
             Divider(
               color: Colors.grey,
             ),
-            ListView.builder(itemBuilder: (BuildContext context, int index) {
-              return historylist();
-            },
+            ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return historylist(data[index]);
+              },
 
               physics: NeverScrollableScrollPhysics(),
-              itemCount: 10,
+              itemCount: data.length,
               shrinkWrap: true,
             )
           ],
         ),
       ),
     );
+        case ConnectionState.waiting:
+          return Center(
+              child: CircularProgressIndicator(color: Colors.blue));
+      }
+      return CircularProgressIndicator();
+        },
+    );
   }
 }
 
 class historylist extends StatelessWidget {
-  const historylist({Key? key}) : super(key: key);
-
+  historylist(this.payments);
+  Payments payments;
   @override
   Widget build(BuildContext context) {
     return Dismissible(
@@ -116,10 +145,11 @@ class historylist extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        title: Text('Date'),
-        subtitle: Text('Notes'),
-        trailing: Text('ammount'),
+        title: Text(payments.time!),
+        subtitle: Text(payments.notes!,style: TextStyle(fontWeight: FontWeight.bold),),
+        trailing: Text(payments.ammount!.toString()),
       ),
     );
   }
 }
+
