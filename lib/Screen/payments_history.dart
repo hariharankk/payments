@@ -103,7 +103,7 @@ class History extends StatelessWidget {
             ),
             ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return historylist(data[index]);
+                return historylist('Payment',data[index],paymentBloc,);
               },
 
               physics: NeverScrollableScrollPhysics(),
@@ -125,15 +125,20 @@ class History extends StatelessWidget {
 }
 
 class historylist extends StatelessWidget {
-  historylist(this.payments);
+  historylist(this.Context,this.payments,this.paymentBloc);
   Payments payments;
+  PaymentBloc paymentBloc;
+  String Context;
+  final mycontroller = Get.put(HistoryController());
+  final mycontroller1 = Get.find<PaymentController>();
+
   @override
   Widget build(BuildContext context) {
     return Dismissible(
       key: UniqueKey(),
       direction: DismissDirection.endToStart,
       onDismissed: (dissm){
-
+        paymentBloc.deletepayment(payments.payment,mycontroller.date.value, Context, mycontroller1.empidValue.value);
       },
       background: Container(
         alignment: AlignmentDirectional.centerEnd,
@@ -152,4 +157,3 @@ class historylist extends StatelessWidget {
     );
   }
 }
-

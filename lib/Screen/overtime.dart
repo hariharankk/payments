@@ -5,12 +5,14 @@ import 'package:get/get.dart';
 import 'package:payment/widgets/rounded button.dart';
 import 'package:payment/global.dart';
 import 'package:payment/GetX/feautre_getx.dart';
-import 'package:payment/Screen/payments_history.dart';
+import 'package:payment/Screen/Overtime_history.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:payment/GetX/spinner widget getx.dart';
 import 'package:payment/models/Payments.dart';
 import 'package:payment/services/firebase_service.dart';
 import 'package:payment/GetX/payment_getx.dart';
+import 'package:payment/services/dummybloc.dart';
+import 'package:intl/intl.dart';
 
 
 
@@ -56,8 +58,7 @@ class overtimescreen extends StatelessWidget {
                           child: Column(
                             children: <Widget>[
                               SizedBox(height: 20,),
-                              roundedtextbutton(text: 'Overtime description',width: MediaQuery.of(context).size  .width *0.90),
-                              Row(
+                               Row(
                                 children: <Widget>[
                                   SizedBox(width: 5,),
                                   DatePickerWidget(),
@@ -131,7 +132,7 @@ class overtimescreen extends StatelessWidget {
                         ),
                         SizedBox(height: 20,),
                             GestureDetector(
-                              onTap: (){
+                              onTap: ()async{
                                 final apiProvider1 = apirepository();
                                 Payments payments = Payments(
                                     ammount: ((mycontroller1.currentIntValue1.value + (mycontroller1.currentIntValue2.value/60))*mycontroller.rate.value).toInt(),
@@ -142,6 +143,8 @@ class overtimescreen extends StatelessWidget {
                                 );
                                 Map<dynamic, dynamic> paymentsMap = payments.toMap();
                                 apiProvider1.Payments_adddata(paymentsMap);
+                                await Future<void>.delayed(const Duration(milliseconds: 100));
+                                ledgerbloc.Ledger_getdata(DateFormat("MMMM, yyyy").format(DateTime.now()), payments.username!);
                                 Get.back();
                               },
                               child: Container(

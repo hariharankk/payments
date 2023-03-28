@@ -1,6 +1,7 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:payment/services/firebase_service.dart';
 import 'package:payment/services/Bloc.dart';
+import 'package:intl/intl.dart';
 
 class ApprovalBloc {
 
@@ -135,6 +136,15 @@ class PaymentBloc {
     return _payment;
   }
 
+  List<dynamic> _Ledger = [];
+  final PublishSubject<List<dynamic>> _LedgerGetter = PublishSubject<List<dynamic>>();
+  Stream<List<dynamic>> get Ledgeradmin => _LedgerGetter.stream;
+
+  List<dynamic> getLedger() {
+    return _Ledger;
+  }
+
+
   Future<void>  payment_getdata(String range, String category ,String userid) async {
     try {
       _payment = await apiProvider1.getPayments(range, category , userid);
@@ -144,10 +154,28 @@ class PaymentBloc {
     }
   }
 
-  Future<void> deletepayment(String payments, String range, String category ,String userid) async {
+  Future<void>  Ledger_getdata(String range,String userid) async {
+    try {
+      _Ledger = await apiProvider1.getLedgerdata(range,userid);
+      print(_Ledger);
+      _LedgerGetter.sink.add(_Ledger);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
+  Future<void> addpayment(Map<dynamic,dynamic> payments) async {
+    await apiProvider1.Payments_adddata(payments);
     await Future<void>.delayed(const Duration(milliseconds: 50));
+    await Ledger_getdata(DateFormat("MMMM, yyyy").format(DateTime.now()), payments['userid']);
+  }
+
+  Future<void> deletepayment(String payments, String range, String category ,String userid) async {
     await apiProvider1. payments_delete(payments);
+    await Future<void>.delayed(const Duration(milliseconds: 50));
     await payment_getdata(range, category , userid);
+    await Ledger_getdata(range, userid);
   }
 
 
@@ -158,3 +186,4 @@ class PaymentBloc {
   }
 }
 
+final ledgerbloc =PaymentBloc();

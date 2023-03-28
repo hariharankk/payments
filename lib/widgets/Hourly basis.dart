@@ -7,7 +7,8 @@ import 'package:payment/global.dart';
 import 'package:payment/models/Payments.dart';
 import 'package:payment/services/firebase_service.dart';
 import 'package:payment/GetX/payment_getx.dart';
-
+import 'package:payment/services/dummybloc.dart';
+import 'package:intl/intl.dart';
 
 class hourlybasissalary extends StatelessWidget {
   final mycontroller = Get.put(feautreController());
@@ -35,8 +36,7 @@ class hourlybasissalary extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20,),
-                roundedtextbutton(text: 'Hour Description',width: MediaQuery.of(context).size  .width *0.90),
-                Row(
+                 Row(
                   children: [
                     rateroundedtextbutton(text: 'Rate',width: MediaQuery.of(context).size  .width *0.45),
                     rateroundedtextbutton(text: 'Time',width: MediaQuery.of(context).size  .width *0.45),
@@ -61,7 +61,7 @@ class hourlybasissalary extends StatelessWidget {
           ),
 
           GestureDetector(
-            onTap: (){
+            onTap: ()async{
               final apiProvider1 = apirepository();
               Payments payments = Payments(
                   ammount: (mycontroller.rate.value * mycontroller.quantity.value).toInt(),
@@ -72,6 +72,9 @@ class hourlybasissalary extends StatelessWidget {
               );
               Map<dynamic, dynamic> paymentsMap = payments.toMap();
               apiProvider1.Payments_adddata(paymentsMap);
+              await Future<void>.delayed(const Duration(milliseconds: 100));
+              ledgerbloc.Ledger_getdata(DateFormat("MMMM, yyyy").format(DateTime.now()), payments.username!);
+
               Get.back();
             },
             child: Container(

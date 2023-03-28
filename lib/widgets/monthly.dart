@@ -9,6 +9,7 @@ import 'package:month_year_picker/month_year_picker.dart';
 import 'package:payment/models/Payments.dart';
 import 'package:payment/services/firebase_service.dart';
 import 'package:payment/GetX/payment_getx.dart';
+import 'package:payment/services/dummybloc.dart';
 
 
 class monthlysalary extends StatelessWidget {
@@ -51,7 +52,7 @@ class monthlysalary extends StatelessWidget {
             ),
 
                 GestureDetector(
-                  onTap: (){
+                  onTap: ()async{
                     final apiProvider1 = apirepository();
                     Payments payments = Payments(
                         ammount: int.parse(mycontroller.paymenttext.value),
@@ -62,6 +63,8 @@ class monthlysalary extends StatelessWidget {
                     );
                     Map<dynamic, dynamic> paymentsMap = payments.toMap();
                     apiProvider1.Payments_adddata(paymentsMap);
+                    await Future<void>.delayed(const Duration(milliseconds: 100));
+                    ledgerbloc.Ledger_getdata(DateFormat("MMMM, yyyy").format(DateTime.now()), payments.username!);
                     Get.back();
                   },
                   child: Container(

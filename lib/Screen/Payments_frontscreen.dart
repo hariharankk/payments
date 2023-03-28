@@ -13,7 +13,9 @@ import 'package:payment/Screen/paymentscreen.dart';
 import 'package:payment/Screen/Salary.dart';
 import 'package:payment/Screen/overtime.dart';
 import 'package:payment/GetX/payment_getx.dart';
-
+import 'package:payment/GetX/Frontpage getx.dart';
+import 'package:intl/intl.dart';
+import 'package:payment/GetX/Balance_getx.dart';
 
 class payments extends StatefulWidget {
   String empid;
@@ -29,20 +31,10 @@ class _paymentsState extends State<payments> {
 
   final mycontroller = Get.put(PaymentController());
 
+  final mycontroller2 = Get.put(BalanceController());
 
-  Future pickDate(BuildContext context) async {
-    final _selected = await showMonthYearPicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2019),
-      lastDate: DateTime(2024),
 
-    );
 
-    if (_selected != null){
-      print('hari');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,16 +48,6 @@ class _paymentsState extends State<payments> {
               Get.back();
             }
         ),
-        actions: [
-          IconButton(
-            onPressed: (){
-
-              pickDate(context);
-            },
-            icon: Icon(Icons.calendar_month),
-          ),
-          SizedBox(width: 20.0,)
-        ],
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -92,7 +74,7 @@ class _paymentsState extends State<payments> {
                             children: <Widget>[
                               Text('Total pending/advance for March 2023', style:  outerheader),
                               SizedBox(width: 2,),
-                              Text('2000', style: amountstyle),
+                              Obx(()=> Text(mycontroller2.data.value.toString(), style: amountstyle)),
                             ],
                           ),
                           Container(
@@ -135,7 +117,8 @@ class _paymentsState extends State<payments> {
                             icon :customicon(icon: Icons.hourglass_bottom),
                             onpress: (){
                               Get.to(() => overtimescreen());
-                            },
+
+                              },
                             text : 'Overtime Pay'),
 
                         custominkwell(
@@ -143,6 +126,7 @@ class _paymentsState extends State<payments> {
                           text : 'Allowance',
                           onpress: (){
                             Get.to(() => allowance());
+
                           },
                         ),
                       ],

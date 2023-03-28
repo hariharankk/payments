@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:payment/global.dart';
+import 'package:payment/models/Payments.dart';
 
 class ledgertile extends StatelessWidget {
-  const ledgertile({Key? key}) : super(key: key);
+  Payments payments;
+  ledgertile({required this.payments});
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +29,11 @@ class ledgertile extends StatelessWidget {
                   children: <Widget>[
                     Padding(
                         padding: EdgeInsets.all(width1),
-                        child: Text('date',style: ledgertimestyle,)),
+                        child: Text(payments.time!,style: ledgertimestyle,)),
 
                     Padding(
                         padding: EdgeInsets.all(width1),
-                        child: Center(child: Text('detail',style: ledgertextstyle,))),
+                        child: Center(child: Text(payments.category!+':- '+payments.notes!,style: ledgertextstyle,))),
                   ]
               ),
             ),
@@ -40,7 +42,7 @@ class ledgertile extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.15,
             width: width,
             color: Colors.red,
-            child: Center(child: Text('for',style: ledgertextstyle,)),
+            child: Center(child: payments.type_of_note=='Debit'?Text(payments.ammount.toString()!,style: ledgertextstyle,):Text('')),
           ),
 
           Container(
@@ -48,7 +50,7 @@ class ledgertile extends StatelessWidget {
             width: width,
             //padding: EdgeInsets.fromLTRB(width, 0, width, 0),
             color: Colors.green,
-            child: Center(child: Text('for',style: ledgertextstyle,)),
+            child: Center(child: payments.type_of_note=='Credit'?Text(payments.ammount.toString()!,style: ledgertextstyle,):Text('')),
           ),
 
         ],

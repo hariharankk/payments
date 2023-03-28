@@ -7,7 +7,7 @@ import 'package:payment/models/Payments.dart';
 
 class apirepository{
   late String Token;
-  String uploadURL = 'http://2a06-34-90-50-66.ngrok.io';
+  String uploadURL = 'http://b88d-34-82-121-145.ngrok.io';
   JWT jwt = JWT();
 
   /// Add a map to a firestore collection
@@ -319,6 +319,44 @@ class apirepository{
       return [];
     }
   }
+
+
+  Future getLedgerdata(String range ,String userid) async {
+    final Token = await jwt.read_token();
+    List data;
+    final queryParameters = {
+      "userid": userid,
+      "range": range,
+    };
+    Uri getPaymentsURL = Uri.parse(uploadURL+'/api/ledgerdata-get').replace(queryParameters: queryParameters);
+    List<Payments> payments = [];
+    try {
+      final response = await http.get(
+        getPaymentsURL,
+        headers: {
+          'x-access-token': Token,
+        },
+      );
+      final Map result = json.decode(response.body);
+      if (response.statusCode == 200) {
+        // If the call to the server was successful, parse the JSON
+        if (result["data"].length > 0) {
+          for (Map<String, dynamic> json_ in result["data"]) {
+            Payments payment = Payments.fromJson(json_);
+            payments.add(payment);
+          }
+          data = [payments, result["total_credit"],result["total_debit"],result["Balance"],];
+          return data;
+        }else
+          return [];
+      }
+    }catch (e) {
+      print(e);
+
+      return [];
+    }
+  }
+
 
   Future<dynamic> Payments_adddata(Map<dynamic,dynamic> payments) async{
     Token = await jwt.read_token();
