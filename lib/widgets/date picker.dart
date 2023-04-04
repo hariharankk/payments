@@ -25,7 +25,10 @@ class DatePickerWidget extends StatelessWidget{
     );
 
     if (newDate != null) {
-      mycontroller.change( DateFormat('MM/dd/yyyy').format(newDate));
+
+      print(newDate);
+      mycontroller.change( DateFormat('dd/MM/yyyy').format(newDate));
+      print(mycontroller.date.value);
     }
 
 

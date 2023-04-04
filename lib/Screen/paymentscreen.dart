@@ -69,12 +69,13 @@ class paymentscreen extends StatelessWidget {
                                   ammount: int.parse(mycontroller.paymenttext.value),
                                   notes: mycontroller.notestext.value,
                                   category: 'Payment',
+                                  time: mycontroller.date.value,
                                   type_of_note: 'Credit',
                                   username: mycontroller1.empidValue.value
                               );
                               Map<dynamic, dynamic> paymentsMap = payments.toMap();
                               apiProvider1.Payments_adddata(paymentsMap);
-                              await Future<void>.delayed(const Duration(milliseconds: 100));
+                              await Future<void>.delayed(const Duration(milliseconds: 200));
                               ledgerbloc.Ledger_getdata(DateFormat("MMMM, yyyy").format(DateTime.now()), payments.username!);
                               Get.back();
                             },

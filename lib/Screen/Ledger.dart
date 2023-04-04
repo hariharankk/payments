@@ -30,7 +30,7 @@ class Ledger extends StatelessWidget {
           break;
         case ConnectionState.active:
           print(snapshot.data);
-          var data = snapshot.data != null ? snapshot.data![0]:[];
+          var data = (snapshot.data != null) ? snapshot.data![0]:[];
           WidgetsBinding.instance.addPostFrameCallback((_) {
             mycontroller2.change(snapshot.data != null ? snapshot.data![3]:0);
           });

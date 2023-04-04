@@ -56,6 +56,7 @@ class weeklysalary extends StatelessWidget {
                   ammount: int.parse(mycontroller.paymenttext.value),
                   notes: 'Weekly Basis Salary :- '+mycontroller.notestext.value,
                   category: 'Salary',
+                  time: mycontroller.date.value,
                   type_of_note: 'Debit',
                   username: mycontroller1.empidValue.value
               );

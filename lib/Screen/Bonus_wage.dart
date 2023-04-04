@@ -69,11 +69,12 @@ class bonus extends StatelessWidget {
                               notes: mycontroller.notestext.value,
                               category: 'Bonus',
                               type_of_note: 'Debit',
+                              time: mycontroller.date.value,
                               username: mycontroller1.empidValue.value
                           );
                           Map<dynamic, dynamic> paymentsMap = payments.toMap();
                           apiProvider1.Payments_adddata(paymentsMap);
-                          await Future<void>.delayed(const Duration(milliseconds: 100));
+                          await Future<void>.delayed(const Duration(milliseconds: 200));
                           ledgerbloc.Ledger_getdata(DateFormat("MMMM, yyyy").format(DateTime.now()), payments.username!);
                           Get.back();
                         },

@@ -4,10 +4,11 @@ import 'package:payment/services/Bloc.dart';
 import 'package:payment/utility/jwt.dart';
 import 'package:payment/models/store.dart';
 import 'package:payment/models/Payments.dart';
+import 'package:payment/models/Shifts.dart';
 
 class apirepository{
   late String Token;
-  String uploadURL = 'http://b88d-34-82-121-145.ngrok.io';
+  String uploadURL = 'http://e0ce-35-204-243-37.ngrok.io';
   JWT jwt = JWT();
 
   /// Add a map to a firestore collection
@@ -301,6 +302,7 @@ class apirepository{
           'x-access-token': Token,
         },
       );
+
       final Map result = json.decode(response.body);
       if (response.statusCode == 200) {
         // If the call to the server was successful, parse the JSON
@@ -312,6 +314,7 @@ class apirepository{
           data = [payments, result["total"]];
           return data;
         }else
+          print('waste');
           return [];
       }
     }catch (e) {
@@ -348,12 +351,12 @@ class apirepository{
           data = [payments, result["total_credit"],result["total_debit"],result["Balance"],];
           return data;
         }else
-          return [];
+          return null;
       }
     }catch (e) {
       print(e);
 
-      return [];
+      return null;
     }
   }
 
@@ -402,6 +405,66 @@ class apirepository{
     }
 
   }
+
+  Future getShifts(String userid) async {
+    final Token = await jwt.read_token();
+    final queryParameters = {
+      "userid": userid,
+    };
+    Uri getPaymentsURL = Uri.parse(uploadURL+'/api/shift-get').replace(queryParameters: queryParameters);
+    List data;
+    try {
+      final response = await http.get(
+        getPaymentsURL,
+        headers: {
+          'x-access-token': Token,
+        },
+      );
+
+      final Map result = json.decode(response.body);
+      if (response.statusCode == 200) {
+        data = [result["nightshift"],result["morningshift"],result["leaveshift"],];
+        return data;
+        }else{
+
+        return null;
+      }
+    }catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<dynamic> Shifts_adddata(DateTime date, String type_of_shift ,String userid) async{
+    Token = await jwt.read_token();
+    String URL = uploadURL+'/api/Shift-add';
+    try {
+      final response = await http.post(
+        Uri.parse(URL),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          'x-access-token': Token,
+        },
+        body: jsonEncode({
+        "type_of_shift": type_of_shift,
+        "userid": userid,
+        "date": date.toString(),
+        }),
+      );
+      var responseData = json.decode(response.body);
+      if(responseData['status']){
+        return responseData['status'];}
+      else{
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+
 
 
 }

@@ -9,6 +9,7 @@ import 'package:payment/services/dummybloc.dart';
 import 'package:payment/global.dart';
 import 'package:get/get.dart';
 import 'package:payment/Screen/Payments_frontscreen.dart';
+import 'package:payment/ui/admin_side/calendar.dart';
 
 class ListEmployeePage extends StatefulWidget {
 
@@ -181,10 +182,77 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
     );
   }
 
+
+  List<Widget> _buildList2(
+      BuildContext context, List<dynamic> snapshot) {
+    return snapshot.map((data) => _buildListItem2(context, data)).toList();
+  }
+
+  /// Build list item (employee)
+  Widget _buildListItem2(BuildContext context, Map<dynamic,dynamic> data) {
+    Employee emp = Employee.fromMap(data);
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListTile(
+        onTap: () async{
+          Get.to(()=>employeeCalendar(userid: emp.id));
+          history.Stopthread();
+        },
+        leading: CircleAvatar(
+          radius: 25,
+          child: ClipOval(
+            child: Center(
+              child: emp.image == ''
+                  ? Container(
+                color: Colors.blue,
+                child: Center(
+                  child: Text(
+                    "Add Image",
+                    textScaleFactor: 0.5,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    maxLines: 2,
+                  ),
+                ),
+              )
+                  :Image.network(
+                emp.image,
+                height: 100,
+                width: 100,
+                fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                        loadingProgress.expectedTotalBytes!
+                        : null,
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+        title: Text(
+          "${emp.first} ${emp.last}",
+          textScaleFactor: 1.2,
+        ),
+        subtitle: Text(
+          "Store: ${storeNames[emp.storeID]}",
+          textScaleFactor: 1.1,
+        ),
+        trailing: Icon(Icons.chevron_right, size: 40.0),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -221,6 +289,7 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
 
       List<Widget> _empList = _buildList(context, snapshot.data!);
       List<Widget> _empList1 = _buildList1(context, snapshot.data!);
+      List<Widget> _empList2 = _buildList2(context, snapshot.data!);
 
     return
       TabBarView(
@@ -247,6 +316,18 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
               ),
             ),
           ),
+          SingleChildScrollView(
+            child:Container(
+              margin: EdgeInsets.all(15.0),
+              child:
+              ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (context, index) => _empList2[index],
+                itemCount: _empList2.length,
+              ),
+            ),
+          ),
+
 
         ]
       );

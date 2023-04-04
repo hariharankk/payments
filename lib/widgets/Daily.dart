@@ -56,6 +56,7 @@ class dailysalary extends StatelessWidget {
                                   notes: 'Daily Basis Salary :- '+mycontroller.notestext.value,
                                   category: 'Salary',
                                   type_of_note: 'Debit',
+                                  time: mycontroller.date.value,
                                   username: mycontroller1.empidValue.value
                               );
                               Map<dynamic, dynamic> paymentsMap = payments.toMap();

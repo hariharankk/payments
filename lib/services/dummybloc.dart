@@ -187,3 +187,47 @@ class PaymentBloc {
 }
 
 final ledgerbloc =PaymentBloc();
+
+
+class ShiftBloc {
+
+  final apiProvider1 = apirepository();
+  final PublishSubject<List<dynamic>> _ShiftGetter = PublishSubject<List<dynamic>>();
+  List<dynamic> _Shift = [];
+
+  ShiftBloc._privateConstructor();
+
+  static final ShiftBloc _instance = ShiftBloc._privateConstructor();
+
+  factory ShiftBloc() {
+    return _instance;
+  }
+
+  Stream<List<dynamic>> get getShift => _ShiftGetter.stream;
+
+  List<dynamic> getUserShift() {
+    return _Shift;
+  }
+
+  Future<void>  Shift_getdata(String id) async {
+    try {
+      _Shift = await apiProvider1.getShifts(id);
+      _ShiftGetter.sink.add(_Shift);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> addShift(DateTime date, String type_of_shift ,String userid) async {
+    await apiProvider1.Shifts_adddata(date,type_of_shift,userid);
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await Shift_getdata(userid);
+  }
+
+
+  dispose() {
+    _ShiftGetter.close();
+  }
+}
+
+final shiftBloc = ShiftBloc();
