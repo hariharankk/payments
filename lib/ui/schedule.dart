@@ -5,7 +5,7 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:payment/services/dummybloc.dart';
-
+import 'package:intl/intl.dart';
 
 
 class clientemployeeCalendar extends StatelessWidget{
@@ -52,9 +52,7 @@ class clientemployeeCalendar extends StatelessWidget{
     ),
   );
 
-  EventList<Event> _markedDateMap = new EventList<Event>(
-    events: {},
-  );
+
   CalendarCarousel? _calendarCarouselNoHeader;
 
   double? cHeight;
@@ -64,64 +62,8 @@ class clientemployeeCalendar extends StatelessWidget{
     shiftBloc.Shift_getdata('');
     cHeight = MediaQuery.of(context).size.height;
 
-    for (int i = 0; i < NightDates.length; i++) {
-      var dummy = NightDates[i];
-      _markedDateMap.add(
-        dummy['date'],
-        new Event(
-          date: dummy['date'],
-          title: dummy['type_of_shift'],
-          icon: _presentIcon(
-            dummy['date'].day.toString(),
-          ),
-        ),
-      );
-    }
-
-    for (int i = 0; i < LeaveDates.length; i++) {
-      var dummy = LeaveDates[i];
-      _markedDateMap.add(
-        dummy['date'],
-        new Event(
-          date: dummy['date'],
-          title: dummy['type_of_shift'],
-          icon: _presentIcon(
-            dummy['date'].day.toString(),
-          ),
-        ),
-      );
-    }
-
-    //code for making morning dates and shift
-    for (int i = 0; i < MorningDates.length; i++) {
-      var dummy = MorningDates[i];
-      _markedDateMap.add(
-        dummy['date'],
-        new Event(
-          date: dummy['date'],
-          title: dummy['type_of_shift'],
-          icon: _presentIcon(
-            dummy['date'].day.toString(),
-          ),
-        ),
-      );
-    }
-
     //click on the dates is not yet enabled
-    _calendarCarouselNoHeader = CalendarCarousel<Event>(
-      height: cHeight! * 0.54,
-      weekendTextStyle: TextStyle(
-        color: Colors.green,
-      ),
-      todayButtonColor: Colors.purple,
-      markedDatesMap: _markedDateMap,
-      markedDateShowIcon: true,
-      markedDateIconMaxShown: 1,
-      markedDateMoreShowTotal: null,
-      markedDateIconBuilder: (event) {
-        return event.icon;
-      },
-    );
+
 
     return       StreamBuilder(
       stream: shiftBloc.getShift,//paymentBloc.paymentadmin, // pass our Stream getter here
@@ -132,10 +74,70 @@ class clientemployeeCalendar extends StatelessWidget{
             print("No data");
             break;
           case ConnectionState.active:
-            print(snapshot.data);
+            EventList<Event> _markedDateMap = new EventList<Event>(
+              events: {},
+            );
             MorningDates = snapshot.data != null ? snapshot.data![1]:[];
             NightDates = snapshot.data != null ? snapshot.data![0]:[];
             LeaveDates = snapshot.data != null ? snapshot.data![2]:[];
+
+            for (int i = 0; i < NightDates.length; i++) {
+              var dummy = NightDates[i];
+              _markedDateMap.add(
+                DateFormat('dd/MM/yyyy').parse(dummy['date']),
+                new Event(
+                  date:  DateFormat('dd/MM/yyyy').parse(dummy['date']),
+                  title: dummy['type_of_shift'],
+                  icon: _presentIcon(
+                    DateFormat('dd/MM/yyyy').parse(dummy['date']).day.toString(),
+                  ),
+                ),
+              );
+            }
+
+            for (int i = 0; i < LeaveDates.length; i++) {
+              var dummy = LeaveDates[i];
+              _markedDateMap.add(
+                DateFormat('dd/MM/yyyy').parse(dummy['date']),
+                new Event(
+                  date: DateFormat('dd/MM/yyyy').parse(dummy['date']),
+                  title: dummy['type_of_shift'],
+                  icon: _LeaveIcon(
+                    DateFormat('dd/MM/yyyy').parse(dummy['date']).day.toString(),
+                  ),
+                ),
+              );
+            }
+
+            //code for making morning dates and shift
+            for (int i = 0; i < MorningDates.length; i++) {
+              var dummy = MorningDates[i];
+              _markedDateMap.add(
+                DateFormat('dd/MM/yyyy').parse(dummy['date']),
+                new Event(
+                  date: DateFormat('dd/MM/yyyy').parse(dummy['date']),
+                  title: dummy['type_of_shift'],
+                  icon: _MorningIcon(
+                    DateFormat('dd/MM/yyyy').parse(dummy['date']).day.toString(),
+                  ),
+                ),
+              );
+            }
+
+            _calendarCarouselNoHeader = CalendarCarousel<Event>(
+              height: cHeight! * 0.54,
+              weekendTextStyle: TextStyle(
+                color: Colors.green,
+              ),
+              todayButtonColor: Colors.purple,
+              markedDatesMap: _markedDateMap,
+              markedDateShowIcon: true,
+              markedDateIconMaxShown: 1,
+              markedDateMoreShowTotal: null,
+              markedDateIconBuilder: (event) {
+                return event.icon;
+              },
+            );
 
             return       Scaffold(
               appBar: new AppBar(

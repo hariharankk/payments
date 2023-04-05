@@ -231,3 +231,61 @@ class ShiftBloc {
 }
 
 final shiftBloc = ShiftBloc();
+
+
+
+class LeaveBloc {
+
+  final apiProvider1 = apirepository();
+  final PublishSubject<List<dynamic>> _LeaveGetter = PublishSubject<List<dynamic>>();
+  List<dynamic> _Leave = [];
+
+  LeaveBloc._privateConstructor();
+
+  static final LeaveBloc _instance = LeaveBloc._privateConstructor();
+
+  factory LeaveBloc() {
+    return _instance;
+  }
+
+  Stream<List<dynamic>> get getLeave => _LeaveGetter.stream;
+
+  List<dynamic> getUserShift() {
+    return _Leave;
+  }
+
+  Future<void>  leave_getdata() async {
+    try {
+      _Leave = await apiProvider1.getleave();
+      _LeaveGetter.sink.add(_Leave);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void>  Leave_adddata(Map<dynamic,dynamic> data) async {
+    try {
+      await apiProvider1.leave_adddata(data);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
+
+  Future<void> Leavedelete(String userid) async {
+    await apiProvider1.leave_delete(userid);
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await leave_getdata();
+  }
+
+
+  dispose() {
+    _LeaveGetter.close();
+  }
+}
+
+final leaveBloc = LeaveBloc();
+
+
+

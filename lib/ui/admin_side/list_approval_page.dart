@@ -81,7 +81,9 @@ class _ListApprovalPageState extends State<ListApprovalPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
       body: StreamBuilder(
           stream: approvalBloc.getapproval,//streamSocket.getResponse,
           builder: (context, snapshot) {
@@ -108,6 +110,7 @@ class _ListApprovalPageState extends State<ListApprovalPage> {
               itemBuilder: (context, index) => _approvalList[index],
             );
           }),
+    ),
     );
   }
 }

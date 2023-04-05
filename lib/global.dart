@@ -35,6 +35,8 @@ List<Widget> tabs= [Text('Add Allowance'),Text('Show History')];
 
 List<Widget> employeetabs = [Text('Attendance'),Text('Payments'),Text('Shifts')];
 
+List<Widget> approvaltabs = [Text('Picture'),Text('Leave request')];
+
 TextStyle salarybox = TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 8.sp);
 
 TextStyle salarycal = TextStyle(color: Colors.black, fontSize: 5.sp);

@@ -4,11 +4,11 @@ import 'package:payment/services/Bloc.dart';
 import 'package:payment/utility/jwt.dart';
 import 'package:payment/models/store.dart';
 import 'package:payment/models/Payments.dart';
-import 'package:payment/models/Shifts.dart';
+import 'package:payment/models/Leave.dart';
 
 class apirepository{
   late String Token;
-  String uploadURL = 'http://e0ce-35-204-243-37.ngrok.io';
+  String uploadURL = 'http://79b2-35-231-72-181.ngrok.io';
   JWT jwt = JWT();
 
   /// Add a map to a firestore collection
@@ -439,7 +439,7 @@ class apirepository{
     Token = await jwt.read_token();
     String URL = uploadURL+'/api/Shift-add';
     try {
-      final response = await http.post(
+      final response = await http.put(
         Uri.parse(URL),
         headers: <String, String>{
           "Content-Type": "application/json",
@@ -464,6 +464,87 @@ class apirepository{
     }
   }
 
+
+  Future<dynamic> getleave() async {
+    final Token = await jwt.read_token();
+    final queryParameters = {'userid':userBloc.getUserObject().user};
+    Uri leaveURL = Uri.parse(uploadURL+'/api/leave-get').replace(queryParameters: queryParameters);
+    List<LeaveRequest> leaves = [];
+
+    final response = await  http.get(
+      leaveURL,
+      headers: {
+        'x-access-token': Token,
+      },
+    );
+    final Map result = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      // If the call to the server was successful, parse the JSON
+      for (Map<String, dynamic> json_ in result["data"]) {
+        try {
+          LeaveRequest leave =  LeaveRequest.fromJson(json_);
+          leaves.add(leave);
+        } catch (Exception) {
+          print(Exception);
+          return null;
+        }
+      }
+
+      return leaves;
+    } else {
+      // If that call was not successful, throw an error.
+      return null;
+    }
+
+  }
+
+
+  Future<dynamic> leave_delete(String leaveid) async{
+    Token = await jwt.read_token();
+    String URL = uploadURL+'/api/leave-delete'+leaveid;
+    final response = await http.get(Uri.parse(URL),
+      headers: <String, String>{
+        'x-access-token': Token
+      },
+    );
+    try {
+      var responseData = json.decode(response.body);
+      print(responseData['status']);//bool
+      return responseData['status'];
+    } catch (e) {
+      print(e);
+      return false;
+
+    }
+
+  }
+
+
+  Future<dynamic> leave_adddata(Map<dynamic,dynamic> leave) async{
+    Token = await jwt.read_token();
+    String URL = uploadURL+'/api/leave-add';
+    try {
+      final response = await http.post(
+        Uri.parse(URL),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          'x-access-token': Token,
+        },
+        body: jsonEncode(leave),
+      );
+      var responseData = json.decode(response.body);
+      if(responseData['status']){
+        return responseData['status'];}
+      else{
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
 
 
 
