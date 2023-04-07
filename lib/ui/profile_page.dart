@@ -5,16 +5,14 @@ import 'package:payment/models/employee.dart';
 import 'package:payment/services/firebase_service.dart';
 import 'package:payment/services/firebase_storage_service.dart';
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:payment/services/single_employee_socket.dart';
-import 'package:payment/services/employee3_stop_thread.dart';
 import 'package:payment/services/history socket exit.dart';
+import 'package:payment/services/Bloc.dart';
+import 'package:payment/services/dummybloc.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String userId;
   final VoidCallback logoutCallback;
 
-  ProfilePage({required this.userId, required this.logoutCallback});
+  ProfilePage({required this.logoutCallback});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -26,22 +24,19 @@ class _ProfilePageState extends State<ProfilePage> {
   // scaffold key
   late File image;
   bool requestChange = false;
-  late IO.Socket socket;
-  employee3Socket emp = employee3Socket();
-  employee3ExitSocket empexit = employee3ExitSocket();
   HistoryExitSocket hist = HistoryExitSocket();
 
   @override
   void initState() {
     super.initState();
     hist.Stopthread();
-    emp.openingapprovalconnectAndListen(widget.userId);
+    empadminBloc.employee_getdata();
   }
 
   void dispose() {
     print('dispose page one');
     super.dispose();
-    empexit.Stopthread();
+
   }
 
   //TODO: Change the Approval Process to include other changes as well
@@ -124,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       key: _scaffoldKey,
       body: StreamBuilder(
-        stream:  emp.getResponse,
+        stream:  empadminBloc.getemp,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(

@@ -3,7 +3,7 @@ import 'package:payment/ui/help_page.dart';
 import 'package:payment/ui/profile_page.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-
+import 'package:payment/ui/schedule.dart';
 
 class HomePage extends StatefulWidget {
   final VoidCallback logoutCallback;
@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   late PageController _pageController;
   late bool Status;
-  bool loading = true;
+  bool loading = false;//true;
 
   @override
   void initState() {
@@ -86,13 +86,13 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
 
           AttendanceHistory(
-            userId: widget.userId,
           ),
+
           ProfilePage(
-            userId: widget.userId,
             logoutCallback: widget.logoutCallback,
           ),
           HelpPage(),
+          clientemployeeCalendar()
         ],
       ),
       bottomNavigationBar: BottomNavyBar(

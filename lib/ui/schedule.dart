@@ -6,6 +6,8 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:payment/services/dummybloc.dart';
 import 'package:intl/intl.dart';
+import 'package:payment/ui/Leave req.dart';
+import 'package:payment/services/Bloc.dart';
 
 
 class clientemployeeCalendar extends StatelessWidget{
@@ -59,7 +61,7 @@ class clientemployeeCalendar extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    shiftBloc.Shift_getdata('');
+    shiftBloc.Shift_getdata(userBloc.getUserObject().user);
     cHeight = MediaQuery.of(context).size.height;
 
     //click on the dates is not yet enabled
@@ -140,10 +142,6 @@ class clientemployeeCalendar extends StatelessWidget{
             );
 
             return       Scaffold(
-              appBar: new AppBar(
-                title: new Text("Employee Calendar"),
-                centerTitle: true,
-              ),
               body: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,7 +166,7 @@ class clientemployeeCalendar extends StatelessWidget{
                         ),
                         onPressed: () {
                           Get.to(()=>
-                              Container());
+                          LeavePage());
                         }
                     ), //leave request, select date, time , from , until , enter reason for leave
 

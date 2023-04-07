@@ -1,5 +1,3 @@
-import 'package:payment/models/store.dart';
-import 'package:payment/services/firebase_service.dart';
 import 'package:payment/ui/admin_side/list_approval_page.dart';
 import 'package:payment/ui/admin_side/employee_form.dart';
 import 'package:payment/ui/admin_side/list_employee_page.dart';
@@ -8,7 +6,7 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payment/services/Bloc.dart';
-import 'package:payment/ui/Leave req.dart';
+
 
 
 class AdminPage extends StatefulWidget {
@@ -122,24 +120,10 @@ class _AdminPageState extends State<AdminPage> {
                   ),
                 ),
               ),
-              Center(
-                child: MaterialButton(
-                  textColor: Colors.white,
-                  color: Colors.lightBlue,
-                  padding: EdgeInsets.all(16.0),
-                  onPressed: ()async{
-                    Get.to(() => LeavePage());
-                  },
-                  child: Text(
-                    "dummy",
-                    textScaleFactor: 1.3,
-                  ),
-                ),
-              ),
             ],
           ),
           ListEmployeePage(),
-          ListApprovalPage(),
+          approval(),
         ],
       ),
       bottomNavigationBar: BottomNavyBar(

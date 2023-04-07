@@ -6,6 +6,39 @@ import 'package:payment/services/socket.dart';
 import 'package:payment/services/exit socket.dart';
 import 'package:payment/services/Bloc.dart';
 import 'package:payment/services/dummybloc.dart';
+import 'package:payment/global.dart';
+import 'package:payment/ui/admin_side/Leave.dart';
+
+
+
+class approval extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return  DefaultTabController(
+      length: 2,
+      child: Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        bottom: TabBar(
+          isScrollable: true,
+          tabs: approvaltabs,
+          indicatorColor: Colors.white,
+        ),
+      ),
+      body:     TabBarView(
+          children: [
+            ListApprovalPage(),
+            LeaveRequestWidget()
+          ]
+          )
+      ),
+    );
+  }
+}
+
+
+
+
 
 class ListApprovalPage extends StatefulWidget {
 
@@ -81,9 +114,7 @@ class _ListApprovalPageState extends State<ListApprovalPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 2,
-        child: Scaffold(
+    return Scaffold(
       body: StreamBuilder(
           stream: approvalBloc.getapproval,//streamSocket.getResponse,
           builder: (context, snapshot) {
@@ -110,7 +141,6 @@ class _ListApprovalPageState extends State<ListApprovalPage> {
               itemBuilder: (context, index) => _approvalList[index],
             );
           }),
-    ),
     );
   }
 }

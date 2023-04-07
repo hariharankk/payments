@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:payment/models/Leave.dart';
 import 'package:payment/services/dummybloc.dart';
-import 'package:payment/models/approval.dart';
+import 'package:get/get.dart';
+//import 'package:sms/sms.dart';
+import 'package:payment/services/firebase_service.dart';
+
 
 class LeaveRequestWidget extends StatelessWidget {
-  final Approval approval;
-  LeaveRequestWidget({required this.approval});
 
+
+  //void sendSms(String number, String messages) {
+  //  SmsSender sender = new SmsSender();
+  //  String address = number; // recipient's phone number
+  //  String message = messages;
+   // sender.sendSms(new SmsMessage(address, message));
+  //}
+  final apiProvider1 = apirepository();
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +30,8 @@ class LeaveRequestWidget extends StatelessWidget {
             print("No data");
             break;
           case ConnectionState.active:
-            print(snapshot.data);
             var _leaveRequests = snapshot.data != null ? snapshot.data : [];
             return Scaffold(
-              appBar: AppBar(
-                title: Text("Leave Requests"),
-              ),
               body: ListView.builder(
                 itemCount: _leaveRequests!.length,
                 itemBuilder: (context, index) {
@@ -63,7 +68,7 @@ class LeaveRequestWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Name: ${approval.empName}"),
+              Text("Name: ${leaveRequest.name}"),
               SizedBox(height: 8),
               Text("Duration : ${leaveRequest.date}"),
               SizedBox(height: 8),
@@ -73,13 +78,18 @@ class LeaveRequestWidget extends StatelessWidget {
           actions: [
             ElevatedButton(
               onPressed: () {
+                //sendSms(leaveRequest.phonenumber, '${leaveRequest.name}, your leave request has been accepted');
+                apiProvider1.LeaveShifts_adddata(leaveRequest.startDate, leaveRequest.endDate, leaveRequest.userid);
                 leaveBloc.Leavedelete(leaveRequest.leave_key);
+                Get.back();
               },
               child: Text("Approve"),
             ),
             ElevatedButton(
               onPressed: () {
+                //sendSms(leaveRequest.phonenumber, '${leaveRequest.name}, your leave request has been rejected');
                 leaveBloc.Leavedelete(leaveRequest.leave_key);
+                Get.back();
               },
               child: Text("Discard"),
             ),
@@ -89,3 +99,4 @@ class LeaveRequestWidget extends StatelessWidget {
     );
   }
 }
+

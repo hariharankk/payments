@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:payment/services/Bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:payment/models/Leave.dart';
 import 'package:get/get.dart';
 import 'package:payment/services/dummybloc.dart';
 
@@ -26,12 +25,14 @@ class _LeavePageState extends State<LeavePage> {
     if(_endDate == null){
       _endDate=_startDate;
     }
+
     _leaveType=='One Day'? date = DateFormat('dd/MM/yyyy').format(_startDate!):_leaveType=='Multiple Days'? date = '${DateFormat('dd/MM/yyyy').format(_startDate!)} to ${DateFormat('dd/MM/yyyy').format(_endDate!)}':_leaveType == 'Few Hours' ? date = '${DateFormat('dd/MM/yyyy').format(_startDate!)} From ${_startTime!.format(context)} to ${_endTime!.format(context)}':'';
+    print(date);
     var data = {
       'start_date':_startDate.toString(),
       'end_date':_endDate.toString(),
       'reason':_reasonController.text,
-      'userid':userBloc.getUserObject().username,
+      'userid':userBloc.getUserObject().user,
       'duration':date,
     };
     leaveBloc.Leave_adddata(data);
@@ -296,7 +297,7 @@ class _LeavePageState extends State<LeavePage> {
                             DateTime? selectedDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-                              firstDate: _startDate!,
+                              firstDate: DateTime.now(),
                               lastDate: DateTime.now().add(Duration(days: 365)),
                             );
                             setState(() {

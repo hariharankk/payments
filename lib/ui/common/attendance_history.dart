@@ -5,12 +5,10 @@ import 'package:payment/services/history_socket.dart';
 import 'package:payment/services/history socket exit.dart';
 import 'package:payment/services/employee3_stop_thread.dart';
 import 'package:payment/services/dummybloc.dart';
+import 'package:payment/services/Bloc.dart';
+
 
 class AttendanceHistory extends StatefulWidget {
-  final String userId;
-  final bool appBarNeeded;
-
-  AttendanceHistory({ required this.userId, this.appBarNeeded = false});
 
   @override
   _AttendanceHistoryState createState() => _AttendanceHistoryState();
@@ -20,7 +18,6 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
   late List<List<String>> data;
   history_StreamSocket history_soc = history_StreamSocket();
   HistoryExitSocket history = HistoryExitSocket();
-  employee3ExitSocket empexit = employee3ExitSocket();
 
   List<String> columnNames = ['Check In Time', 'Check Out Time', 'Hours Spent'];
   late List<String> rowNames;
@@ -29,9 +26,8 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
   void initState() {
     columnNames = ['Check In Time', 'Check Out Time', 'Hours Spent'];
     super.initState();
-    historyBloc.history_getdata(widget.userId);
-    empexit.Stopthread();
-    history_soc.openingapprovalconnectAndListen(widget.userId);
+    historyBloc.history_getdata(userBloc.getUserObject().user);
+    history_soc.openingapprovalconnectAndListen(userBloc.getUserObject().user);
   }
 
   void dispose() {
@@ -90,9 +86,6 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: widget.appBarNeeded
-          ? AppBar(title: Text("Attendance History"))
-          : null,
       body: StreamBuilder(
         stream: historyBloc.gethistory,//history_soc.getResponse,
         builder: (context, snapshot) {

@@ -9,7 +9,9 @@ import 'package:payment/ui/admin_side/admin_page.dart';
 import 'package:payment/ui/home_page.dart';
 import 'package:payment/ui/admin or user.dart';
 import 'package:payment/services/Bloc.dart';
-import 'package:payment/models/user.dart';
+import 'package:flutter/services.dart';
+import 'package:payment/services/remainder.dart';
+import 'package:payment/bloc/resources/injection.dart';
 
 //List<CameraDescription> cameras;
 //var frontCamera;
@@ -17,13 +19,21 @@ import 'package:payment/models/user.dart';
 Future<void> main() async{
   //WidgetsFlutterBinding.ensureInitialized();
   //cameras = await availableCameras();
-
+  initGetIt();
+  //NotificationService notificationService = NotificationService();
+  //await notificationService.init();
   runApp(MyApp());
 }
+
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+
 class MyApp extends StatelessWidget {
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return Sizer(
         builder: (context, orientation, deviceType) {
           return GetMaterialApp(

@@ -2,10 +2,11 @@ class LeaveRequest {
   final String userid;
   final String leave_key;
   final String name;
-  final DateTime startDate;
-  final DateTime endDate;
+  final String startDate;
+  final String endDate;
   final String reason;
   final String date;
+  final String phonenumber;
 
   LeaveRequest({
     required this.userid,
@@ -14,7 +15,8 @@ class LeaveRequest {
     required this.startDate,
     required this.endDate,
     required this.reason,
-    required this.date
+    required this.date,
+    required this.phonenumber
   });
 
 
@@ -27,6 +29,8 @@ class LeaveRequest {
     map['date'] = date;
     map['startDate'] = startDate ;
     map['endDate'] = endDate;
+    map['name'] = name;
+    map['phonenumber'] = phonenumber;
     return map;
 
   }
@@ -38,11 +42,12 @@ class LeaveRequest {
     return LeaveRequest(
         userid : map['userid'],
         reason : map['reason'],
-        date : map['date'],
+        date : map['duration'],
         name : map['name'],
-        startDate : map['startDate'],
-        endDate : map['endDate'],
-        leave_key : map['leave_key']
+        startDate : map['start_date'],
+        endDate : map['end_date'],
+        leave_key : map['leave_key'],
+        phonenumber: map['phonenumber']
     );
   }
 

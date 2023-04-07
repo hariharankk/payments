@@ -6,9 +6,11 @@ import 'package:payment/models/store.dart';
 import 'package:payment/models/Payments.dart';
 import 'package:payment/models/Leave.dart';
 
+
+
 class apirepository{
   late String Token;
-  String uploadURL = 'http://79b2-35-231-72-181.ngrok.io';
+  String uploadURL = 'http://3312-34-83-113-5.ngrok.io';
   JWT jwt = JWT();
 
   /// Add a map to a firestore collection
@@ -183,13 +185,15 @@ class apirepository{
       if(responseData['status']){//list, alternative empty string " "
         print(responseData['data']);
         return responseData['data'];}
-      else{return [];}
+      else{return null;}
     } catch (e) {
       print(e);
-      return [];
+      return null;
     }
 
   }
+
+
 
 
   Future<dynamic> history_getdata(String id) async{
@@ -464,6 +468,35 @@ class apirepository{
     }
   }
 
+  Future<dynamic> LeaveShifts_adddata(String startdate, String enddate,String userid) async{
+    Token = await jwt.read_token();
+    String URL = uploadURL+'/api/LeaveShift-add';
+    try {
+      final response = await http.put(
+        Uri.parse(URL),
+        headers: <String, String>{
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          'x-access-token': Token,
+        },
+        body: jsonEncode({
+          "enddate": enddate,
+          "userid": userid,
+          "startdate": startdate,
+        }),
+      );
+      var responseData = json.decode(response.body);
+      if(responseData['status']){
+        return responseData['status'];}
+      else{
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
 
   Future<dynamic> getleave() async {
     final Token = await jwt.read_token();
@@ -502,8 +535,9 @@ class apirepository{
 
   Future<dynamic> leave_delete(String leaveid) async{
     Token = await jwt.read_token();
-    String URL = uploadURL+'/api/leave-delete'+leaveid;
-    final response = await http.get(Uri.parse(URL),
+    final queryParameters = {'leave_key':leaveid};
+    Uri URL = Uri.parse(uploadURL+'/api/leave-delete/').replace(queryParameters: queryParameters);
+    final response = await http.delete((URL),
       headers: <String, String>{
         'x-access-token': Token
       },

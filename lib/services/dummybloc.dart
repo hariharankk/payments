@@ -81,7 +81,10 @@ class EmpadminBloc {
 
   final apiProvider1 = apirepository();
   final PublishSubject<List<dynamic>> _empadminGetter = PublishSubject<List<dynamic>>();
+  final PublishSubject<dynamic> _empGetter = PublishSubject<dynamic>();
+
   List<dynamic> _empadmin = [];
+  dynamic _emp;
 
   EmpadminBloc._privateConstructor();
 
@@ -92,9 +95,24 @@ class EmpadminBloc {
   }
 
   Stream<List<dynamic>> get getempadmin => _empadminGetter.stream;
+  Stream<dynamic> get getemp => _empGetter.stream;
 
-  List<dynamic> getUserObject() {
+
+  List<dynamic> getempadminObject() {
     return _empadmin;
+  }
+
+  dynamic getempObject() {
+    return _emp!;
+  }
+
+  Future<void>  employee_getdata() async {
+    try {
+      _emp = await apiProvider1.employee_getdata();
+      _empGetter.sink.add(_emp);
+    } catch (e) {
+      throw e;
+    }
   }
 
   Future<void>  employeeadmin_getdata() async {
@@ -220,6 +238,12 @@ class ShiftBloc {
 
   Future<void> addShift(DateTime date, String type_of_shift ,String userid) async {
     await apiProvider1.Shifts_adddata(date,type_of_shift,userid);
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await Shift_getdata(userid);
+  }
+
+  Future<void> addleaveShift(DateTime startdate,DateTime enddate ,String userid) async {
+    //await apiProvider1.Shifts_adddata(date,type_of_shift,userid);
     await Future<void>.delayed(const Duration(milliseconds: 50));
     await Shift_getdata(userid);
   }
