@@ -4,6 +4,7 @@ import 'package:payment/bloc/blocs/user_bloc_provider.dart';
 import 'package:payment/bloc/resources/repository.dart';
 import 'package:payment/models/group.dart';
 import 'package:payment/models/groupmember.dart';
+import 'package:payment/services/Bloc.dart';
 
 class GroupList extends StatefulWidget {
   /// The Page which the list tile will navigate to upon being clicked.
@@ -121,7 +122,7 @@ class _GroupListState extends State<GroupList> {
 //    role = roles[0];
     role=GroupBloc().getroleList().containsKey(group.name)?GroupBloc().getroleList()[group.name]:null;
     print(role);
-    return role == null ? buildWaitingScreen() :role=='admin'? buildGroupListTile(group):role=='worker'?workerbuildGroupListTile(group):visitorbuildGroupListTile(group);
+    return role == null ? buildWaitingScreen() :role=='Admin'? buildGroupListTile(group):role=='Worker'?workerbuildGroupListTile(group):visitorbuildGroupListTile(group);
     }
 
   Dismissible buildGroupListTile(Group group) {
@@ -141,11 +142,11 @@ class _GroupListState extends State<GroupList> {
       onDismissed: (direction) async {
         if (group.members.length == 1) {
           await repository.deleteGroupMember(
-              group.groupKey, userBloc.getUserObject().username);
+              group.groupKey, userBloc.getUserObject()!.username!);
         } else if (group.members.length > 1) {
           try {
             await repository.deleteGroupMember(
-                group.groupKey, userBloc.getUserObject().username);
+                group.groupKey, userBloc.getUserObject().username!);
           } catch (e) {
             print(e);
           }

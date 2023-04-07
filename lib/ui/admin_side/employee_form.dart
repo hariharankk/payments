@@ -68,7 +68,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
   _uploadToFirebase() async {
     apirepository Apirepository = apirepository();
     Auth auth =Auth();
-    User users = User(email: emailId, password: password,phonenumber:mobile,admin:false);
+    User users = User(email: emailId, password: password,phonenumber:mobile,admin:false,name:firstName);
     // Create a user
     Map<dynamic, dynamic> user = users.toMap();
      dummyuser = await apiProvider.signUp(user);

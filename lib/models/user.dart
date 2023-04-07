@@ -10,14 +10,16 @@ class User extends Equatable {
   bool? admin;
   String? phonenumber;
   String? username;
+  String? name;
 
-  User({this.phonenumber, this.admin, this.email, this.password, this.username });
+  User({this.phonenumber, this.admin, this.email, this.password, this.username, this.name });
 
   User.map(dynamic obj) {
     password = obj['password'];
-    email = obj['email'];
+    email = obj['emailaddress'];
     phonenumber = obj['phonenumber'];
     admin = obj['admin'];
+    name = obj['name'];
     username = obj['username'];
   }
 
@@ -29,10 +31,11 @@ class User extends Equatable {
   Map<dynamic, dynamic> toMap() {
     var map = new Map<String , dynamic>();
     map['password'] = password;
-    map['email'] = email;
+    map['emailaddress'] = email;
     map['admin'] = admin;
     map['phonenumber'] = phonenumber;
     map['username'] = username;
+    map['name'] = name;
     return map;
 
   }
@@ -42,10 +45,11 @@ class User extends Equatable {
 
   User.fromMap(Map<dynamic,dynamic> map) {
     this.phonenumber = map['phonenumber'];
-    this.email = map['email'];
+    this.email = map['emailaddress'];
     this.admin = map['admin'];
     this.password = map['password'];
     this.username = map['username'];
+    this.name = map['name'];
   }
 
 }

@@ -478,48 +478,48 @@ class _WorkerSubtaskListTabState extends State<WorkerSubtaskListTab> {
       },
       itemBuilder: (context) => [
         PopupMenuItem<String>(
-          value: "அகரவரிசைப்படி",
+          value: "Alphabetical",
           child: Row(children: [
             Icon(Icons.sort_by_alpha, size: 20 * unitHeightValue, color: Colors.blue),
             SizedBox(width: 5.0 * unitWidthValue),
             Text(
-              "அகரவரிசைப்படி",
+              "Alphabetical",
               style: TextStyle(
                   color: Colors.blue, fontSize: 17 * unitHeightValue),
             )
           ]),
         ),
         PopupMenuItem<String>(
-          value: "அண்மையில்-பழமையான",
+          value: "New-Old",
           child: Row(children: [
             Icon(Icons.date_range, size: 20 * unitHeightValue,color: Colors.blue),
             SizedBox(width: 5.0 * unitWidthValue),
             Text(
-              "அண்மையில்-பழமையான",
+              "New-Old",
               style: TextStyle(
                   color: Colors.blue, fontSize: 17 * unitHeightValue),
             )
           ]),
         ),
         PopupMenuItem<String>(
-          value: "பழமையான-அண்மையில்",
+          value: "Old-New",
           child: Row(children: [
             Icon(Icons.date_range,color: Colors.blue,  size: 20 * unitHeightValue),
             SizedBox(width: 5.0 * unitWidthValue),
             Text(
-              "பழமையான-அண்மையில்",
+              "Old-New",
               style: TextStyle(
                   color: Colors.blue, fontSize: 17 * unitHeightValue),
             )
           ]),
         ),
         PopupMenuItem<String>(
-          value: "இறுதி தேதி",
+          value: "Deadline",
           child: Row(children: [
             Icon(Icons.date_range,color: Colors.blue, size: 20 * unitHeightValue),
             SizedBox(width: 5.0 * unitWidthValue),
             Text(
-              "இறுதி தேதி",
+              "Deadline",
               style: TextStyle(
                   color: Colors.blue, fontSize: 17 * unitHeightValue),
             )
@@ -531,17 +531,17 @@ class _WorkerSubtaskListTabState extends State<WorkerSubtaskListTab> {
 
   _orderBy() {
     switch (orderBy) {
-      case "அகரவரிசைப்படி":
+      case "Alphabetical":
         task.subtasks.sort(
                 (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
         break;
-      case "அண்மையில்-பழமையான":
+      case "New-Old":
         task.subtasks.sort((a, b) => b.timeCreated.compareTo(a.timeCreated));
         break;
-      case "பழமையான-அண்மையில்":
+      case "Old-New":
         task.subtasks.sort((a, b) => a.timeCreated.compareTo(b.timeCreated));
         break;
-      case "இறுதி தேதி":
+      case "Deadline":
         task.subtasks.sort((a, b) => a.deadline.compareTo(b.deadline));
         break;
       default:
@@ -611,7 +611,7 @@ class _VisitorSubtaskListTabState extends State<VisitorSubtaskListTab> {
           child: Scaffold(
             appBar: AppBar(
               title: Text(
-                'பணிகள்',
+                'Subtasks',
                 style: appTitleStyle(unitHeightValue),
               ),
               centerTitle: true,
@@ -715,7 +715,7 @@ class _VisitorSubtaskListTabState extends State<VisitorSubtaskListTab> {
       icon: Icon(Icons.sort,
           size: 32.0 * unitHeightValue, color: Colors.white),
       color: Colors.white,
-      tooltip: 'வகைபடுத்து',
+      tooltip: 'Order_by',
       offset: Offset(0, 70 * unitHeightValue),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -730,48 +730,48 @@ class _VisitorSubtaskListTabState extends State<VisitorSubtaskListTab> {
       },
       itemBuilder: (context) => [
         PopupMenuItem<String>(
-          value: "அகரவரிசைப்படி",
+          value: "Alphabetical",
           child: Row(children: [
             Icon(Icons.sort_by_alpha, size: 20 * unitHeightValue, color: Colors.blue),
             SizedBox(width: 5.0 * unitWidthValue),
             Text(
-              "அகரவரிசைப்படி",
+              "Alphabetical",
               style: TextStyle(
                   color: Colors.blue, fontSize: 17 * unitHeightValue),
             )
           ]),
         ),
         PopupMenuItem<String>(
-          value: "அண்மையில்-பழமையான",
+          value: "New-Old",
           child: Row(children: [
             Icon(Icons.date_range, size: 20 * unitHeightValue,color: Colors.blue),
             SizedBox(width: 5.0 * unitWidthValue),
             Text(
-              "அண்மையில்-பழமையான",
+              "New-Old",
               style: TextStyle(
                   color: Colors.blue, fontSize: 17 * unitHeightValue),
             )
           ]),
         ),
         PopupMenuItem<String>(
-          value: "பழமையான-அண்மையில்",
+          value: "Old-New",
           child: Row(children: [
             Icon(Icons.date_range,color: Colors.blue,  size: 20 * unitHeightValue),
             SizedBox(width: 5.0 * unitWidthValue),
             Text(
-              "பழமையான-அண்மையில்",
+              "Old-New",
               style: TextStyle(
                   color: Colors.blue, fontSize: 17 * unitHeightValue),
             )
           ]),
         ),
         PopupMenuItem<String>(
-          value: "இறுதி தேதி",
+          value: "Deadline",
           child: Row(children: [
             Icon(Icons.date_range,color: Colors.blue, size: 20 * unitHeightValue),
             SizedBox(width: 5.0 * unitWidthValue),
             Text(
-              "இறுதி தேதி",
+              "Deadline",
               style: TextStyle(
                   color: Colors.blue, fontSize: 17 * unitHeightValue),
             )
@@ -783,17 +783,17 @@ class _VisitorSubtaskListTabState extends State<VisitorSubtaskListTab> {
 
   _orderBy() {
     switch (orderBy) {
-      case "அகரவரிசைப்படி":
+      case "Alphabetical":
         task.subtasks.sort(
                 (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
         break;
-      case "அண்மையில்-பழமையான":
+      case "New-Old":
         task.subtasks.sort((a, b) => b.timeCreated.compareTo(a.timeCreated));
         break;
-      case "பழமையான-அண்மையில்":
+      case "Old-New":
         task.subtasks.sort((a, b) => a.timeCreated.compareTo(b.timeCreated));
         break;
-      case "இறுதி தேதி":
+      case "Deadline":
         task.subtasks.sort((a, b) => a.deadline.compareTo(b.deadline));
         break;
       default:

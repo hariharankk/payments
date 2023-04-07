@@ -11,14 +11,6 @@ import 'api.dart';
 class Repository {
   final apiProvider = ApiProvider();
 
-  Future<GroupMember> registerUser(String password, String email,
-          String phonenumber,String username) =>
-      apiProvider.registerUser(password,email,phonenumber,username);
-
-  Future signinUser(String email, String password) =>
-      apiProvider.signinUser(email, password);
-
-
 
   //Groups: Get, Post, Delete
   Future<List> getUserGroups() => apiProvider.getUserGroups();

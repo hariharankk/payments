@@ -51,7 +51,7 @@ class _GroupInfoPageState extends State<GroupInfoPage> {
               TextButton(
                 onPressed: updateGroup,
                 child: Text(
-                  "தரவு புதுப்பிக்கவும்",
+                  "Update",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20 * unitHeightValue,
@@ -187,7 +187,7 @@ class _GroupInfoPageState extends State<GroupInfoPage> {
   Row _buildMembersLabelRow() {
     return Row(children: [
       Text(
-        "உறுப்பினர்கள்",
+        "Members",
         style: TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.blue,
@@ -209,7 +209,7 @@ class _GroupInfoPageState extends State<GroupInfoPage> {
       ),
       Spacer(),
       Text(
-        "பொது",
+        "Public",
         style: TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.black54,
@@ -235,7 +235,7 @@ class _GroupInfoPageState extends State<GroupInfoPage> {
             if (group.members.length > 1) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text("தனிப்பட்ட குழுக்கள் 1 உறுப்பினருக்கு மட்டுமே"),
+                  content: Text("Private Group is for only one member"),
                 ),
               );
             }
@@ -298,7 +298,7 @@ class _GroupInfoPageState extends State<GroupInfoPage> {
 
          ),
             Text(
-              group.members[index].username,
+              group.members[index].name,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: 'Segoe ui',
@@ -326,7 +326,7 @@ class _GroupInfoPageState extends State<GroupInfoPage> {
         ? Align(
             alignment: Alignment(0.9, 0.9),
             child: FloatingActionButton(
-              tooltip: "உறுப்பினர்களைச் சேர்க்க தேடவும்",
+              tooltip: "Search for users",
               onPressed: () {
                 Navigator.push(
                   context,

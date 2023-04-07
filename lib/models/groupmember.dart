@@ -9,6 +9,8 @@ class GroupMember extends Equatable {
   /// Member's Username
   late String username;
 
+  late String name;
+
   /// Member's Email Address
   late String emailaddress;
 
@@ -25,12 +27,13 @@ class GroupMember extends Equatable {
       required this.emailaddress,
       required this.username,
       required this.phonenumber,
-      }):role='';
+      }):role='',name='';
   GroupMember.withrole({
     required this.emailaddress,
     required this.username,
     required this.phonenumber,
-    required this.role
+    required this.role,
+    required this.name
   });
 
   factory GroupMember.fromJson(Map<String, dynamic> parsedJson) {
@@ -46,7 +49,8 @@ class GroupMember extends Equatable {
       username: parsedJson["username"],
       emailaddress: parsedJson["emailaddress"],
       phonenumber: parsedJson["phonenumber"],
-      role: parsedJson["role"]
+      role: parsedJson["role"],
+      name: parsedJson["name"],
     );
   }
 
@@ -54,7 +58,8 @@ class GroupMember extends Equatable {
   List<Object> get props => [username];
 
   /// Get Group Member's Initials
-  String initials() => username[0].toUpperCase() + username[1].toUpperCase();
+  String initials(){
+    return emailaddress.substring(0,1).toUpperCase()+emailaddress.substring(1,2).toUpperCase();}
 
   /// Create CircleAvatar
   CircleAvatar cAvatar({
@@ -83,6 +88,6 @@ class GroupMember extends Equatable {
 
   @override
   String toString() {
-    return "Member: $username Assigned: $selectedForAssignment";
+    return "Member: $name Assigned: $selectedForAssignment";
   }
 }

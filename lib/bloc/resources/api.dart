@@ -6,9 +6,8 @@ import 'package:payment/models/message.dart';
 import 'package:payment/models/subtasks.dart';
 import 'package:payment/models/tasks.dart';
 import 'dart:convert';
-
+import 'package:payment/services/Bloc.dart';
 import 'package:payment/utility/jwt.dart';
-import 'package:payment/bloc/blocs/user_bloc_provider.dart';
 
 class ApiProvider {
   Client client = Client();
@@ -18,7 +17,7 @@ class ApiProvider {
   //static Uri baseURL = 'https://taskmanager-group-stage.herokuapp.com/api';
   //static String baseURL = "http://10.0.2.2:5000/api";
 
-  static String stageHost = 'http://127.0.0.1:5000';
+  static String stageHost = 'http://8979-35-185-18-187.ngrok.io';
   static String productionHost = 'taskmanager-group-pro.herokuapp.com';
   static String localhost = "10.0.2.2:5000";
   String signinURL = stageHost + '/api/login';
@@ -42,74 +41,6 @@ class ApiProvider {
 
   String sendmessage = stageHost+'/api/message_send';
 
-
-  // User CRUD Functions
-  /// Sign Up
-  Future<GroupMember> registerUser(String password, String email,
-      String phonenumber,String username) async {
-
-    print(userURL);
-    final response = await client.post(
-        Uri.parse(userURL),
-        headers: {
-          "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-      body: jsonEncode({
-        "emailaddress": email,
-        "password": password,
-        "phonenumber": phonenumber,
-        'username':username
-      }),
-    );
-    final Map result = json.decode(response.body);
-
-    if (result['status'] == true) {
-      // If the call to the server was successful, parse the JSON
-
-      print(result['token'].runtimeType);
-      await jwt.store_token(result['token']);
-      return GroupMember.fromJson(result["data"]);
-    } else {
-      // If that call was not successful, throw an error.
-      throw Exception(result["status"]);
-    }
-  }
-
-  /// Sign User In using username and password or API_Key
-  Future signinUser(String email, String password) async {
-    print(signinURL);
-    final response = await client.post(
-      Uri.parse(signinURL),
-      headers: {
-        "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
-      body: jsonEncode({
-        "emailaddress": email,
-        "password": password,
-
-      }),
-    );
-    final Map result = json.decode(response.body);
-    print(result['status']);
-    if (result['status'] == true) {
-      // If the call to the server was successful, parse the JSON
-
-      print(result['token'].runtimeType);
-      await jwt.store_token(result['token']);
-
-      await Future<void>.delayed(const Duration(milliseconds: 200));
-      return GroupMember.fromJson(result["data"]);
-    } else {
-      // If that call was not successful, throw an error.
-      throw Exception(result["status"]);
-    }
-  }
-
-  /// Edit Profile
 
 
   /// Group CRUD Functions
@@ -571,7 +502,6 @@ class ApiProvider {
   //Search API Calls
   Future<List<GroupMember>> searchUser(String searchTerm) async {
     final Token = await jwt.read_token();
-    print(searchTerm);
     final response = await client.post(
       Uri.parse(searchURL),
       headers: {

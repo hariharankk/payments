@@ -114,7 +114,7 @@ class _TaskListItemWidgetState extends State<TaskListItemWidget> {
                                    color: Colors.blue, size: 20 * unitHeightValue),
                                SizedBox(width: 5 * unitWidthValue),
                                Text(
-                                 "உருவாக்கப்பட்டது: ${widget.task.timeCreated.toString().substring(0,11)}",
+                                 "Created: ${widget.task.timeCreated.toString().substring(0,11)}",
                                  style: toDoListTiletimeStyle(unitHeightValue*0.7),
                                ),
                               ]
@@ -249,7 +249,7 @@ class _WorkerTaskListItemWidgetState extends State<WorkerTaskListItemWidget> {
                                 color: Colors.blue, size: 20 * unitHeightValue),
                             SizedBox(width: 5 * unitWidthValue),
                             Text(
-                              "உருவாக்கப்பட்டது: ${widget.task.timeCreated.toString().substring(0,11)}",
+                              "Created: ${widget.task.timeCreated.toString().substring(0,11)}",
                               style: toDoListTiletimeStyle(unitHeightValue*0.7),
                             ),
                           ]
@@ -383,7 +383,7 @@ class _VisitorTaskListItemWidgetState extends State<VisitorTaskListItemWidget> {
                                 color: Colors.blue, size: 20 * unitHeightValue),
                             SizedBox(width: 5 * unitWidthValue),
                             Text(
-                              "உருவாக்கப்பட்டது: ${widget.task.timeCreated.toString().substring(0,11)}",
+                              "Created: ${widget.task.timeCreated.toString().substring(0,11)}",
                               style: toDoListTiletimeStyle(unitHeightValue*0.7),
                             ),
                           ]

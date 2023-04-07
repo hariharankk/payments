@@ -4,6 +4,8 @@ import 'package:payment/ui/profile_page.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:payment/ui/schedule.dart';
+import 'package:payment/ui/todo/pages/home_page.dart';
+import 'package:payment/ui/Ledger Home.dart';
 
 class HomePage extends StatefulWidget {
   final VoidCallback logoutCallback;
@@ -74,6 +76,12 @@ class _HomePageState extends State<HomePage> {
     :Scaffold(
       appBar: AppBar(
         title: Text(appBarTitle[_currentIndex]),
+        actions: <Widget>[
+          IconButton(
+            onPressed: widget.logoutCallback,
+            icon: Icon(Icons.exit_to_app),
+          ),
+        ],
         automaticallyImplyLeading: false,
       ),
       body: PageView(
@@ -88,10 +96,8 @@ class _HomePageState extends State<HomePage> {
           AttendanceHistory(
           ),
 
-          ProfilePage(
-            logoutCallback: widget.logoutCallback,
-          ),
-          HelpPage(),
+          Ledger(),
+          Groups(),
           clientemployeeCalendar()
         ],
       ),

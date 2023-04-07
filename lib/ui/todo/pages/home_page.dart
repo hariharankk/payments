@@ -4,13 +4,13 @@ import 'package:payment/ui/todo/tabs/list_groups_tab.dart';
 
 import 'package:payment/models/global.dart';
 
-class HomePage extends StatefulWidget {
+class Groups extends StatefulWidget {
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _GroupsState createState() => _GroupsState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _GroupsState extends State<Groups> {
   late double unitHeightValue, unitWidthValue;
 
 

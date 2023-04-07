@@ -195,7 +195,7 @@ class _AddMembersPageState extends State<AddMembersPage> {
                 widget.group.members[index]
                     .cAvatar(radius: 25, unitHeightValue: unitHeightValue),
                 Text(
-                  widget.group.members[index].username,
+                  widget.group.members[index].name,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
@@ -252,7 +252,7 @@ class _AddMembersPageState extends State<AddMembersPage> {
         leading: searchResults[index]
             .cAvatar(unitHeightValue: unitHeightValue, radius: 16),
         title: Text(
-          "${searchResults[index].username}",
+          "${searchResults[index].emailaddress}",
           style: TextStyle(fontSize: 20 * unitHeightValue),
         ),
         trailing: Checkbox(

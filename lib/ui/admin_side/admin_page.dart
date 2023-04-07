@@ -6,7 +6,7 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:payment/services/Bloc.dart';
-
+import 'package:payment/ui/todo/pages/home_page.dart';
 
 
 class AdminPage extends StatefulWidget {
@@ -23,7 +23,8 @@ class _AdminPageState extends State<AdminPage> {
   List appBarText = [
     'Home',
     'Employees',
-    'Approvals'
+    'Approvals',
+    'Group'
   ]; // Text appearing as the title of pages
   int _currentIndex = 0; // stores the current index of page
   late PageController _pageController;
@@ -124,6 +125,7 @@ class _AdminPageState extends State<AdminPage> {
           ),
           ListEmployeePage(),
           approval(),
+          Groups(),
         ],
       ),
       bottomNavigationBar: BottomNavyBar(
@@ -153,6 +155,14 @@ class _AdminPageState extends State<AdminPage> {
             activeColor: Colors.blue,
             inactiveColor: Colors.black,
           ),
+          BottomNavyBarItem(
+            icon: Icon(Icons.message),
+            title: Text("Chat"),
+            activeColor: Colors.orange,
+            inactiveColor: Colors.black,
+          ),
+
+
         ],
       ),
     );

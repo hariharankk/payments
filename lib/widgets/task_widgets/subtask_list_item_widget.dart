@@ -107,14 +107,14 @@ class _SubtaskListItemWidgetState extends State<SubtaskListItemWidget> {
                                 ),
                             )
                             : Text(
-                                "குறிப்புகள் இல்லை",
+                                "No Notes",
                                 style: toDoListTilesubtimeStyle(unitHeightValue)
                               ),
                         SizedBox(height: 10,),
                         widget.subtask.assignedTo.length > 0
                             ? _buildAssignedMemberAvatars()
                             : Text(
-                                "ஒதுக்கப்பட்ட உறுப்பினர்கள் இல்லை",
+                                "No Assigned Members",
                                 style: toDoListTilesubtimeStyle(unitHeightValue),
                               ),
                       ],
@@ -134,7 +134,7 @@ class _SubtaskListItemWidgetState extends State<SubtaskListItemWidget> {
                   color: Colors.blue, size: 20 * unitHeightValue),
               SizedBox(width: 5 * unitWidthValue),
               Text(
-              "இறுதி தேதி: ${widget.subtask.deadline.month}/${widget.subtask.deadline.day}/${widget.subtask.deadline.year}",
+              "Deadline: ${widget.subtask.deadline.month}/${widget.subtask.deadline.day}/${widget.subtask.deadline.year}",
                 style: toDoListTiletimeStyle(unitHeightValue*0.7),
                ),
             ],
@@ -270,14 +270,14 @@ class _WorkerSubtaskListItemWidgetState extends State<WorkerSubtaskListItemWidge
                           ),
                         )
                             : Text(
-                            "குறிப்புகள் இல்லை",
+                            "No Notes",
                             style: toDoListTilesubtimeStyle(unitHeightValue)
                         ),
                         SizedBox(height: 10,),
                         widget.subtask.assignedTo.length > 0
                             ? _buildAssignedMemberAvatars()
                             : Text(
-                          "ஒதுக்கப்பட்ட உறுப்பினர்கள் இல்லை",
+                          "No Assigned Members",
                           style: toDoListTilesubtimeStyle(unitHeightValue),
                         ),
                       ],
@@ -297,7 +297,7 @@ class _WorkerSubtaskListItemWidgetState extends State<WorkerSubtaskListItemWidge
                         color: Colors.blue, size: 20 * unitHeightValue),
                     SizedBox(width: 5 * unitWidthValue),
                     Text(
-                      "இறுதி தேதி: ${widget.subtask.deadline.month}/${widget.subtask.deadline.day}/${widget.subtask.deadline.year}",
+                      "Deadline: ${widget.subtask.deadline.month}/${widget.subtask.deadline.day}/${widget.subtask.deadline.year}",
                       style: toDoListTiletimeStyle(unitHeightValue*0.7),
                     ),
                   ],
@@ -432,14 +432,14 @@ class _VisitorSubtaskListItemWidgetState extends State<VisitorSubtaskListItemWid
                           ),
                         )
                             : Text(
-                            "குறிப்புகள் இல்லை",
+                            "No Notes",
                             style: toDoListTilesubtimeStyle(unitHeightValue)
                         ),
                         SizedBox(height: 10,),
                         widget.subtask.assignedTo.length > 0
                             ? _buildAssignedMemberAvatars()
                             : Text(
-                          "ஒதுக்கப்பட்ட உறுப்பினர்கள் இல்லை",
+                          "No Assigned Members",
                           style: toDoListTilesubtimeStyle(unitHeightValue),
                         ),
                       ],
@@ -459,7 +459,7 @@ class _VisitorSubtaskListItemWidgetState extends State<VisitorSubtaskListItemWid
                         color: Colors.blue, size: 20 * unitHeightValue),
                     SizedBox(width: 5 * unitWidthValue),
                     Text(
-                      "இறுதி தேதி: ${widget.subtask.deadline.month}/${widget.subtask.deadline.day}/${widget.subtask.deadline.year}",
+                      "Deadline: ${widget.subtask.deadline.month}/${widget.subtask.deadline.day}/${widget.subtask.deadline.year}",
                       style: toDoListTiletimeStyle(unitHeightValue*0.7),
                     ),
                   ],

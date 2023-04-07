@@ -337,7 +337,7 @@ class _SubtaskInfoState extends State<SubtaskInfo> {
                     color: Colors.blue,
                     unitHeightValue: unitHeightValue),
                 Text(
-                  viewmodel.members[index].username,
+                  viewmodel.members[index].name,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -571,7 +571,7 @@ class _VisitorSubtaskInfoState extends State<VisitorSubtaskInfo> {
                     color: Colors.blue,
                     unitHeightValue: unitHeightValue),
                 Text(
-                  viewmodel.members[index].username,
+                  viewmodel.members[index].name,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -893,7 +893,7 @@ class _WorkerSubtaskInfoState extends State<WorkerSubtaskInfo> {
                     color: Colors.blue,
                     unitHeightValue: unitHeightValue),
                 Text(
-                  viewmodel.members[index].username,
+                  viewmodel.members[index].name,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,

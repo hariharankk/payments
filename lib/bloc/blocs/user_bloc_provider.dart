@@ -7,50 +7,6 @@ import '../resources/repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:payment/models/tasks.dart';
 
-class UserBloc {
-  final PublishSubject<GroupMember> _userGetter = PublishSubject<GroupMember>();
-  GroupMember _user = new GroupMember.blank();
-
-  UserBloc._privateConstructor();
-
-  static final UserBloc _instance = UserBloc._privateConstructor();
-
-  factory UserBloc() {
-    return _instance;
-  }
-
-  Stream<GroupMember> get getUser => _userGetter.stream;
-
-  GroupMember getUserObject() {
-    return _user;
-  }
-
-  Future<void> registerUser(String password, String email,
-      String phonenumber,String username) async {
-    try {
-      _user = await repository.registerUser(
-          password, email, phonenumber,username);
-
-      _userGetter.sink.add(_user);
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  Future<void> signinUser(
-      String email, String password) async {
-    try {
-      _user = await repository.signinUser(email, password);
-      _userGetter.sink.add(_user);
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  dispose() {
-    _userGetter.close();
-  }
-}
 
 class GroupBloc {
   final _groupSubject = BehaviorSubject<List<Group>>();
@@ -198,6 +154,6 @@ class messageBloc{
   }
 }
 
-final userBloc = UserBloc();
+
 final groupBloc = GroupBloc();
 //final taskBloc = TaskBloc();

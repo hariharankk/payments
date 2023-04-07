@@ -8,10 +8,10 @@ import 'package:payment/widgets/global_widgets/background_color_container.dart';
 import 'package:payment/widgets/global_widgets/custom_appbar.dart';
 import 'package:payment/ui/todo/pages/sidebar_pages/Listitem.dart';
 import 'package:payment/ui/todo/pages/sidebar_pages/add_members.dart';
-
+import 'package:payment/services/Bloc.dart';
 
 class CreateGroupPage extends StatefulWidget {
-  static const routeName = '/create_group';
+
 
   @override
   _CreateGroupPageState createState() => _CreateGroupPageState();
@@ -22,16 +22,21 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
   int membersLength = 0;
   bool isPrivate = true;
   TextEditingController groupName = new TextEditingController();
-  late double unitHeightValue, unitWidthValue;
+  double? unitHeightValue, unitWidthValue;
   bool saving = true;
-  late GroupMember admin;
+  GroupMember? admin;
 
   @override
   void initState() {
     if (newGroup.members.length == 0) {
-      admin=userBloc.getUserObject();
-      admin.role='Admin';
-      newGroup.addGroupMember(admin);
+      admin = GroupMember.withrole(
+          name: userBloc.getUserObject().name!,
+          role: 'Admin',
+        username: userBloc.getUserObject().user,
+        phonenumber: userBloc.getUserObject().phone,
+        emailaddress: userBloc.getUserObject().emailid
+      );
+      newGroup.addGroupMember(admin!);
       membersLength = newGroup.members.length;
     }
     super.initState();
@@ -68,12 +73,12 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
                     "Save",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 20 * unitHeightValue,
+                        fontSize: 20 * unitHeightValue!,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
-              fontSize: 24 * unitHeightValue,
+              fontSize: 24 * unitHeightValue!,
             ),
             backgroundColor: Colors.blue,
             body: Padding(
@@ -102,7 +107,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
         saving=false;
       });
 
-      String groupKey = await repository.addGroup(groupName.text, isPrivate,admin.role);
+      String groupKey = await repository.addGroup(groupName.text, isPrivate,admin!.role);
       for (GroupMember member in newGroup.members) {
         try {
           if(member.username != userBloc.getUserObject().username) {
@@ -134,9 +139,9 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _buildAvatar(),
-        SizedBox(height: 10 * unitHeightValue),
+        SizedBox(height: 10 * unitHeightValue!),
         _buildGroupNameContainer(),
-        SizedBox(height: 20 * unitHeightValue),
+        SizedBox(height: 20 * unitHeightValue!),
         _buildExpandedCard(),
       ],
     );
@@ -144,11 +149,11 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
 
   CircleAvatar _buildAvatar() {
     return CircleAvatar(
-      radius: 50.0 * unitHeightValue,
+      radius: 50.0 * unitHeightValue!,
       backgroundColor: Colors.white,
       child: Icon(
         Icons.group,
-        size: 62.0 * unitHeightValue,
+        size: 62.0 * unitHeightValue!,
         color: Colors.blue,
       ),
     );
@@ -157,7 +162,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
   Container _buildGroupNameContainer() {
     return Container(
       //margin: const EdgeInsets.only(left: 100.0, right: 45.0, bottom: 20.0),
-      width: 480 * unitWidthValue,
+      width: 480 * unitWidthValue!,
       padding: EdgeInsets.only(left: 20),
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -176,19 +181,19 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
         hintText: "Group name",
         hintStyle: TextStyle(
           color: Colors.black54,
-          fontSize: 22 * unitHeightValue,
+          fontSize: 22 * unitHeightValue!,
         ),
         suffixIcon: Icon(
           Icons.edit,
           color: Colors.black54,
-          size: 30 * unitHeightValue,
+          size: 30 * unitHeightValue!,
         ),
         isDense: true,
       ),
       style: TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.black54,
-          fontSize: 20 * unitHeightValue),
+          fontSize: 20 * unitHeightValue!),
       onChanged: (groupName) => newGroup.name = groupName,
     );
   }
@@ -222,19 +227,19 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
         style: TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.blue,
-          fontSize: 22 * unitHeightValue,
+          fontSize: 22 * unitHeightValue!,
         ),
       ),
-      SizedBox(width: 15 * unitWidthValue),
+      SizedBox(width: 15 * unitWidthValue!),
       CircleAvatar(
-        radius: 16 * unitHeightValue,
+        radius: 16 * unitHeightValue!,
         backgroundColor: Colors.blue,
         child: Text(
           "${newGroup.members.length}",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 16 * unitHeightValue,
+            fontSize: 16 * unitHeightValue!,
           ),
         ),
       ),
@@ -244,7 +249,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
         style: TextStyle(
           fontWeight: FontWeight.bold,
           color: Colors.black54,
-          fontSize: 20 * unitHeightValue,
+          fontSize: 20 * unitHeightValue!,
         ),
       ),
       Switch(
@@ -265,13 +270,13 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
     });
     return Padding(
       padding: EdgeInsets.only(
-          top: 75.0 * unitHeightValue, right: 24.0 * unitWidthValue),
+          top: 75.0 * unitHeightValue!, right: 24.0 * unitWidthValue!),
       child: GridView.builder(
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200 * unitWidthValue,
+          maxCrossAxisExtent: 200 * unitWidthValue!,
           childAspectRatio: 0.75,
-          crossAxisSpacing: 10 * unitWidthValue,
-          mainAxisSpacing: 10 * unitHeightValue,
+          crossAxisSpacing: 10 * unitWidthValue!,
+          mainAxisSpacing: 10 * unitHeightValue!,
         ),
         itemBuilder: (context, index) => Column(
           children: [
@@ -279,7 +284,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
 
               GestureDetector(
                 child: newGroup.members[index]
-                    .cAvatar(radius: 34, unitHeightValue: unitHeightValue),
+                    .cAvatar(radius: 34, unitHeightValue: unitHeightValue!),
               onTap: (){
                 showModalBottomSheet(
                     context: context,
@@ -296,11 +301,11 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
               ),
 
             Text(
-              newGroup.members[index].username,
+              newGroup.members[index].name,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 16 * unitHeightValue,
+                fontSize: 16 * unitHeightValue!,
               ),
             ),
 
@@ -309,7 +314,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 10 * unitHeightValue,
+                fontSize: 10 * unitHeightValue!,
               ),
             ),
 

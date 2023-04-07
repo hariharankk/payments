@@ -19,6 +19,7 @@ class _registerState extends State<register> {
   Auth auth = Auth();
   late String _email;
   late String _password;
+  late String _name;
   late String _phoneNumber;
   String _errorMessage = '';
   bool _isLoading = false;
@@ -28,7 +29,7 @@ class _registerState extends State<register> {
       _isLoading = true;
     });
     try {
-    User user = User(phonenumber: _phoneNumber,email: _email,admin: true, password: _password);
+    User user = User(phonenumber: _phoneNumber,email: _email,admin: true, password: _password, name: _name);
     Map<dynamic, dynamic> userdata = user.toMap();
     await userBloc.registerUser(userdata);
 
@@ -66,6 +67,7 @@ class _registerState extends State<register> {
             shrinkWrap: true,
             children: <Widget>[
               //showLogo(),
+              NameInput(),
               showEmailInput(),
               showPasswordInput(),
               showPhoneInput(),
@@ -184,7 +186,7 @@ class _registerState extends State<register> {
 
   Widget showEmailInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
       child: TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
@@ -197,6 +199,26 @@ class _registerState extends State<register> {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (value) => value!.isEmpty ? 'Email can\'t be empty' : null,
         onChanged: (value) => _email = value.trim(),
+      ),
+    );
+  }
+
+
+  Widget NameInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+      child: TextFormField(
+        maxLines: 1,
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+            hintText: 'Please enter your Name',
+            icon: new Icon(
+              Icons.person,
+              color: Colors.grey,
+            )),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (value) => value!.isEmpty ? 'Name can\'t be empty' : null,
+        onChanged: (value) => _name = value.trim(),
       ),
     );
   }

@@ -10,9 +10,6 @@ import 'package:payment/services/Bloc.dart';
 import 'package:payment/services/dummybloc.dart';
 
 class ProfilePage extends StatefulWidget {
-  final VoidCallback logoutCallback;
-
-  ProfilePage({required this.logoutCallback});
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -260,18 +257,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 icon: Icon(Icons.credit_card, color: Colors.black,),
               ),
 
-              Center(
-                child: MaterialButton(
-                  padding: EdgeInsets.all(12.0),
-                  textColor: Colors.white,
-                  onPressed: widget.logoutCallback,
-                  child: Text(
-                    "Sign Out",
-                    textScaleFactor: 1.2,
-                  ),
-                  color: Colors.red,
-                ),
-              ),
             ],
           );
         },

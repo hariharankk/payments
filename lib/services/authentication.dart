@@ -20,7 +20,7 @@ abstract class BaseAuth {
 
 class Auth implements BaseAuth {
   late String Token;
-  String uploadURL = 'http://3312-34-83-113-5.ngrok.io';
+  String uploadURL = 'http://8979-35-185-18-187.ngrok.io';
   JWT jwt= JWT();
 
 
@@ -85,7 +85,7 @@ class Auth implements BaseAuth {
           "Content-Type": "application/json",
           "Accept": "application/json",
         },
-        body: jsonEncode(<String,String>{'email':email,'password':password}),
+        body: jsonEncode(<String,String>{'emailaddress':email,'password':password}),
       );
       var responseData = json.decode(response.body);
       if(responseData['status']){

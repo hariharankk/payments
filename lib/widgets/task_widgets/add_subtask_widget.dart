@@ -86,7 +86,7 @@ class _AddSubtaskState extends State<AddSubtask> {
                             })
                         : SizedBox.shrink(),
                     border: InputBorder.none,
-                    hintText: "ஒரு பணியை எழுதுங்கள்",
+                    hintText: "Add Subtask",
                     hintStyle: TextStyle(
                         color: Colors.black54, fontSize: 16 * unitHeightValue),
                   ),

@@ -6,7 +6,7 @@ import 'package:payment/bloc/blocs/user_bloc_provider.dart';
 import 'package:payment/bloc/resources/repository.dart';
 import 'package:payment/bloc/resources/message socket.dart';
 import 'package:payment/bloc/resources/message socket exit.dart';
-
+import 'package:payment/services/Bloc.dart';
 
 class ChatScreen extends StatefulWidget {
   String subtaskKey;
@@ -41,7 +41,7 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       final user = userBloc.getUserObject();
       if (user != null) {
-        loggedInUser = user.username;
+        loggedInUser = user.username!;
       }
     } catch (e) {
       print(e);
