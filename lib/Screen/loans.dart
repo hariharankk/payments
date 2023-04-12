@@ -23,7 +23,7 @@ class loan extends StatelessWidget {
     return  DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: AppBar(title: Text('employee name'),
+          appBar: AppBar(title: Obx(()=>Text(mycontroller1.empnameValue.value)),
             centerTitle: true,
             bottom: TabBar(
               isScrollable: true,

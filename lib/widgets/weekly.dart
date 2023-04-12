@@ -9,6 +9,8 @@ import 'package:payment/models/Payments.dart';
 import 'package:payment/services/firebase_service.dart';
 import 'package:payment/GetX/payment_getx.dart';
 import 'package:payment/services/dummybloc.dart';
+import 'package:payment/ui/admin_side/attendance history.dart';
+
 
 class weeklysalary extends StatelessWidget {
   final mycontroller = Get.put(feautreController());
@@ -18,7 +20,7 @@ class weeklysalary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      appBar: AppBar(title: Text('employee name'),
+      appBar: AppBar(title: Obx(()=>Text(mycontroller1.empnameValue.value)),
         centerTitle: true,
         leading: IconButton(
             icon: Icon(Icons.arrow_back),
@@ -48,6 +50,24 @@ class weeklysalary extends StatelessWidget {
               ],
             ),
           ),
+          SizedBox(height: 10,),
+          GestureDetector(
+            onTap: ()async{
+              Get.to(()=> AttendanceHistory(userId: mycontroller1.empidValue.value));
+            },
+            child: Container(
+              width: MediaQuery.of(context).size  .width *0.95,
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: Colors.blue,
+              ),
+              margin: EdgeInsets.only(bottom: 20),
+              child: Center(child: Text('Check Attendance')),
+            ),
+          ),
+
+          SizedBox(height: 10,),
 
           GestureDetector(
             onTap: ()async{

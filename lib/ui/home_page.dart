@@ -1,11 +1,13 @@
 import 'package:payment/ui/common/attendance_history.dart';
 import 'package:payment/ui/help_page.dart';
 import 'package:payment/ui/profile_page.dart';
+import 'package:payment/ui/Opening page.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:payment/ui/schedule.dart';
 import 'package:payment/ui/todo/pages/home_page.dart';
 import 'package:payment/ui/Ledger Home.dart';
+import 'package:payment/services/firebase_storage_service.dart';
 
 class HomePage extends StatefulWidget {
   final VoidCallback logoutCallback;
@@ -21,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   List appBarTitle = ['Mark Attendance', 'Attendance History', 'My Profile', 'Help'];
   int _currentIndex = 0;
   late PageController _pageController;
-  late bool Status;
+  late bool Status = true;
   bool loading = false;//true;
 
   @override
@@ -32,14 +34,14 @@ class _HomePageState extends State<HomePage> {
     //_imagestatus();
   }
 
- // void _imagestatus() async{
- //   Imagestorage imagestorage = Imagestorage();
- //   bool status = await imagestorage.getstatus(widget.userId);
- //   setState(() {
- //     Status = status;
-  //    loading = false;
- //   });
-  //}
+  void _imagestatus() async{
+   Imagestorage imagestorage = Imagestorage();
+    bool status = await imagestorage.getstatus(widget.userId);
+    setState(() {
+      Status = status;
+      loading = false;
+    });
+  }
 
   @override
   void dispose() {
@@ -73,7 +75,9 @@ class _HomePageState extends State<HomePage> {
     ),
     ),
      )
-    :Scaffold(
+        :!Status ? OpeningPage(logoutCallback: widget.logoutCallback,)
+
+        :Scaffold(
       appBar: AppBar(
         title: Text(appBarTitle[_currentIndex]),
         actions: <Widget>[

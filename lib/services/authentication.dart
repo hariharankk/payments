@@ -20,7 +20,7 @@ abstract class BaseAuth {
 
 class Auth implements BaseAuth {
   late String Token;
-  String uploadURL = 'http://8979-35-185-18-187.ngrok.io';
+  String uploadURL = 'http://1842-35-223-119-74.ngrok-free.app';
   JWT jwt= JWT();
 
 

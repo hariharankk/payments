@@ -3,8 +3,8 @@ import 'package:payment/constants.dart';
 
 class dialogbox extends StatelessWidget {
   String text, content;
-  VoidCallback func;
-  dialogbox({ required this.text, required this.content, required this.func}) ;
+  VoidCallback? func;
+  dialogbox({ required this.text, required this.content,this.func}) ;
 
 
   @override

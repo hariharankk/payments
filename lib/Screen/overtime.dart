@@ -13,7 +13,7 @@ import 'package:payment/services/firebase_service.dart';
 import 'package:payment/GetX/payment_getx.dart';
 import 'package:payment/services/dummybloc.dart';
 import 'package:intl/intl.dart';
-
+import 'package:payment/ui/admin_side/attendance history.dart';
 
 
 class overtimescreen extends StatelessWidget {
@@ -31,7 +31,7 @@ class overtimescreen extends StatelessWidget {
     return  DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: AppBar(title: Text('employee name'),
+          appBar: AppBar(title: Obx(()=>Text(mycontroller2.empnameValue.value)),
             centerTitle: true,
             bottom: TabBar(
               isScrollable: true,
@@ -128,6 +128,22 @@ class overtimescreen extends StatelessWidget {
                                 child: Obx(()=>Center(child:  (Text('Total : Rs ${(mycontroller1.currentIntValue1.value + (mycontroller1.currentIntValue2.value/60))*mycontroller.rate.value}')),)),
                               ),
                             ],
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        GestureDetector(
+                          onTap: ()async{
+                            Get.to(()=> AttendanceHistory(userId: mycontroller2.empidValue.value));
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size  .width *0.95,
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Colors.blue,
+                            ),
+                            margin: EdgeInsets.only(bottom: 20),
+                            child: Center(child: Text('Check Attendance')),
                           ),
                         ),
                         SizedBox(height: 20,),

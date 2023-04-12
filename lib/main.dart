@@ -12,12 +12,13 @@ import 'package:payment/services/Bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:payment/services/remainder.dart';
 import 'package:payment/bloc/resources/injection.dart';
+import 'package:camera/camera.dart';
 
-//List<CameraDescription> cameras;
-//var frontCamera;
+List<CameraDescription>? cameras;
+var frontCamera;
 
 Future<void> main() async{
-  //WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   //cameras = await availableCameras();
   initGetIt();
   //NotificationService notificationService = NotificationService();

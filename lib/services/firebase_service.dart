@@ -10,7 +10,7 @@ import 'package:payment/models/Leave.dart';
 
 class apirepository{
   late String Token;
-  String uploadURL = 'http://8979-35-185-18-187.ngrok.io';
+  String uploadURL = 'http://1842-35-223-119-74.ngrok-free.app';
   JWT jwt = JWT();
 
   /// Add a map to a firestore collection
@@ -241,7 +241,7 @@ class apirepository{
 
 
 
-  Future<dynamic> history_adddata(Map<String,dynamic> history) async{
+  Future<dynamic> history_adddata(Map<dynamic,dynamic> history) async{
     Token = await jwt.read_token();
     String URL = uploadURL+'/history/adddata';
     try {
@@ -266,7 +266,7 @@ class apirepository{
     }
   }
 
-  Future<dynamic> history_updatedata(Map<String,dynamic> history) async{
+  Future<dynamic> history_updatedata(Map<dynamic,dynamic> history) async{
     Token = await jwt.read_token();
     String URL = uploadURL+'/history/updatedata';
     try {

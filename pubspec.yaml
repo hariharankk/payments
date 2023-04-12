@@ -71,8 +71,9 @@ dependencies:
   shared_preferences: ^2.0.6
   form_field_validator: ^1.0.1
   flutter_keyboard_size: ^1.0.0+3
-  #splashscreen: ^1.3.5
   flutter_local_notifications: ^13.0.0
+  camera:
+  image_picker:
 
 
 dev_dependencies:

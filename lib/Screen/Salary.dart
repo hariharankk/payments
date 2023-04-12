@@ -8,16 +8,19 @@ import 'package:payment/widgets/monthly.dart';
 import 'package:payment/widgets/weekly.dart';
 import 'package:payment/widgets/Work basis.dart';
 import 'package:payment/widgets/Hourly basis.dart';
+import 'package:payment/GetX/payment_getx.dart';
 
 class Salary extends StatelessWidget {
   //Salary({});
+
+  final mycontroller = Get.put(PaymentController());
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: AppBar(title: Text('employee name'),
+          appBar: AppBar(title: Obx(()=>Text(mycontroller.empnameValue.value)),
             centerTitle: true,
             bottom: TabBar(
               isScrollable: true,

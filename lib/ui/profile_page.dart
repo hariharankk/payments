@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:payment/services/history socket exit.dart';
 import 'package:payment/services/Bloc.dart';
 import 'package:payment/services/dummybloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
 
@@ -42,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
   /// Send the image for approval
   _changeImage(Employee emp) async {
     //Choose Image First
-    //await _chooseImage();
+    await _chooseImage();
 
     if (image == null) return; // Cancelled image change
 
@@ -89,16 +90,16 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   /// Choose imAge from front camera
-  //_chooseImage() async {
-  //  final _picker = ImagePicker();
-  //  PickedFile img = await _picker.getImage(
-  //      source: ImageSource.camera,
-  //      imageQuality: 100,
-  //      preferredCameraDevice: CameraDevice.front);
-  //  setState(() {
-  //    image = File(img.path);
-  //  });
- // }
+  _chooseImage() async {
+    final _picker = ImagePicker();
+    PickedFile? img = await _picker.getImage(
+        source: ImageSource.camera,
+        imageQuality: 100,
+        preferredCameraDevice: CameraDevice.front);
+    setState(() {
+      image = File(img!.path);
+    });
+  }
 
   /// Display message in snack bar
   void showInSnackBar(String message, Duration duration) {

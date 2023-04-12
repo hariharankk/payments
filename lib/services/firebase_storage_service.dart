@@ -9,7 +9,7 @@ import 'package:payment/utility/jwt.dart';
 
 class Imagestorage {
   // Uploads a file to Firebase Storage and returns the path to its location
-  String uploadURL = 'http://cdbd-34-70-244-240.ngrok.io';
+  String uploadURL = 'http://1842-35-223-119-74.ngrok-free.app';
   late String Token;
   JWT jwt = JWT();
   Future<dynamic> upload(File imageFile) async {
@@ -78,7 +78,7 @@ class Imagestorage {
     var responseData = json.decode(response.body);
   }
 
-  void delete(String user) async {
+   delete(String user) async {
     Token = await jwt.read_token();
     String imgURL = uploadURL+'/delete/'+user;
     final response = await http.get(Uri.parse(imgURL),
