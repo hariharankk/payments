@@ -120,6 +120,7 @@ class _RootPageState extends State<RootPage> {
           _userId = userBloc.getUserObject().username!;
           authStatus = AuthStatus.LOGGED_IN;
           admin = userBloc.getUserObject().admin!;
+
         }
         else{authStatus = AuthStatus.NOT_LOGGED_IN;}
       });
@@ -176,13 +177,11 @@ class _RootPageState extends State<RootPage> {
           if (admin) {
             return  AdminPage(
               logoutCallback: logoutCallback,
-              userid: _userId,
             );
           } else {
             // Employee
             return  HomePage(
               logoutCallback: logoutCallback,
-              userId: _userId,
             );
           }
         }else

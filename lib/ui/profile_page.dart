@@ -116,6 +116,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      appBar: AppBar(
+        title: Text('Profile Page'),
+      ),
       body: StreamBuilder(
         stream:  empadminBloc.getemp,
         builder: (context, snapshot) {

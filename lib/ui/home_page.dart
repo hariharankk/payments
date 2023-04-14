@@ -1,6 +1,4 @@
 import 'package:payment/ui/common/attendance_history.dart';
-import 'package:payment/ui/help_page.dart';
-import 'package:payment/ui/profile_page.dart';
 import 'package:payment/ui/Opening page.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +6,15 @@ import 'package:payment/ui/schedule.dart';
 import 'package:payment/ui/todo/pages/home_page.dart';
 import 'package:payment/ui/Ledger Home.dart';
 import 'package:payment/services/firebase_storage_service.dart';
+import 'package:payment/services/Bloc.dart';
+import 'package:payment/ui/Settings.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   final VoidCallback logoutCallback;
-  final String userId;
 
-  HomePage({required this.logoutCallback, required this.userId});
+
+  HomePage({required this.logoutCallback});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
 
   void _imagestatus() async{
    Imagestorage imagestorage = Imagestorage();
-    bool status = await imagestorage.getstatus(widget.userId);
+    bool status = await imagestorage.getstatus(userBloc.getUserObject().user);
     setState(() {
       Status = status;
       loading = false;
@@ -82,9 +83,16 @@ class _HomePageState extends State<HomePage> {
         title: Text(appBarTitle[_currentIndex]),
         actions: <Widget>[
           IconButton(
+            onPressed: (){
+              Get.to(()=>SettingsPage(logoutCallback: widget.logoutCallback));
+            },
+            icon: Icon(Icons.settings),
+          ),
+          IconButton(
             onPressed: widget.logoutCallback,
             icon: Icon(Icons.exit_to_app),
           ),
+
         ],
         automaticallyImplyLeading: false,
       ),
@@ -115,29 +123,30 @@ class _HomePageState extends State<HomePage> {
         },
         items: <BottomNavyBarItem>[
           BottomNavyBarItem(
-            title: Text("Home"),
-            icon: Icon(Icons.home),
-            activeColor: Colors.red,
-            inactiveColor: Colors.black,
-          ),
-          BottomNavyBarItem(
             title: Text("History"),
             icon: Icon(Icons.history),
             activeColor: Colors.purpleAccent,
             inactiveColor: Colors.black,
           ),
           BottomNavyBarItem(
-            title: Text("Profile"),
-            icon: Icon(Icons.person),
+            title: Text("Ledger"),
+            icon: Icon(Icons.book),
+            activeColor: Colors.blue,
+            inactiveColor: Colors.black,
+          ),
+          BottomNavyBarItem(
+            title: Text("Chat"),
+            icon: Icon(Icons.chat),
             activeColor: Colors.pink,
             inactiveColor: Colors.black,
           ),
           BottomNavyBarItem(
-            title: Text("Help"),
-            icon: Icon(Icons.help),
-            activeColor: Colors.blue,
+            title: Text("Calendar"),
+            icon: Icon(Icons.calendar_month),
+            activeColor: Colors.red,
             inactiveColor: Colors.black,
           ),
+
         ],
       ),
     );

@@ -9,12 +9,12 @@ import 'package:payment/models/Payments.dart';
 import 'package:payment/services/firebase_service.dart';
 import 'package:payment/GetX/payment_getx.dart';
 import 'package:payment/services/dummybloc.dart';
-import 'package:payment/ui/admin_side/attendance history.dart';
-
+import 'package:payment/Screen/attendance weekly.dart';
 
 class weeklysalary extends StatelessWidget {
   final mycontroller = Get.put(feautreController());
   final mycontroller1 = Get.find<PaymentController>();
+  final mycontroller2 = Get.put(WeekController());
 
   //allowance({}) ;
   @override
@@ -53,7 +53,7 @@ class weeklysalary extends StatelessWidget {
           SizedBox(height: 10,),
           GestureDetector(
             onTap: ()async{
-              Get.to(()=> AttendanceHistory(userId: mycontroller1.empidValue.value));
+              Get.to(()=> AttendanceHistoryweek(userId: mycontroller1.empidValue.value,startdate: mycontroller2.datestart.value,enddate: mycontroller2.datesend.value,));
             },
             child: Container(
               width: MediaQuery.of(context).size  .width *0.95,
@@ -108,7 +108,7 @@ class weeklysalary extends StatelessWidget {
 
 
 class DateRangePickerWidget extends StatelessWidget {
-  final mycontroller = Get.put(WeekController());
+  final mycontroller = Get.find<WeekController>();
 
   @override
   Widget build(BuildContext context) => Container(

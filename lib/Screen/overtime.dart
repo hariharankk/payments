@@ -13,7 +13,7 @@ import 'package:payment/services/firebase_service.dart';
 import 'package:payment/GetX/payment_getx.dart';
 import 'package:payment/services/dummybloc.dart';
 import 'package:intl/intl.dart';
-import 'package:payment/ui/admin_side/attendance history.dart';
+import 'package:payment/Screen/Attendance.dart';
 
 
 class overtimescreen extends StatelessWidget {
@@ -133,7 +133,7 @@ class overtimescreen extends StatelessWidget {
                         SizedBox(height: 10,),
                         GestureDetector(
                           onTap: ()async{
-                            Get.to(()=> AttendanceHistory(userId: mycontroller2.empidValue.value));
+                            Get.to(()=> AttendanceHistoryday(userId: mycontroller2.empidValue.value,date: mycontroller.date.value ,));
                           },
                           child: Container(
                             width: MediaQuery.of(context).size  .width *0.95,

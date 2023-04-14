@@ -11,9 +11,8 @@ import 'package:payment/ui/todo/pages/home_page.dart';
 
 class AdminPage extends StatefulWidget {
   final VoidCallback logoutCallback;
-  String userid;
 
-  AdminPage({required this.logoutCallback,required this.userid});
+  AdminPage({required this.logoutCallback});
 
   @override
   _AdminPageState createState() => _AdminPageState();

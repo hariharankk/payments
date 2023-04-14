@@ -8,7 +8,7 @@ import 'package:payment/services/firebase_service.dart';
 import 'package:payment/GetX/payment_getx.dart';
 import 'package:payment/services/dummybloc.dart';
 import 'package:payment/widgets/date picker.dart';
-import 'package:payment/ui/admin_side/attendance history.dart';
+import 'package:payment/Screen/attendance monthly.dart';
 
 
 class monthlysalary extends StatelessWidget {
@@ -52,7 +52,7 @@ class monthlysalary extends StatelessWidget {
             SizedBox(height: 10,),
             GestureDetector(
               onTap: ()async{
-                Get.to(()=> AttendanceHistory(userId: mycontroller1.empidValue.value));
+                Get.to(()=> AttendanceHistorymonth(userId: mycontroller1.empidValue.value,date: mycontroller.date.value ,));
               },
               child: Container(
                 width: MediaQuery.of(context).size  .width *0.95,

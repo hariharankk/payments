@@ -10,7 +10,7 @@ import 'package:payment/models/Leave.dart';
 
 class apirepository{
   late String Token;
-  String uploadURL = 'http://1842-35-223-119-74.ngrok-free.app';
+  String uploadURL = 'http://070b-35-197-119-145.ngrok-free.app';
   JWT jwt = JWT();
 
   /// Add a map to a firestore collection
@@ -162,10 +162,10 @@ class apirepository{
       if(responseData['status']){//list, alternative empty string " "
         print(responseData['data']);
         return responseData['data'];}
-      else{return [];}
+      else{return null;}
     } catch (e) {
       print(e);
-      return [];
+      return null;
     }
 
   }
@@ -556,6 +556,7 @@ class apirepository{
 
 
   Future<dynamic> leave_adddata(Map<dynamic,dynamic> leave) async{
+
     Token = await jwt.read_token();
     String URL = uploadURL+'/api/leave-add';
     try {
@@ -581,5 +582,84 @@ class apirepository{
   }
 
 
+  Future<dynamic> history_getdatamonthly(String id, String month) async {
+    final queryParameters = {'userid': id,'month':month};
+    Token = await jwt.read_token();
+    Uri URL = Uri.parse(uploadURL + '/history/getdatamonth/').replace(
+        queryParameters: queryParameters);
+    final response = await http.get(URL,
+      headers: <String, String>{
+        'x-access-token': Token
+      },
+    );
+    print(json.decode(response.body));
+    try {
+      var responseData = json.decode(response.body);
+      if (responseData['status']) { //list, alternative empty string " "
+        print(responseData['data']);
+        return responseData['data'];
+      }
+      else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
-}
+    Future<dynamic> history_getdataweekly(String id,String end_date, String start_date) async {
+      final queryParameters = {'userid': id, 'end_date':end_date, 'start_date':start_date};
+      Token = await jwt.read_token();
+      Uri URL = Uri.parse(uploadURL + '/history/getdataweek/').replace(
+          queryParameters: queryParameters);
+      final response = await http.get(URL,
+        headers: <String, String>{
+          'x-access-token': Token
+        },
+      );
+      print(json.decode(response.body));
+      try {
+        var responseData = json.decode(response.body);
+        if (responseData['status']) { //list, alternative empty string " "
+          print(responseData['data']);
+          return responseData['data'];
+        }
+        else {
+          return null;
+        }
+      } catch (e) {
+        print(e);
+        return null;
+      }
+    }
+
+      Future<dynamic> history_getdataday(String id, String time) async {
+        final queryParameters = {'userid': id, 'time':time};
+        Token = await jwt.read_token();
+        Uri URL = Uri.parse(uploadURL + '/history/getdataday/').replace(
+            queryParameters: queryParameters);
+        final response = await http.get(URL,
+          headers: <String, String>{
+            'x-access-token': Token
+          },
+        );
+        print(json.decode(response.body));
+        try {
+          var responseData = json.decode(response.body);
+          if (responseData['status']) { //list, alternative empty string " "
+            print(responseData['data']);
+            return responseData['data'];
+          }
+          else {
+            return null;
+          }
+        } catch (e) {
+          print(e);
+          return null;
+        }
+      }
+    }
+
+
+

@@ -12,6 +12,9 @@ class _HelpPageState extends State<HelpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Help'),
+      ),
       body: Center(
         child: Column(
           children: <Widget>[
