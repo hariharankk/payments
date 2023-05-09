@@ -30,7 +30,7 @@ class ledgertile extends StatelessWidget {
                     Padding(
                         padding: EdgeInsets.all(width1),
                         child: Text(payments.time!,style: ledgertimestyle,)),
-
+                    SizedBox(height: 20,),
                     Padding(
                         padding: EdgeInsets.all(width1),
                         child: Center(child: Text(payments.category!+':- '+payments.notes!,style: ledgertextstyle,))),

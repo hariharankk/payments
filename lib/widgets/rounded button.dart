@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:payment/GetX/feautre_getx.dart';
 import 'package:get/get.dart';
+import 'package:payment/services/validate.dart';
 
 class roundedtextbutton extends StatelessWidget {
   String text;
@@ -10,6 +11,7 @@ class roundedtextbutton extends StatelessWidget {
   final mycontroller = Get.find<feautreController>();
   String? Payment;
   late double unitHeightValue, unitWidthValue;
+  Validate validate = new Validate();
 
 
   @override
@@ -21,16 +23,19 @@ class roundedtextbutton extends StatelessWidget {
       child:
           Container(
             padding: const EdgeInsets.only(top: 10),
-            child: TextField(
-              style: TextStyle(
+            child: TextFormField(
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+               validator: validate.validateInteger,
+               style: TextStyle(
                   fontWeight: FontWeight.bold,
+
                   color: Colors.black54,
                   fontSize: 20 * unitHeightValue),
               controller: cont,
 
               textAlign: TextAlign.center,
-              keyboardType: TextInputType.name,
               onChanged: (payment) {
+                 print(payment);
                 mycontroller.paymenttext = payment.obs ;
                 },
               decoration: InputDecoration(

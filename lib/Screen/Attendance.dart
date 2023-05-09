@@ -1,8 +1,6 @@
 import 'package:payment/models/history.dart';
 import 'package:flutter/material.dart';
 import 'package:table_sticky_headers/table_sticky_headers.dart';
-import 'package:payment/loc/mymap.dart';
-import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:payment/services/firebase_service.dart';
 import 'package:intl/intl.dart';
@@ -25,11 +23,18 @@ class _AttendanceHistorydayState extends State<AttendanceHistoryday> {
 
   @override
   void initState() {
-    final apiProvider1 = apirepository();
-    columnNames = ['Check In Time', 'Check Out Time', 'Hours Spent'];
     super.initState();
-    widget.date = widget.date == 'Select Date'? DateFormat('dd/MM/yyyy').format(DateTime.now()):widget.date;
-    _historyGetter.sink.add(apiProvider1. history_getdataday(widget.userId,widget.date));
+    columnNames = ['Check In Time', 'Check Out Time', 'Hours Spent'];
+    widget.date = widget.date == 'Select Date' ? DateFormat('dd/MM/yyyy').format(DateTime.now()) : widget.date;
+    fetchDataAndAddToStream(); // Call the new method here
+  }
+
+// New async method to fetch data and add it to the stream
+  Future<void> fetchDataAndAddToStream() async {
+    final apiProvider1 = apirepository();
+    var fetchedData = await apiProvider1.history_getdataday(widget.userId, widget.date);
+    print("Fetched Data: $fetchedData"); // Debug print statement
+    _historyGetter.sink.add(fetchedData);
   }
 
   void dispose() {
@@ -40,14 +45,14 @@ class _AttendanceHistorydayState extends State<AttendanceHistoryday> {
 
   /// Make a 2-d array of the data
   _makeData(List<dynamic> snapshots) {
-    var temp = List<List<String>>.empty();
-    var rows = List<String>.empty();
+    var temp = <List<String>>[]; // Changed to growable list
+    var rows = <String>[]; // Changed to growable list
 
     int i = 0;
     for (var snapshot in snapshots) {
       List<String> row = _makeDataItem(snapshot);
       rows.add(row[0]);
-      temp.add(List<String>.empty());
+      temp.add([]); // Changed to growable list
       temp[i].add(row[1]);
       temp[i].add(row[2]);
       temp[i].add(row[3]);
@@ -77,11 +82,11 @@ class _AttendanceHistorydayState extends State<AttendanceHistoryday> {
         ? "-"
         : checkOut!.hour.toString() + ":" + checkOut.minute.toString();
 
-    List<String> dateData = List<String>.empty();
-    dateData[0] = date;
-    dateData[1] = inTime;
-    dateData[2] = outTime;
-    dateData[3] = hrs;
+    List<String> dateData = [];
+    dateData.add(date);
+    dateData.add(inTime);
+    dateData.add(outTime);
+    dateData.add(hrs);
     return dateData;
   }
 
@@ -89,15 +94,12 @@ class _AttendanceHistorydayState extends State<AttendanceHistoryday> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-      AppBar(title: Text("Attendance History"),
-        actions: [
-          IconButton(onPressed: (){
-            Get.to(()=>MyMap());
-          }, icon: Icon(Icons.location_on_outlined,color: Colors.white,))
-        ],),
+      AppBar(title: Text("Attendance History"),),
       body: StreamBuilder(
-        stream: _historyGetter,//history_soc.getResponse,
-        builder: (context, snapshot) {
+        stream: _historyGetter.stream,//history_soc.getResponse,
+
+        builder: (context, AsyncSnapshot<dynamic> snapshot) {
+          print("Snapshot data: ${snapshot.data}");
           if (!snapshot.hasData) {
             return Center(child: Text('Has no Data'));
           }

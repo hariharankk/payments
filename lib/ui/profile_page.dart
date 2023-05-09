@@ -121,15 +121,16 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: StreamBuilder(
         stream:  empadminBloc.getemp,
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot<dynamic> snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
 
-          print(snapshot.data);
+
           Employee emp = Employee.fromMap(snapshot.data);
+
 
           return requestChange
               ? Center(
@@ -162,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: <Widget>[
                           ClipOval(
                             child: Center(
-                              child: emp.image == null
+                              child: emp.imageId == null
                                   ? Container(
                                 color: Colors.blue,
                                 child: Center(

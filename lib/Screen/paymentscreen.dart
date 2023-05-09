@@ -50,7 +50,7 @@ class paymentscreen extends StatelessWidget {
                         child: Column(
                           children: <Widget>[
                             SizedBox(height: 20,),
-                            roundedtextbutton(text: 'Payments',width: MediaQuery.of(context).size  .width *0.90),
+                            roundedtextbutton(text: 'Payment amount',width: MediaQuery.of(context).size  .width *0.90),
                             Row(
                               children: <Widget>[
                                 SizedBox(width: 5,),

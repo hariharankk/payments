@@ -117,7 +117,7 @@ class _ListApprovalPageState extends State<ListApprovalPage> {
     return Scaffold(
       body: StreamBuilder(
           stream: approvalBloc.getapproval,//streamSocket.getResponse,
-          builder: (context, snapshot) {
+          builder: (context, AsyncSnapshot<dynamic> snapshot) {
 
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());

@@ -298,7 +298,7 @@ class _GroupInfoPageState extends State<GroupInfoPage> {
 
          ),
             Text(
-              group.members[index].name,
+              group.members[index].emailaddress,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontFamily: 'Segoe ui',

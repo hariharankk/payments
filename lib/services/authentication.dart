@@ -20,7 +20,7 @@ abstract class BaseAuth {
 
 class Auth implements BaseAuth {
   late String Token;
-  String uploadURL = 'http://070b-35-197-119-145.ngrok-free.app';
+  String uploadURL = 'http://17db-35-240-131-193.ngrok-free.app';
   JWT jwt= JWT();
 
 
@@ -35,6 +35,7 @@ class Auth implements BaseAuth {
         },
         body: jsonEncode(user),
       );
+      print(response.body);
       var responseData = json.decode(response.body);
       if(responseData['status']){
       print(responseData["data"]);
@@ -82,6 +83,7 @@ class Auth implements BaseAuth {
       final response = await http.post(
         Uri.parse(URL),
         headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
           "Accept": "application/json",
         },
@@ -101,7 +103,7 @@ class Auth implements BaseAuth {
   }
 
   Future<dynamic> signInWithOTP(String phone, String verificationId) async{
-    String URL = uploadURL+'/register/';
+    String URL = uploadURL+'/verifyOTP';
     try {
       final response = await http.post(
         Uri.parse(URL),

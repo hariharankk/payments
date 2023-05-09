@@ -19,10 +19,10 @@ var frontCamera;
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  //cameras = await availableCameras();
+  cameras = await availableCameras();
   initGetIt();
-  //NotificationService notificationService = NotificationService();
-  //await notificationService.init();
+  NotificationService notificationService = NotificationService();
+  await notificationService.init();
   runApp(MyApp());
 }
 

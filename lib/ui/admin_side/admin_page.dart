@@ -87,11 +87,11 @@ class _AdminPageState extends State<AdminPage> {
         children: <Widget>[
           Column(
             children: <Widget>[
-             // Container(
-             //   height: MediaQuery.of(context).size.height * 0.5,
-             //   width: MediaQuery.of(context).size.width * 0.75,
-             //   child: Image.asset('assets/logo.jpg'),
-              //),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.5,
+                width: MediaQuery.of(context).size.width * 0.75,
+                child: Image.asset('assets/logo.jpg'),
+              ),
               SizedBox(height: 25.0),
               Center(
                 child: MaterialButton(

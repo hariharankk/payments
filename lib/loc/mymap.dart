@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong2/latlong.dart' as latLng;
 import 'package:payment/loc/repository.dart';
 
@@ -12,7 +11,6 @@ class MyMap extends StatefulWidget {
 
 class _MyMapState extends State<MyMap> {
 
-  final PopupController _popupController = PopupController();
   MapController _mapController = MapController();
   double _zoom = 15;
   List _locs = [];
@@ -20,7 +18,7 @@ class _MyMapState extends State<MyMap> {
 
 
 
-  Future<void> getdata() async {
+    Future<void> getdata() async {
     try{
     _locs =  await repository.getLocation('hari');
     for (var loc in _locs){
@@ -119,16 +117,3 @@ class _MyMapState extends State<MyMap> {
   }}
 
 
-/*[
-Marker(
-point: latLng.LatLng(9.9252, 78.1198),
-width: 80,
-height: 80,
-builder: (context) =>
-const Icon(
-Icons.location_history,
-color: Colors.red,
-size: 25,
-),
-),
-],*/

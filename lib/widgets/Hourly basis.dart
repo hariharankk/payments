@@ -9,7 +9,7 @@ import 'package:payment/services/firebase_service.dart';
 import 'package:payment/GetX/payment_getx.dart';
 import 'package:payment/services/dummybloc.dart';
 import 'package:intl/intl.dart';
-import 'package:payment/ui/admin_side/attendance history.dart';
+import 'package:payment/Screen/Attendance.dart';
 
 
 
@@ -30,88 +30,90 @@ class hourlybasissalary extends StatelessWidget {
             }
         ),),
       body:
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20,),
-                 Row(
-                  children: [
-                    rateroundedtextbutton(text: 'Rate',width: MediaQuery.of(context).size  .width *0.45),
-                    rateroundedtextbutton(text: 'Time',width: MediaQuery.of(context).size  .width *0.45),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    SizedBox(width: 5,),
-                    DatePickerWidget(),
-                    roundedtextbutton(text: 'Notes',width: MediaQuery.of(context).size  .width *0.65),
-                  ],
-                ),
-                SizedBox(width: 5,),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  decoration: upperbox1,
-                  child: Obx(()=>Center(child:  (Text('Total : Rs ${mycontroller.rate.value * mycontroller.quantity.value}')),)),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 10,),
-          GestureDetector(
-            onTap: ()async{
-              Get.to(()=> AttendanceHistory(userId: mycontroller1.empidValue.value));
-            },
-            child: Container(
-              width: MediaQuery.of(context).size  .width *0.95,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                color: Colors.blue,
+      SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 20,),
+                   Row(
+                    children: [
+                      rateroundedtextbutton(text: 'Rate',width: MediaQuery.of(context).size  .width *0.40),
+                      rateroundedtextbutton(text: 'Time',width: MediaQuery.of(context).size  .width *0.40),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      SizedBox(width: 5,),
+                      DatePickerWidget(),
+                      roundedtextbutton1(text: 'Notes',width: MediaQuery.of(context).size  .width *0.65),
+                    ],
+                  ),
+                  SizedBox(width: 5,),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    decoration: upperbox1,
+                    child: Obx(()=>Center(child:  (Text('Total : Rs ${mycontroller.rate.value * mycontroller.quantity.value}')),)),
+                  ),
+                ],
               ),
-              margin: EdgeInsets.only(bottom: 20),
-              child: Center(child: Text('Check Attendance')),
             ),
-          ),
-
-          SizedBox(height: 10,),
-
-
-          GestureDetector(
-            onTap: ()async{
-              final apiProvider1 = apirepository();
-              Payments payments = Payments(
-                  ammount: (mycontroller.rate.value * mycontroller.quantity.value).toInt(),
-                  notes: 'Horuly Basis Salary:- '+ mycontroller.notestext.value,
-                  category: 'Salary',
-                  type_of_note: 'Debit',
-                  time: mycontroller.date.value,
-                  username: mycontroller1.empidValue.value
-              );
-              Map<dynamic, dynamic> paymentsMap = payments.toMap();
-              apiProvider1.Payments_adddata(paymentsMap);
-              await Future<void>.delayed(const Duration(milliseconds: 100));
-              ledgerbloc.Ledger_getdata(DateFormat("MMMM, yyyy").format(DateTime.now()), payments.username!);
-
-              Get.back();
-            },
-            child: Container(
-              width: MediaQuery.of(context).size  .width *0.95,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                color: Colors.blue,
+            SizedBox(height: 10,),
+            GestureDetector(
+              onTap: ()async{
+                Get.to(()=> AttendanceHistoryday(userId: mycontroller1.empidValue.value,date: mycontroller.date.value ,));
+              },
+              child: Container(
+                width: MediaQuery.of(context).size  .width *0.95,
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Colors.blue,
+                ),
+                margin: EdgeInsets.only(bottom: 20),
+                child: Center(child: Text('Check Attendance')),
               ),
-              margin: EdgeInsets.only(bottom: 20),
-              child: Center(child: Text('Add Hourly wage')),
             ),
-          ),
-        ],
+
+            SizedBox(height: 10,),
+
+
+            GestureDetector(
+              onTap: ()async{
+                final apiProvider1 = apirepository();
+                Payments payments = Payments(
+                    ammount: (mycontroller.rate.value * mycontroller.quantity.value).toInt(),
+                    notes: 'Horuly Basis Salary:- '+ mycontroller.notestext.value,
+                    category: 'Salary',
+                    type_of_note: 'Debit',
+                    time: mycontroller.date.value,
+                    username: mycontroller1.empidValue.value
+                );
+                Map<dynamic, dynamic> paymentsMap = payments.toMap();
+                apiProvider1.Payments_adddata(paymentsMap);
+                await Future<void>.delayed(const Duration(milliseconds: 100));
+                ledgerbloc.Ledger_getdata(DateFormat("MMMM, yyyy").format(DateTime.now()), payments.username!);
+
+                Get.back();
+              },
+              child: Container(
+                width: MediaQuery.of(context).size  .width *0.95,
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  color: Colors.blue,
+                ),
+                margin: EdgeInsets.only(bottom: 20),
+                child: Center(child: Text('Add Hourly wage')),
+              ),
+            ),
+          ],
+        ),
       ),
     );
 

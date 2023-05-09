@@ -9,9 +9,9 @@ TextStyle ledger = TextStyle(fontWeight: FontWeight.bold,fontSize: 8.sp,color: C
 
 TextStyle innerstyle = TextStyle(color: Colors.white, fontSize: 7.sp);
 
-TextStyle ledgertextstyle = TextStyle(color: Colors.black,fontSize: 5.sp,fontWeight: FontWeight.bold);
+TextStyle ledgertextstyle = TextStyle(color: Colors.black,fontSize: 9.sp,fontWeight: FontWeight.bold);
 
-TextStyle ledgertimestyle = TextStyle(color: Colors.grey,fontSize: 6.sp,);
+TextStyle ledgertimestyle = TextStyle(color: Colors.grey,fontSize: 7.sp,);
 
 TextStyle amountstyle = TextStyle(color: Colors.white,fontSize: 12.sp,fontWeight: FontWeight.bold);
 

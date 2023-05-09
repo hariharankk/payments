@@ -102,7 +102,7 @@ class weeklystartbutton extends StatelessWidget {
         side: BorderSide(color:Colors.blue,width:1.4),
         borderRadius: BorderRadius.circular(10),
       ),
-      fixedSize: Size(180,60),
+      fixedSize: Size(120,30),
       primary: Color.fromARGB(255, 255, 255, 255),
     ),
     child: Obx(
@@ -135,7 +135,7 @@ class weeklyendbutton extends StatelessWidget {
         side: BorderSide(color:Colors.blue,width:1.4),
         borderRadius: BorderRadius.circular(10),
       ),
-      fixedSize: Size(180,60),
+      fixedSize: Size(120,30),
       primary: Color.fromARGB(255, 255, 255, 255),
     ),
     child: Obx(

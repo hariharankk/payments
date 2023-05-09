@@ -301,7 +301,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
               ),
 
             Text(
-              newGroup.members[index].name,
+              newGroup.members[index].emailaddress,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontWeight: FontWeight.bold,

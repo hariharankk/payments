@@ -10,7 +10,7 @@ import 'package:payment/models/Leave.dart';
 
 class apirepository{
   late String Token;
-  String uploadURL = 'http://070b-35-197-119-145.ngrok-free.app';
+  String uploadURL = 'http://17db-35-240-131-193.ngrok-free.app';
   JWT jwt = JWT();
 
   /// Add a map to a firestore collection
@@ -644,7 +644,6 @@ class apirepository{
             'x-access-token': Token
           },
         );
-        print(json.decode(response.body));
         try {
           var responseData = json.decode(response.body);
           if (responseData['status']) { //list, alternative empty string " "

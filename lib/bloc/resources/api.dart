@@ -17,7 +17,7 @@ class ApiProvider {
   //static Uri baseURL = 'https://taskmanager-group-stage.herokuapp.com/api';
   //static String baseURL = "http://10.0.2.2:5000/api";
 
-  static String stageHost = 'http://070b-35-197-119-145.ngrok-free.app';
+  static String stageHost = 'http://17db-35-240-131-193.ngrok-free.app';
   static String productionHost = 'taskmanager-group-pro.herokuapp.com';
   static String localhost = "10.0.2.2:5000";
   String signinURL = stageHost + '/api/login';
@@ -204,7 +204,7 @@ class ApiProvider {
     final Token = await jwt.read_token();
     print('${role},${username}');
     if (role==''){
-      role='பார்வையாளர்';
+      role='Visitor';
     }
     final response = await client.post(
       Uri.parse(groupmemberaddURL),

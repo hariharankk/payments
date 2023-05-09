@@ -49,7 +49,7 @@ class loan extends StatelessWidget {
                         child: Column(
                           children: <Widget>[
                             SizedBox(height: 20,),
-                            roundedtextbutton(text: 'Loan Amount given',width: MediaQuery.of(context).size  .width *0.90),
+                            roundedtextbutton(text: 'Loan Amount',width: MediaQuery.of(context).size  .width *0.90),
                             Row(
                               children: <Widget>[
                                 SizedBox(width: 5,),

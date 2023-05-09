@@ -38,14 +38,14 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
 
   /// Make a 2-d array of the data
   _makeData(List<dynamic> snapshots) {
-    var temp = List<List<String>>.empty();
-    var rows = List<String>.empty();
+    var temp = <List<String>>[]; // Changed to growable list
+    var rows = <String>[]; // Changed to growable list
 
     int i = 0;
     for (var snapshot in snapshots) {
       List<String> row = _makeDataItem(snapshot);
       rows.add(row[0]);
-      temp.add(List<String>.empty());
+      temp.add([]); // Changed to growable list
       temp[i].add(row[1]);
       temp[i].add(row[2]);
       temp[i].add(row[3]);
@@ -55,6 +55,7 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
 
     return temp;
   }
+
 
   //// Extract Data from snapshot and convert it into a LIST
   List<String> _makeDataItem(Map<dynamic,dynamic> data) {
@@ -75,11 +76,11 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
         ? "-"
         : checkOut!.hour.toString() + ":" + checkOut.minute.toString();
 
-    List<String> dateData = List<String>.empty();
-    dateData[0] = date;
-    dateData[1] = inTime;
-    dateData[2] = outTime;
-    dateData[3] = hrs;
+    List<String> dateData = [];
+    dateData.add(date);
+    dateData.add(inTime);
+    dateData.add(outTime);
+    dateData.add(hrs);
     return dateData;
   }
 
@@ -88,7 +89,7 @@ class _AttendanceHistoryState extends State<AttendanceHistory> {
     return Scaffold(
       body: StreamBuilder(
         stream: historyBloc.gethistory,//history_soc.getResponse,
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }

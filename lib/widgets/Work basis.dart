@@ -40,15 +40,15 @@ class workbasissalary extends StatelessWidget {
                 SizedBox(height: 20,),
                 Row(
                   children: [
-                    rateroundedtextbutton(text: 'Rate',width: MediaQuery.of(context).size  .width *0.45),
-                    rateroundedtextbutton(text: 'Quantity',width: MediaQuery.of(context).size  .width *0.45),
+                    rateroundedtextbutton(text: 'Rate',width: MediaQuery.of(context).size  .width *0.40),
+                    rateroundedtextbutton(text: 'Quantity',width: MediaQuery.of(context).size  .width *0.40),
                   ],
                 ),
                 Row(
                   children: <Widget>[
                     SizedBox(width: 5,),
                     DatePickerWidget(),
-                    roundedtextbutton(text: 'Notes',width: MediaQuery.of(context).size  .width *0.65),
+                    roundedtextbutton1(text: 'Notes',width: MediaQuery.of(context).size  .width *0.65),
                   ],
                 ),
                 SizedBox(width: 5,),

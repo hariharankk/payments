@@ -278,12 +278,11 @@ class _LeavePageState extends State<LeavePage> {
                             child: Row(
                               children: [
                                 Icon(Icons.calendar_today),
-                                SizedBox(width: 8),
                                 Text(
                                   _startDate == null
                                       ? 'Select a start date'
                                       : _startDate!.toString().split(' ')[0],
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(fontSize: 10),
                                 ),
                               ],
                             ),
@@ -313,12 +312,11 @@ class _LeavePageState extends State<LeavePage> {
                             child: Row(
                               children: [
                                 Icon(Icons.calendar_today),
-                                SizedBox(width: 8),
                                 Text(
                                   _endDate == null
                                       ? 'Select an end date'
                                       : _endDate!.toString().split(' ')[0],
-                                  style: TextStyle(fontSize: 16),
+                                  style: TextStyle(fontSize: 10),
                                 ),
                               ],
                             ),
@@ -345,7 +343,7 @@ class _LeavePageState extends State<LeavePage> {
             SizedBox(height: 40),
             Center(
               child: ConstrainedBox(
-                constraints:  BoxConstraints.tightFor(width: MediaQuery.of(context).size.width * 0.2, height:  MediaQuery.of(context).size.height * 0.1),
+                constraints:  BoxConstraints.tightFor(width: MediaQuery.of(context).size.width * 0.23, height:  MediaQuery.of(context).size.height * 0.1),
                 child: ElevatedButton(
                   onPressed: _submitForm,
                   child: Text('Submit'),

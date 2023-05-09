@@ -69,6 +69,15 @@ class HistoryBloc {
     }
   }
 
+  Future<void>  history_getdata1(String id) async {
+    try {
+      _history = await apiProvider1.history_getdata(id);
+      _historyGetter.sink.add(_history);
+    } catch (e) {
+      throw e;
+    }
+  }
+
 
   dispose() {
     _historyGetter.close();

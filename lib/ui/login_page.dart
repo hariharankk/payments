@@ -29,6 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   late bool _isPhone;
   late bool _codeSent = false;
 
+  TextEditingController _textController = TextEditingController();
+
   @override
   void initState() {
     _errorMessage = "";
@@ -102,7 +104,7 @@ try {
           child: new ListView(
             shrinkWrap: true,
             children: <Widget>[
-              //showLogo(),
+              showLogo(),
               !_isPhone ? showEmailInput() : Container(),
               !_isPhone ? showPasswordInput() : Container(),
               _isPhone ? showPhoneInput() : Container(),
@@ -118,9 +120,7 @@ try {
               SizedBox(height: 10,),
               AlreadyHaveAnAccountCheck(login: true,
                 press: () {
-                  Get.to(()=> register(loginCallback: widget.loginCallback));
-                  Get.back();
-                },
+                 },
               ),
             ],
           ),
@@ -237,6 +237,7 @@ try {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: TextFormField(
+        controller: _textController,
         maxLines: 1,
         obscureText: false,
         keyboardType: TextInputType.number,

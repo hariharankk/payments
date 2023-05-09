@@ -66,7 +66,7 @@ class _registerState extends State<register> {
           child: new ListView(
             shrinkWrap: true,
             children: <Widget>[
-              //showLogo(),
+              showLogo(),
               NameInput(),
               showEmailInput(),
               showPasswordInput(),

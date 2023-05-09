@@ -6,7 +6,7 @@ import 'package:payment/loc/loc.dart';
 
 class ApiProvider {
   Client client = Client();
-  static String stageHost = '48d8-104-199-124-7.ngrok.io';
+  static String stageHost = '17db-35-240-131-193.ngrok-free.app';
   Uri Locationgetpost = Uri(scheme: 'http', host: stageHost, path: '/api/location-add');
 
   Future<List> getLocation(String userid) async {

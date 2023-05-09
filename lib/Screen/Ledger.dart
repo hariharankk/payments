@@ -23,7 +23,7 @@ class Ledger extends StatelessWidget {
       // Wrap our widget with a StreamBuilder
       stream: ledgerbloc.Ledgeradmin, // pass our Stream getter here
       initialData: [], // provide an initial data
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<dynamic> snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
             print("No data");

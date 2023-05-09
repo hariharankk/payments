@@ -18,6 +18,14 @@ class Validate {
     return null;
   }
 
+  String? validateInteger(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a value';
+    } else if (int.tryParse(value) == null) {
+      return 'Please enter a valid amount';
+    }    return null;
+  }
+
   /// Password Verification
   verifyPassword(String password) {
     if (password.length < 8 || password.length > 20) {

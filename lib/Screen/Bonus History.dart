@@ -41,14 +41,14 @@ class History extends StatelessWidget {
         // Wrap our widget with a StreamBuilder
         stream: paymentBloc.paymentadmin, // pass our Stream getter here
         initialData: [], // provide an initial data
-        builder: (context, snapshot) {
+        builder: (context, AsyncSnapshot<dynamic> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
               print("No data");
               break;
             case ConnectionState.active:
               print(snapshot.data);
-              var data = snapshot.data != null ? snapshot.data![0]:[];
+              var data = snapshot.data != null ? snapshot.data![0] :[];
               return       SingleChildScrollView(
                 child: Container(
                   child: Column(

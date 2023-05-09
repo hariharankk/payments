@@ -171,10 +171,13 @@ class _AddMembersPageState extends State<AddMembersPage> {
   }
 
   ListView _addedMembersListView() {
+
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
         final member = widget.group.members[index];
+        print('otha');
+        print(member.emailaddress);
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0),
           child: Dismissible(
@@ -195,7 +198,7 @@ class _AddMembersPageState extends State<AddMembersPage> {
                 widget.group.members[index]
                     .cAvatar(radius: 25, unitHeightValue: unitHeightValue),
                 Text(
-                  widget.group.members[index].name,
+                  widget.group.members[index].emailaddress,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],

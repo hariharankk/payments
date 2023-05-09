@@ -4,7 +4,6 @@ import 'package:payment/global.dart';
 import 'package:payment/widgets/custom icon.dart';
 import 'package:payment/widgets/custom inkwell.dart';
 import 'package:payment/Screen/allowance.dart';
-import 'package:month_year_picker/month_year_picker.dart';
 import 'package:payment/Screen/Bonus_wage.dart';
 import 'package:payment/Screen/Deductions.dart';
 import 'package:payment/Screen/loans.dart';
@@ -13,8 +12,6 @@ import 'package:payment/Screen/paymentscreen.dart';
 import 'package:payment/Screen/Salary.dart';
 import 'package:payment/Screen/overtime.dart';
 import 'package:payment/GetX/payment_getx.dart';
-import 'package:payment/GetX/Frontpage getx.dart';
-import 'package:intl/intl.dart';
 import 'package:payment/GetX/Balance_getx.dart';
 
 class payments extends StatefulWidget {
@@ -62,11 +59,7 @@ class _paymentsState extends State<payments> {
                     width: MediaQuery.of(context).size.width * 0.90,
                     height: MediaQuery.of(context).size.height * 0.2,
                     decoration: upperbox,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children:<Widget>[
+                    child:
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -77,15 +70,6 @@ class _paymentsState extends State<payments> {
                               Obx(()=> Text(mycontroller2.data.value.toString(), style: amountstyle)),
                             ],
                           ),
-                          Container(
-                              width: MediaQuery.of(context).size.width * 0.15,
-                              height: MediaQuery.of(context).size.height * 0.15,
-                              padding: EdgeInsets.all(20.0),
-                              decoration: innerbox,
-                              child: Center(child: Text('Report', style: innerstyle))),
-
-                        ]
-                    ),
                   ),
                 ),
               ),

@@ -94,7 +94,7 @@ class _OpeningPageState extends State<OpeningPage> {
           context: context,
           builder: (BuildContext context) {
             return dialogbox(text: "success",
-                content: "Your Images have been registered successfully");
+                content: "Your Images have been registered successfully, please login to start using the app.");
           }
       );
        widget.logoutCallback();

@@ -24,7 +24,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
   final apiProvider =  Auth();
   late User dummyuser;
 
-  late String firstName,
+  String? firstName,
       lastName,
       emailId,
       password,
@@ -104,17 +104,66 @@ class _EmployeeFormState extends State<EmployeeForm> {
 
   /// Submit form after validating it
   _submitForm() async {
+    // Check if all data is entered
+    bool isDataComplete = (
+        firstName != null &&
+        lastName != null &&
+        emailId != null &&
+        password != null &&
+        address != null &&
+        mobile != null &&
+        aadhar != null &&
+        expertise != null &&
+        experience != null);
+
+    if (!isDataComplete) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Missing Information"),
+            content: Text("Please fill out all the fields."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("Go back"),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
       setState(() {
         _isUploading = true;
       });
 
       // upload files to firebase
       await _uploadToFirebase();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Completed"),
+            content: Text("Employee has been added"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("Done"),
+              ),
+            ],
+          );
+        },
+      );
 
       setState(() {
         _isUploading = false;
       });
     }
+  }
 
   /// Reset Form
 

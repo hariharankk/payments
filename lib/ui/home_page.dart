@@ -9,6 +9,12 @@ import 'package:payment/services/firebase_storage_service.dart';
 import 'package:payment/services/Bloc.dart';
 import 'package:payment/ui/Settings.dart';
 import 'package:get/get.dart';
+import 'package:payment/ui/attendance.dart';
+import 'dart:async';
+import 'package:payment/loc/loc.dart';
+import 'package:location/location.dart' as loci;
+import 'package:payment/loc/repository.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
   final VoidCallback logoutCallback;
@@ -21,18 +27,64 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List appBarTitle = ['Mark Attendance', 'Attendance History', 'My Profile', 'Help'];
+  List appBarTitle = ['Mark Attendance', 'Attendance History', 'Ledger', 'Chat', 'Calendar'];
   int _currentIndex = 0;
   late PageController _pageController;
-  late bool Status = true;
-  bool loading = false;//true;
+  late bool Status = false;
+  bool loading = true;
+  final loci.Location location = loci.Location();
+  StreamSubscription<loci.LocationData>? _locationSubscription;
+  final repository = Repository();
 
   @override
   void initState() {
     super.initState();
     _currentIndex = 0;
+    _requestPermission();
+    location.changeSettings(interval: 10000, accuracy: loci.LocationAccuracy.high);
+  location.enableBackgroundMode(enable: true);
+    _listenLocation();
     _pageController = PageController();
-    //_imagestatus();
+    _imagestatus();
+  }
+
+
+  Future<void> _listenLocation() async {
+    _locationSubscription = location.onLocationChanged.handleError((onError) {
+      print(onError);
+      _locationSubscription?.cancel();
+      setState(() {
+        _locationSubscription = null;
+      });
+    }).listen((loci.LocationData currentlocation) async {
+      try {
+        final loc Loc = loc(longi: currentlocation.longitude.toString(),
+            lat: currentlocation.latitude.toString(),
+            userid: 'hari');
+        Map<dynamic, dynamic> locmap = Loc.toMap();
+        repository.addloc(locmap);
+      }catch(e){
+        print(e);
+      }
+    });
+  }
+
+  _stopListening() {
+    _locationSubscription?.cancel();
+    setState(() {
+      _locationSubscription = null;
+    });
+  }
+
+  _requestPermission() async {
+    var status = await Permission.location.request();
+    if (status.isGranted) {
+      print('done');
+    } else if (status.isDenied) {
+      _requestPermission();
+    } else if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
   }
 
   void _imagestatus() async{
@@ -48,6 +100,7 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     _pageController.dispose();
     super.dispose();
+    _stopListening();
   }
 
 
@@ -105,9 +158,8 @@ class _HomePageState extends State<HomePage> {
         },
         children: <Widget>[
 
-          AttendanceHistory(
-          ),
-
+          MarkAttendancePage(),
+          AttendanceHistory(),
           Ledger(),
           Groups(),
           clientemployeeCalendar()
@@ -122,6 +174,12 @@ class _HomePageState extends State<HomePage> {
               duration: Duration(milliseconds: 300), curve: Curves.ease);
         },
         items: <BottomNavyBarItem>[
+          BottomNavyBarItem(
+            title: Text("Home"),
+            icon: Icon(Icons.home),
+            activeColor: Colors.orange,
+            inactiveColor: Colors.black,
+          ),
           BottomNavyBarItem(
             title: Text("History"),
             icon: Icon(Icons.history),

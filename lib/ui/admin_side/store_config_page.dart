@@ -93,11 +93,10 @@ class _StoreConfigPageState extends State<StoreConfigPage> {
 
   /// Get Location
   _getLocation() async {
-    //Position position = await Geolocator().getCurrentPosition();
-    //print(position);
-    lat =  '92';//position.latitude.toString();
-    longi = '72';//position.longitude.toString();
-    print(lat);
+    Position position = await Geolocator().getCurrentPosition();
+    print(position);
+    lat =  position.latitude.toString();
+    longi = position.longitude.toString();
   }
 
   /// Upload radius and Location in firebase

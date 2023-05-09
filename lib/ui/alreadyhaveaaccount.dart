@@ -10,22 +10,24 @@ class AlreadyHaveAnAccountCheck extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return login ? Container():
+    Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          login ? "Don’t have an Account ? " : "Already have an Account ? ",
+           "Already have an Account ? ",
         ),
         GestureDetector(
           onTap: press ,
           child: Text(
-            login ? "Sign Up" : "Sign In",
+            "Sign In",
             style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
         )
       ],
-    );
+    )
+    ;
   }
 }
