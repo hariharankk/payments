@@ -29,13 +29,6 @@ class SettingsPage extends StatelessWidget {
               Get.to(()=> HelpPage());
             },
           ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Sign out'),
-            onTap: () {
-             logoutCallback();
-            },
-          ),
         ],
       ),
     );

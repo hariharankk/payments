@@ -2,9 +2,7 @@ import 'package:payment/models/approval.dart';
 import 'package:payment/services/firebase_service.dart';
 import 'package:payment/services/firebase_storage_service.dart';
 import 'package:flutter/material.dart';
-import 'package:payment/services/socket.dart';
 import 'package:payment/services/exit socket.dart';
-import 'package:payment/services/Bloc.dart';
 import 'package:payment/services/dummybloc.dart';
 import 'package:payment/global.dart';
 import 'package:payment/ui/admin_side/Leave.dart';
@@ -48,21 +46,21 @@ class ListApprovalPage extends StatefulWidget {
 
 class _ListApprovalPageState extends State<ListApprovalPage> {
   /// Build List of Approvals
-  StreamSocket streamSocket =StreamSocket();
-  ApprovalExitSocket streamsSocket = ApprovalExitSocket();
+  //StreamSocket streamSocket =StreamSocket();
+//  ApprovalExitSocket streamsSocket = ApprovalExitSocket();
 
   void initState() {
     super.initState();
     print('init');
     approvalBloc.approval_getdata();
-    streamSocket.openingapprovalconnectAndListen(userBloc.getUserObject().user);
+    //streamSocket.openingapprovalconnectAndListen(userBloc.getUserObject().user);
   }
 
 
   void dispose() {
     super.dispose();
     print('dispose approval');
-    streamsSocket.Stopthread();
+    //streamsSocket.Stopthread();
   }
 
   _buildList(List<dynamic> snapshots) {
@@ -168,6 +166,7 @@ class _ImageApprovalPageState extends State<ImageApprovalPage> {
 
     Apirepository.employee_updatedata(widget.approval.empId!, widget.approval.imageId!);
 
+
     // remove this from the list of approvals
     await _deleteEntry();
   }
@@ -178,7 +177,6 @@ class _ImageApprovalPageState extends State<ImageApprovalPage> {
 
     //Remove image from firebase storage
     Imagestorage imagestorage = Imagestorage();
-
     await imagestorage.deleteFile(widget.approval.imageId!);
 
     //Remove this from the list of approvals
@@ -189,7 +187,9 @@ class _ImageApprovalPageState extends State<ImageApprovalPage> {
   _deleteEntry() async {
 
     // Delete Entry from list of approvals
-    Apirepository.approval_delete(widget.approval.empId!);
+    await Apirepository.approval_delete(widget.approval.empId!);
+
+    approvalBloc.approval_getdata();
 
     //toggle working state and pop back
     _toggleWorking();

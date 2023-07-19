@@ -21,13 +21,11 @@ class _ListEmployeePageState extends State<ListEmployeePage> {
   Map<String, String> storeNames = {};
 
   bool loading = false;
-  ApprovalExitSocket streamSocket = ApprovalExitSocket();
   HistoryExitSocket history = HistoryExitSocket();
 
   @override
   void initState() {
     empadminBloc.employeeadmin_getdata();
-    streamSocket.Stopthread();
     _initStoreName();
     super.initState();
   }

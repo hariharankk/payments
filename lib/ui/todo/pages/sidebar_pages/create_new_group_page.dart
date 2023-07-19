@@ -268,6 +268,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
         membersLength = newGroup.members.length;
       });
     });
+    print(newGroup.members);
     return Padding(
       padding: EdgeInsets.only(
           top: 75.0 * unitHeightValue!, right: 24.0 * unitWidthValue!),
@@ -278,7 +279,9 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
           crossAxisSpacing: 10 * unitWidthValue!,
           mainAxisSpacing: 10 * unitHeightValue!,
         ),
-        itemBuilder: (context, index) => Column(
+        itemBuilder: (context, index) {
+
+          return Column(
           children: [
 
 
@@ -319,7 +322,8 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
             ),
 
           ],
-        ),
+        );
+          },
         itemCount: membersLength,
       ),
     );

@@ -46,7 +46,7 @@ class History extends StatelessWidget {
           print("No data");
           break;
         case ConnectionState.active:
-          print(snapshot.data);
+
           var data = snapshot.data != null ? snapshot.data![0]:[];
           return       SingleChildScrollView(
       child: Container(
@@ -103,7 +103,7 @@ class History extends StatelessWidget {
             ),
             ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return historylist('Bonus',data[index],paymentBloc,);
+                return historylist('OverTime',data[index],paymentBloc,);
               },
 
               physics: NeverScrollableScrollPhysics(),

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:payment/models/global.dart';
-import 'package:payment/bloc/blocs/user_bloc_provider.dart';
 import 'package:payment/bloc/resources/repository.dart';
 import 'package:payment/bloc/resources/message socket.dart';
 import 'package:payment/bloc/resources/message socket exit.dart';
@@ -28,7 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
     //message =messageBloc(widget.subtaskKey);
     super.initState();
     getCurrentUser();
-    //socket.openingapprovalconnectAndListen(widget.subtaskKey);
+    socket.openingapprovalconnectAndListen(widget.subtaskKey);
   }
 
   void dispose() {
@@ -41,7 +40,7 @@ class _ChatScreenState extends State<ChatScreen> {
     try {
       final user = userBloc.getUserObject();
       if (user != null) {
-        loggedInUser = user.username!;
+        loggedInUser = user.name!;
       }
     } catch (e) {
       print(e);
@@ -75,7 +74,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: () {
                       messageTextController.clear();
                       //message.addmessage(messageText, loggedInUser);
-                      //repository.send_message(messageText, loggedInUser,widget.subtaskKey);
+                      repository.send_message(messageText, loggedInUser,widget.subtaskKey);
                     },
                     child: Text(
                       'send',

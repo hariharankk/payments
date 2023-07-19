@@ -32,7 +32,7 @@ class _SubtaskListTabState extends State<SubtaskListTab> {
   late Group group;
   late Task task;
   late double unitHeightValue, unitWidthValue, height;
-  late String orderBy;
+  String orderBy = 'Alphabetical';
   bool reorder;
 
   _SubtaskListTabState() : reorder = false {
@@ -321,7 +321,7 @@ class _WorkerSubtaskListTabState extends State<WorkerSubtaskListTab> {
   late Group group;
   late Task task;
   late double unitHeightValue, unitWidthValue, height;
-  late String orderBy;
+  String orderBy = 'Alphabetical';
   bool reorder;
 
   _WorkerSubtaskListTabState() : reorder = false {
@@ -580,7 +580,7 @@ class _VisitorSubtaskListTabState extends State<VisitorSubtaskListTab> {
   late Group group;
   late Task task;
   late double unitHeightValue, unitWidthValue, height;
-  late String orderBy;
+  String orderBy = 'Alphabetical';
   bool reorder;
 
   _VisitorSubtaskListTabState() : reorder = false {

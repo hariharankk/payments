@@ -1,17 +1,16 @@
 import 'package:payment/models/history.dart';
 import 'package:flutter/material.dart';
 import 'package:table_sticky_headers/table_sticky_headers.dart';
-import 'package:payment/loc/mymap.dart';
-import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:payment/services/firebase_service.dart';
 import 'package:intl/intl.dart';
+import 'package:month_year_picker/month_year_picker.dart';
+
 
 class AttendanceHistorymonth extends StatefulWidget {
   final String userId;
-  String date;
 
-  AttendanceHistorymonth({ required this.userId , required this.date});
+  AttendanceHistorymonth({ required this.userId});
 
   @override
   _AttendanceHistorymonthState createState() => _AttendanceHistorymonthState();
@@ -22,18 +21,18 @@ class _AttendanceHistorymonthState extends State<AttendanceHistorymonth> {
   final PublishSubject<dynamic> _historyGetter = PublishSubject<dynamic>();
   List<String> columnNames = ['Check In Time', 'Check Out Time', 'Hours Spent'];
   late List<String> rowNames;
+  DateTime selectedMonthDate = DateTime.now();
 
   @override
   void initState() {
     final apiProvider1 = apirepository();
     columnNames = ['Check In Time', 'Check Out Time', 'Hours Spent'];
     super.initState();
-    widget.date = widget.date == 'Select Date' ? DateFormat('dd/MM/yyyy').format(DateTime.now()):widget.date;
     fetchDataAndAddToStream(); // Call the new method here
   }
   Future<void> fetchDataAndAddToStream() async {
     final apiProvider1 = apirepository();
-    var fetchedData = await apiProvider1.history_getdataday(widget.userId, widget.date);
+    var fetchedData = await apiProvider1.history_getdatamonthly(widget.userId, DateFormat('dd/MM/yyyy').format(selectedMonthDate));
     print("Fetched Data: $fetchedData"); // Debug print statement
     _historyGetter.sink.add(fetchedData);
   }
@@ -43,6 +42,44 @@ class _AttendanceHistorymonthState extends State<AttendanceHistorymonth> {
     print('dispose page one');
     super.dispose();
   }
+
+  Widget _buildMonthPicker() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.deepPurple,
+        onPrimary: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+      ),
+      onPressed: () async {
+        final newDate = await showMonthYearPicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(2019),
+          lastDate: DateTime(2024),
+        );
+
+        if (newDate != null) {
+          final apiProvider1 = apirepository();
+          setState(() {
+            selectedMonthDate = newDate;
+          });
+
+          var fetchedData = await apiProvider1.history_getdatamonthly(
+              widget.userId, DateFormat('dd/MM/yyyy').format(newDate));
+
+          print("Fetched Data: $fetchedData"); // Debug print statement
+          _historyGetter.sink.add(fetchedData);
+        }
+      },
+      child: Text(selectedMonthDate == null
+          ? 'Select month'
+          : '${DateFormat('MMMM yyyy').format(selectedMonthDate!)}'),
+    );
+  }
+
 
   /// Make a 2-d array of the data
   _makeData(List<dynamic> snapshots) {
@@ -96,47 +133,71 @@ class _AttendanceHistorymonthState extends State<AttendanceHistorymonth> {
     return Scaffold(
       appBar:
       AppBar(title: Text("Attendance History"),),
-      body: StreamBuilder(
-        stream: _historyGetter,//history_soc.getResponse,
-        builder: (context, AsyncSnapshot<dynamic> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: Text('Has no Data'));
-          }
+      body: Column(
+        children: [
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                'Search attendance using the filters below',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              )),
+          SizedBox(
+            height: 10,
+          ),
+          _buildMonthPicker(),
 
-          data = _makeData(snapshot.data!);
+          SizedBox(
+            height: 10,
+          ),
 
-          return StickyHeadersTable(
-            columnsLength: 3,
-            rowsLength: snapshot.data!.length,
-            columnsTitleBuilder: (i) => TableCell.stickyRow(
-              columnNames[i],
-              onTap: (){},
-              textStyle: TextStyle(fontSize: 18.0),
+          Expanded(
+            child: StreamBuilder(
+              stream: _historyGetter,//history_soc.getResponse,
+              builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: Text('Has no Data'));
+                }
+
+                data = _makeData(snapshot.data!);
+
+                return StickyHeadersTable(
+                  columnsLength: 3,
+                  rowsLength: snapshot.data!.length,
+                  columnsTitleBuilder: (i) => TableCell.stickyRow(
+                    columnNames[i],
+                    onTap: (){},
+                    textStyle: TextStyle(fontSize: 18.0),
+                  ),
+                  rowsTitleBuilder: (i) => TableCell.stickyColumn(
+                    rowNames[i],
+                    onTap: (){},
+                    textStyle: TextStyle(fontSize: 18.0),
+                  ),
+                  contentCellBuilder: (i, j) => TableCell.content(
+                    data[j][i],
+                    onTap: (){},
+                    textStyle: TextStyle(fontSize: 16.0),
+                  ),
+                  legendCell: TableCell.legend(
+                    'Date',
+                    onTap: (){},
+                    textStyle: TextStyle(fontSize: 20.0),
+                  ),
+                  cellFit: BoxFit.cover,
+                  cellDimensions: CellDimensions(
+                    contentCellHeight: 74.0,
+                    contentCellWidth: 100.0,
+                    stickyLegendHeight: 72.0,
+                    stickyLegendWidth: 104.0,
+                  ),
+                );
+              },
             ),
-            rowsTitleBuilder: (i) => TableCell.stickyColumn(
-              rowNames[i],
-              onTap: (){},
-              textStyle: TextStyle(fontSize: 18.0),
-            ),
-            contentCellBuilder: (i, j) => TableCell.content(
-              data[j][i],
-              onTap: (){},
-              textStyle: TextStyle(fontSize: 16.0),
-            ),
-            legendCell: TableCell.legend(
-              'Date',
-              onTap: (){},
-              textStyle: TextStyle(fontSize: 20.0),
-            ),
-            cellFit: BoxFit.cover,
-            cellDimensions: CellDimensions(
-              contentCellHeight: 74.0,
-              contentCellWidth: 100.0,
-              stickyLegendHeight: 72.0,
-              stickyLegendWidth: 104.0,
-            ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

@@ -8,11 +8,10 @@ import 'package:payment/services/firebase_service.dart';
 import 'package:intl/intl.dart';
 
 class AttendanceHistoryweek extends StatefulWidget {
-   final String userId;
-   String startdate;
-   String enddate;
+  final String userId;
 
-  AttendanceHistoryweek({ required this.userId , required this.enddate, required this.startdate});
+  AttendanceHistoryweek(
+      { required this.userId});
 
   @override
   _AttendanceHistoryweekState createState() => _AttendanceHistoryweekState();
@@ -23,20 +22,24 @@ class _AttendanceHistoryweekState extends State<AttendanceHistoryweek> {
   final PublishSubject<dynamic> _historyGetter = PublishSubject<dynamic>();
   List<String> columnNames = ['Check In Time', 'Check Out Time', 'Hours Spent'];
   late List<String> rowNames;
+  DateTime selectedStartDate = DateTime.now();
+  DateTime selectedEndDate = DateTime.now();
 
   @override
   void initState() {
-
     columnNames = ['Check In Time', 'Check Out Time', 'Hours Spent'];
     super.initState();
-    widget.startdate = widget.startdate == 'Select Date'? DateFormat('dd/MM/yyyy').format(DateTime.now()):widget.startdate;
-    widget.enddate = widget.enddate == 'Select Date'? DateFormat('dd/MM/yyyy').format(DateTime.now()):widget.enddate;
-    fetchDataAndAddToStream(); // Call the new method here
+      fetchDataAndAddToStream(); // Call the new method here
 
   }
+
   Future<void> fetchDataAndAddToStream() async {
     final apiProvider1 = apirepository();
-    var fetchedData = await apiProvider1. history_getdataweekly(widget.userId,widget.enddate,widget.startdate);
+    var fetchedData = await apiProvider1.history_getdataweekly(
+        widget.userId,       DateFormat('dd/MM/yyyy').format(selectedEndDate),
+        // change from widget.enddate
+        DateFormat('dd/MM/yyyy').format(
+            selectedStartDate),);
     print("Fetched Data: $fetchedData"); // Debug print statement
     _historyGetter.sink.add(fetchedData);
   }
@@ -45,6 +48,80 @@ class _AttendanceHistoryweekState extends State<AttendanceHistoryweek> {
     _historyGetter.close();
     print('dispose page one');
     super.dispose();
+  }
+
+  Future<void> _selectDate(BuildContext context,
+      {required bool isStartDate}) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: isStartDate ? selectedStartDate : selectedEndDate,
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      setState(() {
+        if (isStartDate) {
+          selectedStartDate = picked;
+        } else {
+          selectedEndDate = picked;
+        }
+      });
+      if (selectedStartDate.isBefore(selectedEndDate)) {
+        final apiProvider1 = apirepository();
+      var fetchedData = await apiProvider1.history_getdataweekly(
+        widget.userId,
+        DateFormat('dd/MM/yyyy').format(selectedEndDate),
+        // change from widget.enddate
+        DateFormat('dd/MM/yyyy').format(
+            selectedStartDate), // change from widget.startdate
+      );
+      print("Fetched Data: $fetchedData"); // Debug print statement
+      _historyGetter.sink.add(fetchedData);
+    }
+    }
+  }
+
+  Widget _buildWeekPicker() {
+    return Column(
+      children: <Widget>[
+        SizedBox(height: 10), // for spacing
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.deepPurple,
+            onPrimary: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+          ),
+          onPressed: () => _selectDate(context, isStartDate: true),
+          child: Text(selectedStartDate == null
+              ? 'Select start date'
+              : '${selectedStartDate!.day}-${selectedStartDate!
+              .month}-${selectedStartDate!.year}'),
+        ),
+        SizedBox(height: 10),
+        Center(
+          child: Text('To'),
+        ),
+        SizedBox(height: 10), // for spacing
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.deepPurple,
+            onPrimary: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+          ),
+          onPressed: () => _selectDate(context, isStartDate: false),
+          child: Text(selectedEndDate == null
+              ? 'Select end date'
+              : '${selectedEndDate!.day}-${selectedEndDate!
+              .month}-${selectedEndDate!.year}'),
+        ),
+      ],
+    );
   }
 
   /// Make a 2-d array of the data
@@ -68,12 +145,12 @@ class _AttendanceHistoryweekState extends State<AttendanceHistoryweek> {
   }
 
   //// Extract Data from snapshot and convert it into a LIST
-  List<String> _makeDataItem(Map<dynamic,dynamic> data) {
+  List<String> _makeDataItem(Map<dynamic, dynamic> data) {
     final history = History.fromMap(data);
 
     DateTime checkIn = DateTime.parse(history.checkIn!);
     DateTime? checkOut;
-    if (history.checkOut!= "-") checkOut = DateTime.parse(history.checkOut!);
+    if (history.checkOut != "-") checkOut = DateTime.parse(history.checkOut!);
     String hrs = history.hrsSpent!;
 
     String date = checkIn.day.toString() +
@@ -99,47 +176,75 @@ class _AttendanceHistoryweekState extends State<AttendanceHistoryweek> {
     return Scaffold(
       appBar:
       AppBar(title: Text("Attendance History"),),
-      body: StreamBuilder(
-        stream: _historyGetter,//history_soc.getResponse,
-        builder: (context, AsyncSnapshot<dynamic> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: Text('Has no Data'));
-          }
+      body: Column(
+        children: [
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                'Search attendance using the filters below',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              )),
+          SizedBox(
+            height: 10,
+          ),
 
-          data = _makeData(snapshot.data!);
+          _buildWeekPicker(),
 
-          return StickyHeadersTable(
-            columnsLength: 3,
-            rowsLength: snapshot.data!.length,
-            columnsTitleBuilder: (i) => TableCell.stickyRow(
-              columnNames[i],
-              onTap: (){},
-              textStyle: TextStyle(fontSize: 18.0),
+          SizedBox(
+            height: 10,
+          ),
+
+          Expanded(
+            child: StreamBuilder(
+              stream: _historyGetter, //history_soc.getResponse,
+              builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(child: Text('Has no Data'));
+                }
+
+                data = _makeData(snapshot.data!);
+
+                return StickyHeadersTable(
+                  columnsLength: 3,
+                  rowsLength: snapshot.data!.length,
+                  columnsTitleBuilder: (i) =>
+                      TableCell.stickyRow(
+                        columnNames[i],
+                        onTap: () {},
+                        textStyle: TextStyle(fontSize: 18.0),
+                      ),
+                  rowsTitleBuilder: (i) =>
+                      TableCell.stickyColumn(
+                        rowNames[i],
+                        onTap: () {},
+                        textStyle: TextStyle(fontSize: 18.0),
+                      ),
+                  contentCellBuilder: (i, j) =>
+                      TableCell.content(
+                        data[j][i],
+                        onTap: () {},
+                        textStyle: TextStyle(fontSize: 16.0),
+                      ),
+                  legendCell: TableCell.legend(
+                    'Date',
+                    onTap: () {},
+                    textStyle: TextStyle(fontSize: 20.0),
+                  ),
+                  cellFit: BoxFit.cover,
+                  cellDimensions: CellDimensions(
+                    contentCellHeight: 74.0,
+                    contentCellWidth: 100.0,
+                    stickyLegendHeight: 72.0,
+                    stickyLegendWidth: 104.0,
+                  ),
+                );
+              },
             ),
-            rowsTitleBuilder: (i) => TableCell.stickyColumn(
-              rowNames[i],
-              onTap: (){},
-              textStyle: TextStyle(fontSize: 18.0),
-            ),
-            contentCellBuilder: (i, j) => TableCell.content(
-              data[j][i],
-              onTap: (){},
-              textStyle: TextStyle(fontSize: 16.0),
-            ),
-            legendCell: TableCell.legend(
-              'Date',
-              onTap: (){},
-              textStyle: TextStyle(fontSize: 20.0),
-            ),
-            cellFit: BoxFit.cover,
-            cellDimensions: CellDimensions(
-              contentCellHeight: 74.0,
-              contentCellWidth: 100.0,
-              stickyLegendHeight: 72.0,
-              stickyLegendWidth: 104.0,
-            ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
@@ -147,73 +252,73 @@ class _AttendanceHistoryweekState extends State<AttendanceHistoryweek> {
 
 /// Class for Defining decoration in [Sticky Table Headers ]
 class TableCell extends StatelessWidget {
-  TableCell.content(
-      this.text, {
-        required this.textStyle,
-        this.cellDimensions = const CellDimensions(
-          contentCellHeight: 74.0,
-          contentCellWidth: 100.0,
-          stickyLegendHeight: 72.0,
-          stickyLegendWidth: 104.0,
-        ),
-        this.colorBg = Colors.white,
-        required this.onTap
+  TableCell.content(this.text, {
+    required this.textStyle,
+    this.cellDimensions = const CellDimensions(
+      contentCellHeight: 74.0,
+      contentCellWidth: 100.0,
+      stickyLegendHeight: 72.0,
+      stickyLegendWidth: 104.0,
+    ),
+    this.colorBg = Colors.white,
+    required this.onTap
 
-      })  : cellWidth = cellDimensions.contentCellWidth,
+  })
+      : cellWidth = cellDimensions.contentCellWidth,
         cellHeight = cellDimensions.contentCellHeight,
         _colorHorizontalBorder = Colors.amber,
         _colorVerticalBorder = Colors.black38,
         _textAlign = TextAlign.center,
         _padding = EdgeInsets.zero;
 
-  TableCell.legend(
-      this.text, {
-        required this.textStyle,
-        this.cellDimensions = const CellDimensions(
-          contentCellHeight: 74.0,
-          contentCellWidth: 100.0,
-          stickyLegendHeight: 72.0,
-          stickyLegendWidth: 104.0,
-        ),
-        this.colorBg = Colors.amber,
-        required this.onTap,
-      })  : cellWidth = cellDimensions.stickyLegendWidth,
+  TableCell.legend(this.text, {
+    required this.textStyle,
+    this.cellDimensions = const CellDimensions(
+      contentCellHeight: 74.0,
+      contentCellWidth: 100.0,
+      stickyLegendHeight: 72.0,
+      stickyLegendWidth: 104.0,
+    ),
+    this.colorBg = Colors.amber,
+    required this.onTap,
+  })
+      : cellWidth = cellDimensions.stickyLegendWidth,
         cellHeight = cellDimensions.stickyLegendHeight,
         _colorHorizontalBorder = Colors.white,
         _colorVerticalBorder = Colors.amber,
         _textAlign = TextAlign.start,
         _padding = EdgeInsets.zero;
 
-  TableCell.stickyRow(
-      this.text, {
-        required this.textStyle,
-        this.cellDimensions = const CellDimensions(
-          contentCellHeight: 74.0,
-          contentCellWidth: 100.0,
-          stickyLegendHeight: 72.0,
-          stickyLegendWidth: 104.0,
-        ),
-        this.colorBg = Colors.amber,
-        required this.onTap,
-      })  : cellWidth = cellDimensions.contentCellWidth,
+  TableCell.stickyRow(this.text, {
+    required this.textStyle,
+    this.cellDimensions = const CellDimensions(
+      contentCellHeight: 74.0,
+      contentCellWidth: 100.0,
+      stickyLegendHeight: 72.0,
+      stickyLegendWidth: 104.0,
+    ),
+    this.colorBg = Colors.amber,
+    required this.onTap,
+  })
+      : cellWidth = cellDimensions.contentCellWidth,
         cellHeight = cellDimensions.stickyLegendHeight,
         _colorHorizontalBorder = Colors.white,
         _colorVerticalBorder = Colors.amber,
         _textAlign = TextAlign.center,
         _padding = EdgeInsets.all(10.0);
 
-  TableCell.stickyColumn(
-      this.text, {
-        required this.textStyle,
-        this.cellDimensions = const CellDimensions(
-          contentCellHeight: 74.0,
-          contentCellWidth: 100.0,
-          stickyLegendHeight: 72.0,
-          stickyLegendWidth: 104.0,
-        ),
-        this.colorBg = Colors.white,
-        required this.onTap,
-      })  : cellWidth = cellDimensions.stickyLegendWidth,
+  TableCell.stickyColumn(this.text, {
+    required this.textStyle,
+    this.cellDimensions = const CellDimensions(
+      contentCellHeight: 74.0,
+      contentCellWidth: 100.0,
+      stickyLegendHeight: 72.0,
+      stickyLegendWidth: 104.0,
+    ),
+    this.colorBg = Colors.white,
+    required this.onTap,
+  })
+      : cellWidth = cellDimensions.stickyLegendWidth,
         cellHeight = cellDimensions.contentCellHeight,
         _colorHorizontalBorder = Colors.amber,
         _colorVerticalBorder = Colors.black38,
@@ -223,7 +328,7 @@ class TableCell extends StatelessWidget {
   final CellDimensions cellDimensions;
 
   final String text;
-  final  onTap;
+  final onTap;
 
   final double cellWidth;
   final double cellHeight;

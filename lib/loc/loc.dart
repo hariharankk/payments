@@ -8,7 +8,7 @@ class loc extends Equatable {
   String userid;
   String longi;
   String lat;
-  late String? time;
+  String time;
 
 
   loc(
@@ -17,7 +17,7 @@ class loc extends Equatable {
         required this.userid,
         required this.longi,
         required this.lat,
-        this.time,
+        required this.time,
       });
 
   factory loc.fromJson(Map<String, dynamic> parsedJson) {
@@ -26,7 +26,7 @@ class loc extends Equatable {
       userid: parsedJson['userid'],
       longi: parsedJson['longi'],
       lat: parsedJson['lat'],
-      time: DateFormat.jm().format(DateTime.parse(parsedJson['time'])),
+      time:  DateFormat.jm().format(DateFormat('yyyy-MM-dd HH:mm:ss').parse(DateFormat('yyyy-MM-dd HH:mm:ss').format(DateFormat('EEE, dd MMM yyyy HH:mm:ss Z').parse(parsedJson['time'])),))
     );
   }
 
@@ -35,6 +35,7 @@ class loc extends Equatable {
     map['userid']=this.userid;
     map['longi'] = this.longi;
     map['lat'] = this.lat;
+    map['time'] = this.time;
     return map;
   }
 

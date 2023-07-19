@@ -104,7 +104,7 @@ class History extends StatelessWidget {
             ),
             ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return historylist('Bonus',data[index],paymentBloc,);
+                return historylist('Allowance',data[index],paymentBloc,);
               },
 
               physics: NeverScrollableScrollPhysics(),

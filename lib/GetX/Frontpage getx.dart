@@ -9,7 +9,7 @@ class MainController extends GetxController {
   void change(String dates)
   {
     date.value = dates;
-    print(dates);
+    print('baadu the date is ${dates}');
   }
 
 

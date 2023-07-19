@@ -94,11 +94,11 @@ class _AddMembersPageState extends State<AddMembersPage> {
       controller: _searchQueryController,
       autofocus: true,
       decoration: InputDecoration(
-        hintText: "Search users",
+        hintText: "Search user using their email address",
         border: InputBorder.none,
         hintStyle: TextStyle(
             color: Colors.white,
-            fontSize: 24.0 * unitHeightValue),
+            fontSize: 15.0 * unitHeightValue),
       ),
       style: TextStyle(
         color: Colors.white,
@@ -176,8 +176,6 @@ class _AddMembersPageState extends State<AddMembersPage> {
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
         final member = widget.group.members[index];
-        print('otha');
-        print(member.emailaddress);
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0),
           child: Dismissible(
@@ -189,7 +187,7 @@ class _AddMembersPageState extends State<AddMembersPage> {
               });
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text("Removed ${member.username}"),
+                  content: Text("Removed ${member.emailaddress}"),
                 ),
               );
             },
@@ -251,7 +249,8 @@ class _AddMembersPageState extends State<AddMembersPage> {
 
   ListView searchResultListView() {
     return ListView.separated(
-      itemBuilder: (context, index) => ListTile(
+      itemBuilder: (context, index) {
+        return ListTile(
         leading: searchResults[index]
             .cAvatar(unitHeightValue: unitHeightValue, radius: 16),
         title: Text(
@@ -275,7 +274,8 @@ class _AddMembersPageState extends State<AddMembersPage> {
                 });
               }
             }),
-      ),
+      );
+      },
       separatorBuilder: (context, index) => Divider(),
       itemCount: searchResults.length,
     );

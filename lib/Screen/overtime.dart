@@ -15,23 +15,19 @@ import 'package:payment/services/dummybloc.dart';
 import 'package:intl/intl.dart';
 import 'package:payment/Screen/Attendance.dart';
 
-
 class overtimescreen extends StatelessWidget {
   final mycontroller = Get.put(feautreController());
   final mycontroller1 = Get.put(spinnerController());
   final mycontroller2 = Get.find<PaymentController>();
 
-
-
-
-
   //allowance({}) ;
   @override
   Widget build(BuildContext context) {
-    return  DefaultTabController(
+    return DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: AppBar(title: Obx(()=>Text(mycontroller2.empnameValue.value)),
+          appBar: AppBar(
+            title: Obx(() => Text(mycontroller2.empnameValue.value)),
             centerTitle: true,
             bottom: TabBar(
               isScrollable: true,
@@ -42,8 +38,8 @@ class overtimescreen extends StatelessWidget {
                 icon: Icon(Icons.arrow_back),
                 onPressed: () {
                   Get.back();
-                }
-            ),),
+                }),
+          ),
           body: TabBarView(
               physics: BouncingScrollPhysics(),
               dragStartBehavior: DragStartBehavior.start,
@@ -57,135 +53,164 @@ class overtimescreen extends StatelessWidget {
                         Container(
                           child: Column(
                             children: <Widget>[
-                              SizedBox(height: 20,),
-                               Row(
-                                children: <Widget>[
-                                  SizedBox(width: 5,),
-                                  DatePickerWidget(),
-                                  roundedtextbutton1(text: 'Notes',width: MediaQuery.of(context).size  .width *0.65),
-                                ],
+                              SizedBox(height: 20),
+                              Text('Please select the date first'),
+                              SizedBox(height: 15),
+                              DatePickerWidget(),
+                              SizedBox(
+                                height: 20,
                               ),
-                              rateroundedtextbutton(text: 'Rate',width: MediaQuery.of(context).size  .width *0.9),
-                              SizedBox(height: 20,),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Column(
-                                children: <Widget>[
-                                  Text('Hours'),
-                                  Obx(
-                                    ()=> NumberPicker(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(16),
-                                        border: Border.all(color: Colors.black26),
-                                      ),
-                                     // itemHeight: 15,
-                                      //itemWidth: 15,
-                                      value: mycontroller1.currentIntValue1.value,
-                                      minValue: 0,
-                                      maxValue: 23,
-                                      step: 1,
-                                      haptics: true,
-                                      onChanged: (value) {
-                                        mycontroller1.currentIntValue1change(value);
+                              roundedtextbutton1(
+                                  text: 'Notes',
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9),
+                              rateroundedtextbutton(
+                                  text: 'Rate',
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9),
+                              rateroundedtextbutton(
+                                  text: 'Time',
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              /*Row(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Column(children: <Widget>[
+                                    Text('Hours'),
+                                    Obx(
+                                      () => NumberPicker(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          border:
+                                              Border.all(color: Colors.black26),
+                                        ),
+                                        // itemHeight: 15,
+                                        //itemWidth: 15,
+                                        value: mycontroller1
+                                            .currentIntValue1.value,
+                                        minValue: 0,
+                                        maxValue: 23,
+                                        step: 1,
+                                        haptics: true,
+                                        onChanged: (value) {
+                                          mycontroller1
+                                              .currentIntValue1change(value);
                                         },
                                       ),
+                                    ),
+                                  ]),
+                                  SizedBox(
+                                    width: 20,
                                   ),
-                                   ]
-                                  ),
-                              SizedBox(width: 20,),
-                              Column(
-                                  children: <Widget>[
+                                  Column(children: <Widget>[
                                     Text('Minutes'),
                                     Obx(
-                                      ()=> NumberPicker(
+                                      () => NumberPicker(
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(16),
-                                          border: Border.all(color: Colors.black26),
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          border:
+                                              Border.all(color: Colors.black26),
                                         ),
-                                        value: mycontroller1.currentIntValue2.value,
+                                        value: mycontroller1
+                                            .currentIntValue2.value,
                                         minValue: 0,
                                         maxValue: 59,
                                         step: 1,
                                         haptics: true,
                                         onChanged: (value) {
-                                          mycontroller1.currentIntValue2change(value);
+                                          mycontroller1
+                                              .currentIntValue2change(value);
                                         },
                                       ),
                                     ),
-                                  ]
+                                  ]),
+                                ],
+                              ),*/
+                              SizedBox(
+                                height: 20,
                               ),
-                              
-                            ],
-                          ),
-                              SizedBox(height: 20,),
                               Container(
                                 margin: EdgeInsets.all(10),
                                 padding: EdgeInsets.all(10),
                                 decoration: upperbox1,
-                                child: Obx(()=>Center(child:  (Text('Total : Rs ${(mycontroller1.currentIntValue1.value + (mycontroller1.currentIntValue2.value/60))*mycontroller.rate.value}')),)),
+                                child: Obx(() => Center(
+                                      child: (Text(
+                                          'Total : Rs ${mycontroller.rate.value * mycontroller.quantity.value}')),
+                                    )),
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         GestureDetector(
-                          onTap: ()async{
-                            Get.to(()=> AttendanceHistoryday(userId: mycontroller2.empidValue.value,date: mycontroller.date.value ,));
+                          onTap: () async {
+                            Get.to(() => AttendanceHistoryday(
+                                  userId: mycontroller2.empidValue.value,
+                                ));
                           },
                           child: Container(
-                            width: MediaQuery.of(context).size  .width *0.95,
+                            width: MediaQuery.of(context).size.width * 0.95,
                             padding: EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.0),
                               color: Colors.blue,
                             ),
                             margin: EdgeInsets.only(bottom: 20),
-                            child: Center(child: Text('Check Attendance')),
-                          ),
-                        ),
-                        SizedBox(height: 20,),
-                            GestureDetector(
-                              onTap: ()async{
-                                final apiProvider1 = apirepository();
-                                Payments payments = Payments(
-                                    ammount: ((mycontroller1.currentIntValue1.value + (mycontroller1.currentIntValue2.value/60))*mycontroller.rate.value).toInt(),
-                                    notes: mycontroller.notestext.value,
-                                    category: 'OverTime',
-                                    type_of_note: 'Debit',
-                                    time: mycontroller.date.value,
-                                    username: mycontroller2.empidValue.value
-                                );
-                                Map<dynamic, dynamic> paymentsMap = payments.toMap();
-                                apiProvider1.Payments_adddata(paymentsMap);
-                                await Future<void>.delayed(const Duration(milliseconds: 100));
-                                ledgerbloc.Ledger_getdata(DateFormat("MMMM, yyyy").format(DateTime.now()), payments.username!);
-                                Get.back();
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size  .width *0.95,
-                                padding: EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                  color: Colors.blue,
-                                ),
-                                margin: EdgeInsets.only(bottom: 20),
-                                child: Center(child: Text('Add Payments')),
-                              ),
-                            ),
+                            child: Center(
+                                child: Text(
+                                    'Check Attendance'))),
 
-                      ]
-                  ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Obx(
+                          () => mycontroller.date.value == 'Select Date'
+                              ? Container()
+                              : GestureDetector(
+                                  onTap: () async {
+                                    final apiProvider1 = apirepository();
+                                    Payments payments = Payments(
+                                        ammount: (mycontroller.rate.value *
+                                                mycontroller.quantity.value)
+                                            .toInt(),
+                                        notes: mycontroller.notestext.value,
+                                        category: 'OverTime',
+                                        type_of_note: 'Debit',
+                                        time: mycontroller.date.value,
+                                        username:
+                                            mycontroller2.empidValue.value);
+                                    Map<dynamic, dynamic> paymentsMap =
+                                        payments.toMap();
+                                    apiProvider1.Payments_adddata(paymentsMap);
+                                    Get.back();
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.95,
+                                    padding: EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      color: Colors.blue,
+                                    ),
+                                    margin: EdgeInsets.only(bottom: 20),
+                                    child: Center(child: Text('Add Payments')),
+                                  ),
+                                ),
+                        )
+                      ]),
                 ),
                 History()
-              ]
-          )
-      ),
+              ])),
     );
   }
 }
-
-
-

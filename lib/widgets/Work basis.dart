@@ -29,68 +29,69 @@ class workbasissalary extends StatelessWidget {
             }
         ),),
       body:
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20,),
-                Row(
-                  children: [
-                    rateroundedtextbutton(text: 'Rate',width: MediaQuery.of(context).size  .width *0.40),
-                    rateroundedtextbutton(text: 'Quantity',width: MediaQuery.of(context).size  .width *0.40),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    SizedBox(width: 5,),
-                    DatePickerWidget(),
-                    roundedtextbutton1(text: 'Notes',width: MediaQuery.of(context).size  .width *0.65),
-                  ],
-                ),
-                SizedBox(width: 5,),
-                Container(
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(10),
-                    decoration: upperbox1,
-                    child: Obx(()=>Center(child:  (Text('Total : Rs ${mycontroller.rate.value * mycontroller.quantity.value}')),)),
+      SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 20,),
+                  Text('Please select the date below'),
+                  SizedBox(height:5),
+                  DatePickerWidget(),
+                  SizedBox(height: 20,),
+                  Row(
+                    children: [
+                      rateroundedtextbutton(text: 'Rate',width: MediaQuery.of(context).size  .width *0.40),
+                      rateroundedtextbutton(text: 'Quantity',width: MediaQuery.of(context).size  .width *0.40),
+                    ],
                   ),
-              ],
-            ),
-          ),
-
-          GestureDetector(
-            onTap: ()async{
-              final apiProvider1 = apirepository();
-              Payments payments = Payments(
-                  ammount: (mycontroller.rate.value * mycontroller.quantity.value).toInt(),
-                  notes: 'Work Basis Salary :- '+mycontroller.notestext.value,
-                  category: 'Salary',
-                  type_of_note: 'Debit',
-                  time: mycontroller.date.value,
-                  username: mycontroller1.empidValue.value
-              );
-              Map<dynamic, dynamic> paymentsMap = payments.toMap();
-              apiProvider1.Payments_adddata(paymentsMap);
-              await Future<void>.delayed(const Duration(milliseconds: 100));
-              ledgerbloc.Ledger_getdata(DateFormat("MMMM, yyyy").format(DateTime.now()), payments.username!);
-              Get.back();
-            },
-            child: Container(
-              width: MediaQuery.of(context).size  .width *0.95,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                color: Colors.blue,
+                   roundedtextbutton1(text: 'Notes',width: MediaQuery.of(context).size  .width *0.65),
+                   SizedBox(width: 5,),
+                  Container(
+                      margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(10),
+                      decoration: upperbox1,
+                      child: Obx(()=>Center(child:  (Text('Total : Rs ${mycontroller.rate.value * mycontroller.quantity.value}')),)),
+                    ),
+                ],
               ),
-              margin: EdgeInsets.only(bottom: 20),
-              child: Center(child: Text('Add Work wage')),
             ),
-          ),
-        ],
+
+            Obx(
+              ()=> mycontroller.date.value == 'Select Date'? Container() :
+              GestureDetector(
+                onTap: ()async{
+                  final apiProvider1 = apirepository();
+                  Payments payments = Payments(
+                      ammount: (mycontroller.rate.value * mycontroller.quantity.value).toInt(),
+                      notes: 'Work Basis Salary :- '+mycontroller.notestext.value,
+                      category: 'Salary',
+                      type_of_note: 'Debit',
+                      time: mycontroller.date.value,
+                      username: mycontroller1.empidValue.value
+                  );
+                  Map<dynamic, dynamic> paymentsMap = payments.toMap();
+                  apiProvider1.Payments_adddata(paymentsMap);
+                  Get.back();
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size  .width *0.95,
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    color: Colors.blue,
+                  ),
+                  margin: EdgeInsets.only(bottom: 20),
+                  child: Center(child: Text('Add Work wage')),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
 

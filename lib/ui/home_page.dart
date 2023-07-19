@@ -14,7 +14,8 @@ import 'dart:async';
 import 'package:payment/loc/loc.dart';
 import 'package:location/location.dart' as loci;
 import 'package:payment/loc/repository.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:intl/intl.dart';
+
 
 class HomePage extends StatefulWidget {
   final VoidCallback logoutCallback;
@@ -40,10 +41,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _currentIndex = 0;
+
     _requestPermission();
-    location.changeSettings(interval: 10000, accuracy: loci.LocationAccuracy.high);
-  location.enableBackgroundMode(enable: true);
-    _listenLocation();
     _pageController = PageController();
     _imagestatus();
   }
@@ -60,7 +59,7 @@ class _HomePageState extends State<HomePage> {
       try {
         final loc Loc = loc(longi: currentlocation.longitude.toString(),
             lat: currentlocation.latitude.toString(),
-            userid: 'hari');
+            userid: userBloc.getUserObject().user ,time: DateFormat('yyyy-MM-dd HH:mm:ss.SSSSSS').format(DateTime.now()));
         Map<dynamic, dynamic> locmap = Loc.toMap();
         repository.addloc(locmap);
       }catch(e){
@@ -76,15 +75,19 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  _requestPermission() async {
-    var status = await Permission.location.request();
-    if (status.isGranted) {
-      print('done');
-    } else if (status.isDenied) {
-      _requestPermission();
-    } else if (status.isPermanentlyDenied) {
-      openAppSettings();
+  void _requestPermission() async {
+    loci.PermissionStatus _permissionGranted;
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == loci.PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != loci.PermissionStatus.granted) {
+        return;
+      }
     }
+    location.changeSettings(interval: 100000, accuracy: loci.LocationAccuracy.high);
+    location.enableBackgroundMode(enable: true);
+    _listenLocation(); // start listening only after permissions are granted
   }
 
   void _imagestatus() async{
@@ -98,9 +101,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    _stopListening();
     _pageController.dispose();
     super.dispose();
-    _stopListening();
   }
 
 

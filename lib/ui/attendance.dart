@@ -49,9 +49,9 @@ class _MarkAttendancePageState extends State<MarkAttendancePage>
     bool statusFace = prefs.getBool('statusFace') ?? false;
     bool statusLocation = prefs.getBool('statusLocation') ?? false;
 
-    int currentStep = prefs.getInt("currentStep")! ?? 0;
-    String chkIn = prefs.getString("checkInTime")! ?? null!;
-    String docRef = prefs.getString("docRef")! ?? null!;
+    int currentStep = prefs.getInt("currentStep") ?? 0;
+    String?  chkIn = prefs.getString("checkInTime") ?? null;
+    String? docRef = prefs.getString("docRef") ?? null;
 
 
     if (statusFace && statusLocation) {
@@ -60,7 +60,7 @@ class _MarkAttendancePageState extends State<MarkAttendancePage>
       statusFace = false;
       statusLocation = false;
       currentStep = 0;
-      docRef = null!;
+      docRef = null;
     }
 
     setState(() {
@@ -121,7 +121,7 @@ class _MarkAttendancePageState extends State<MarkAttendancePage>
     double storeRadius = double.parse(data['radius'].toString());
 
     LocationService locationService =  LocationService();
-    var position = await Geolocator().getCurrentPosition();
+    var position = await Geolocator.getCurrentPosition();
     if (position == null) return;
 
     bool statusLocation = locationService.getDistance(position.latitude,
@@ -206,7 +206,8 @@ class _MarkAttendancePageState extends State<MarkAttendancePage>
     prefs.setBool("statusFace", false);
     prefs.setBool("statusLocation", false);
     prefs.setInt("currentStep", 0);
-    prefs.setString("docRef", null!);
+    prefs.remove("docRef");
+
   }
 
   /// Define what will happen on clicking on continue

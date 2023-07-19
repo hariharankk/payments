@@ -11,8 +11,7 @@ import 'package:payment/services/firebase_service.dart';
 import 'package:payment/GetX/payment_getx.dart';
 import 'package:payment/services/dummybloc.dart';
 import 'package:intl/intl.dart';
-
-
+import 'package:payment/Screen/UPI.dart';
 
 class paymentscreen extends StatelessWidget {
   final mycontroller = Get.put(feautreController());
@@ -41,57 +40,76 @@ class paymentscreen extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               dragStartBehavior: DragStartBehavior.start,
               children: [
-                Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(height: 20,),
-                            roundedtextbutton(text: 'Payment amount',width: MediaQuery.of(context).size  .width *0.90),
-                            Row(
-                              children: <Widget>[
-                                SizedBox(width: 5,),
-                                DatePickerWidget(),
-                                roundedtextbutton1(text: 'Notes',width: MediaQuery.of(context).size  .width *0.65),
-                              ],
+                SingleChildScrollView(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(height:20),
+                              Text('Please select the date first'),
+                              SizedBox(height:15),
+                              DatePickerWidget(),
+                              SizedBox(height: 20,),
+                              roundedtextbutton(text: 'Payment amount',width: MediaQuery.of(context).size  .width *0.90),
+                              roundedtextbutton1(text: 'Notes',width: MediaQuery.of(context).size  .width *0.65),
+                            ],
+                          ),
+                        ),
+
+/*                        GestureDetector(
+                          onTap: () async {
+                            Get.to(()=>UpiPage());
+
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.95,
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Colors.blue,
                             ),
+                            margin: EdgeInsets.only(bottom: 20),
+                            child: Center(child: Text('Add Payments')),
+                          ),
+                        ),
+*/
+
+                        Obx(
+                          ()=> mycontroller.date.value == 'Select Date'? Container() :
+                          GestureDetector(
+                                onTap: ()async{
+                                  final apiProvider1 = apirepository();
+                                  Payments payments = Payments(
+                                      ammount: int.parse(mycontroller.paymenttext.value),
+                                      notes: mycontroller.notestext.value,
+                                      category: 'Payment',
+                                      time: mycontroller.date.value,
+                                      type_of_note: 'Credit',
+                                      username: mycontroller1.empidValue.value
+                                  );
+                                  Map<dynamic, dynamic> paymentsMap = payments.toMap();
+                                  apiProvider1.Payments_adddata(paymentsMap);
+                                  Get.back();
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size  .width *0.95,
+                                  padding: EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    color: Colors.blue,
+                                  ),
+                                  margin: EdgeInsets.only(bottom: 20),
+                                  child: Center(child: Text('Add Payments')),
+                                ),
+                              ),
+                        ),
                           ],
                         ),
-                      ),
-
-                          GestureDetector(
-                            onTap: ()async{
-                              final apiProvider1 = apirepository();
-                              Payments payments = Payments(
-                                  ammount: int.parse(mycontroller.paymenttext.value),
-                                  notes: mycontroller.notestext.value,
-                                  category: 'Payment',
-                                  time: mycontroller.date.value,
-                                  type_of_note: 'Credit',
-                                  username: mycontroller1.empidValue.value
-                              );
-                              Map<dynamic, dynamic> paymentsMap = payments.toMap();
-                              apiProvider1.Payments_adddata(paymentsMap);
-                              await Future<void>.delayed(const Duration(milliseconds: 200));
-                              ledgerbloc.Ledger_getdata(DateFormat("MMMM, yyyy").format(DateTime.now()), payments.username!);
-                              Get.back();
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size  .width *0.95,
-                              padding: EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20.0),
-                                color: Colors.blue,
-                              ),
-                              margin: EdgeInsets.only(bottom: 20),
-                              child: Center(child: Text('Add Payments')),
-                            ),
-                          ),
-                        ],
-                      ),
+                ),
 
                 History()
               ]
@@ -100,6 +118,4 @@ class paymentscreen extends StatelessWidget {
     );
   }
 }
-
-
 

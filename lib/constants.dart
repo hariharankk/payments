@@ -34,3 +34,6 @@ color: Colors.black54,
 fontSize: 14);
 
 }
+String uploadURL = 'http://127.0.0.1:5000';
+
+

@@ -6,7 +6,7 @@ import 'package:payment/services/firebase_service.dart';
 import 'package:payment/services/firebase_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:payment/services/history socket exit.dart';
-import 'package:payment/services/Bloc.dart';
+import 'package:payment/constants.dart';
 import 'package:payment/services/dummybloc.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -70,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
       return;
     }
 
-    String imgURL = imagestorage.uploadURL+'/image/'+img;
+    String imgURL = uploadURL+'/image/'+img;
 
     String name = emp.first + " " + emp.last;
     Approval approval =
@@ -92,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
   /// Choose imAge from front camera
   _chooseImage() async {
     final _picker = ImagePicker();
-    PickedFile? img = await _picker.getImage(
+    var img = await _picker.pickImage(
         source: ImageSource.camera,
         imageQuality: 100,
         preferredCameraDevice: CameraDevice.front);

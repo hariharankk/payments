@@ -37,15 +37,17 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   http:
+  flutter_sms: ^2.3.3
   rxdart: ^0.27.1
   get: ^4.6.5
   sizer: ^2.0.15
   intl: 0.17.0
+  upi_india: ^3.0.1
   numberpicker: ^2.1.1
   month_year_picker: ^0.2.0+2
   flutter_localization: ^0.1.10
   socket_io_client: ^2.0.0
-  geolocator: ^5.3.1
+  geolocator:
   bottom_navy_bar: ^5.4.0
   table_sticky_headers: ^1.1.2
   great_circle_distance2: ^1.0.1+1
@@ -65,7 +67,6 @@ dependencies:
   get_it: ^6.0.0
   latlong2: ^0.8.0
   flutter_map: ^3.1.0
-  #sms:
   english_words: ^4.0.0
   shared_preferences: ^2.0.6
   form_field_validator: ^1.0.1

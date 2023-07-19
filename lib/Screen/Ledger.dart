@@ -15,8 +15,10 @@ class Ledger extends StatelessWidget {
   final mycontroller1 = Get.find<PaymentController>();
   final mycontroller2 = Get.find<BalanceController>();
 
+
   @override
   Widget build(BuildContext context) {
+    print('rebuilding the ledger');
     ledgerbloc.Ledger_getdata(
         mycontroller.date.value, mycontroller1.empidValue.value);
     return StreamBuilder(
@@ -59,7 +61,7 @@ class Ledger extends StatelessWidget {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text('you have to pay'),
+                              Text('you have to pay', style: TextStyle(fontSize: 8),),
                               Text(
                                 snapshot.data != null
                                     ? snapshot.data![2].toString()
@@ -78,7 +80,7 @@ class Ledger extends StatelessWidget {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text('you have paid'),
+                              Text('you have paid', style: TextStyle(fontSize: 8),),
                               Text(
                                 snapshot.data != null
                                     ? snapshot.data![1].toString()
@@ -135,6 +137,92 @@ class Ledger extends StatelessWidget {
 class month_button extends StatelessWidget {
   final mycontroller = Get.find<MainController>();
   final mycontroller1 = Get.find<PaymentController>();
+  final RxBool isAllSelected = false.obs;
+
+  Future pickDate(BuildContext context) async {
+      final _selected = await showMonthYearPicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2019),
+        lastDate: DateTime(2024),
+      );
+
+      if (_selected != null) {
+        print('selected day format ledger $_selected');
+        mycontroller.change(DateFormat("MMMM, yyyy").format(_selected));
+        ledgerbloc.Ledger_getdata(
+            mycontroller.date.value, mycontroller1.empidValue.value);
+      }
+    }
+
+   Future GetdataAll()async{
+     mycontroller.change("All");
+     ledgerbloc.Ledger_getdata(
+         mycontroller.date.value, mycontroller1.empidValue.value);
+   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          'The Ledger Balance For ',
+          style: TextStyle(fontSize: 10),
+        ),
+        GestureDetector(
+          onTap: () {
+            pickDate(context);
+          },
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: 50,
+              maxWidth: 150,
+              minHeight: 50,
+              maxHeight: 150,
+            ),
+            child: Container(
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.blue,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Obx(() => Text(
+                    mycontroller.date.value,
+                    style: TextStyle(fontSize: 10),
+                  )),
+                  Icon(Icons.arrow_drop_down, size: 10),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Obx(
+              () => CheckboxListTile(
+            title: Text("All"),
+            value: isAllSelected.value,
+            onChanged: (newValue) {
+              isAllSelected.value = newValue ?? false;
+              GetdataAll();
+            },
+            controlAffinity: ListTileControlAffinity.leading,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/*class month_button extends StatelessWidget {
+  final mycontroller = Get.find<MainController>();
+  final mycontroller1 = Get.find<PaymentController>();
 
   Future pickDate(BuildContext context) async {
     final _selected = await showMonthYearPicker(
@@ -145,6 +233,7 @@ class month_button extends StatelessWidget {
     );
 
     if (_selected != null) {
+      print('selected day format ledger ${_selected}');
       mycontroller.change(DateFormat("MMMM, yyyy").format(_selected));
       ledgerbloc.Ledger_getdata(
           mycontroller.date.value, mycontroller1.empidValue.value);
@@ -157,7 +246,7 @@ class month_button extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text('The Ledger Balance For '),
+        Text('The Ledger Balance For ', style: TextStyle(fontSize: 10),),
         GestureDetector(
             onTap: () {
               pickDate(context);
@@ -180,8 +269,8 @@ class month_button extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center ,
                   children: [
-                    Obx(() => Text(mycontroller.date.value)),
-                    Icon(Icons.arrow_drop_down)
+                    Obx(() => Text(mycontroller.date.value, style: TextStyle(fontSize: 10),)),
+                    Icon(Icons.arrow_drop_down,size: 10,)
                   ],
                 ),
               ),
@@ -190,4 +279,4 @@ class month_button extends StatelessWidget {
       ],
     );
   }
-}
+}*/

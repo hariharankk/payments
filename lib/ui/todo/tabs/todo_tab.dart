@@ -31,7 +31,7 @@ class _ToDoTabState extends State<ToDoTab> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late Group group;
   late double unitHeightValue, unitWidthValue;
-  late String orderBy;
+  String orderBy = "Alphabetical";
   bool reorder;
   double height = 175;
 
@@ -284,7 +284,7 @@ class _WorkerToDoTabState extends State<WorkerToDoTab> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late Group group;
   late double unitHeightValue, unitWidthValue;
-  late String orderBy;
+  String orderBy = "Alphabetical";
   bool reorder;
   double height = 175;
 
@@ -524,7 +524,7 @@ class _VisitorToDoTabState extends State<VisitorToDoTab> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late Group group;
   late double unitHeightValue, unitWidthValue;
-  late String orderBy;
+  String orderBy = "Alphabetical";
   bool reorder;
   double height = 175;
 

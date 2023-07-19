@@ -6,6 +6,11 @@ import 'package:payment/loc/repository.dart';
 
 class MyMap extends StatefulWidget {
   @override
+
+   String empid;
+  MyMap({required this.empid});
+
+  @override
   _MyMapState createState() => _MyMapState();
 }
 
@@ -20,7 +25,7 @@ class _MyMapState extends State<MyMap> {
 
     Future<void> getdata() async {
     try{
-    _locs =  await repository.getLocation('hari');
+    _locs =  await repository.getLocation(widget.empid);
     for (var loc in _locs){
       allMarkers.add(
         Marker(

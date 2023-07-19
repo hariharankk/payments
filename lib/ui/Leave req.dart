@@ -198,7 +198,7 @@ class _LeavePageState extends State<LeavePage> {
                                         : '${_startTime!.hour.toString()
                                         .padLeft(2, '0')}:${_startTime!.minute
                                         .toString().padLeft(2, '0')}',
-                                    style: TextStyle(fontSize: 16),
+                                    style: TextStyle(fontSize: 10),
                                   ),
                                 ],
                               ),
@@ -234,7 +234,7 @@ class _LeavePageState extends State<LeavePage> {
                                         : '${_endTime!.hour.toString().padLeft(
                                         2, '0')}:${_endTime!.minute.toString()
                                         .padLeft(2, '0')}',
-                                    style: TextStyle(fontSize: 16),
+                                    style: TextStyle(fontSize: 10),
                                   ),
                                 ],
                               ),

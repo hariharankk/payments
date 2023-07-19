@@ -8,6 +8,7 @@ import 'package:payment/models/tasks.dart';
 import 'dart:convert';
 import 'package:payment/services/Bloc.dart';
 import 'package:payment/utility/jwt.dart';
+import 'package:payment/constants.dart';
 
 class ApiProvider {
   Client client = Client();
@@ -17,29 +18,26 @@ class ApiProvider {
   //static Uri baseURL = 'https://taskmanager-group-stage.herokuapp.com/api';
   //static String baseURL = "http://10.0.2.2:5000/api";
 
-  static String stageHost = 'http://17db-35-240-131-193.ngrok-free.app';
-  static String productionHost = 'taskmanager-group-pro.herokuapp.com';
-  static String localhost = "10.0.2.2:5000";
-  String signinURL = stageHost + '/api/login';
-  String userURL = stageHost+'/api/register';
-  String userupdateURL = stageHost+'/api/userupdate';
+  String signinURL = uploadURL + '/api/login';
+  String userURL = uploadURL +'/api/register';
+  String userupdateURL = uploadURL + '/api/userupdate';
 
-  String taskaddURL = stageHost+'/api/tasks-add';
-  String taskupdateURL = stageHost+'/api/tasks-update';
+  String taskaddURL = uploadURL + '/api/tasks-add';
+  String taskupdateURL = uploadURL + '/api/tasks-update';
 
-  String subtaskaddURL = stageHost+'/api/subtasks-add';
-  String subtaskupdateURL = stageHost+'/api/subtasks-update';
+  String subtaskaddURL = uploadURL + '/api/subtasks-add';
+  String subtaskupdateURL = uploadURL + '/api/subtasks-update';
 
-  String groupaddURL = stageHost+'/api/group-add';
-  String groupupdateURL = stageHost+'/api/group-update';
+  String groupaddURL = uploadURL + '/api/group-add';
+  String groupupdateURL = uploadURL + '/api/group-update';
 
-  String groupmemberaddURL = stageHost+'/api/groupmember-add';
+  String groupmemberaddURL = uploadURL + '/api/groupmember-add';
 
-  String searchURL = stageHost+'/api/search';
-  String groupmemberupdateURL = stageHost+'/api/groupmember-update';
-  String assignedtouserhaddURL = stageHost+'/api/assignedtouserhURL-add';
+  String searchURL = uploadURL + '/api/search';
+  String groupmemberupdateURL = uploadURL + '/api/groupmember-update';
+  String assignedtouserhaddURL = uploadURL + '/api/assignedtouserhURL-add';
 
-  String sendmessage = stageHost+'/api/message_send';
+  String sendmessage = uploadURL + '/api/message_send';
 
 
 
@@ -48,7 +46,7 @@ class ApiProvider {
   Future<List> getUserGroups() async {
     final Token = await jwt.read_token();
     final queryParameters = {'username':userBloc.getUserObject().username};
-    Uri groupURL = Uri.parse(stageHost+'/api/group').replace(queryParameters: queryParameters);
+    Uri groupURL = Uri.parse(uploadURL + '/api/group').replace(queryParameters: queryParameters);
     List<Group> groups = [];
     List data;
       final response = await client.get(
@@ -144,7 +142,7 @@ class ApiProvider {
     final queryParameters = {
       "group_key": groupKey,
     };
-    Uri groupdeleteURL = Uri.parse(stageHost+'/api/group-delete').replace(queryParameters: queryParameters);
+    Uri groupdeleteURL = Uri.parse(uploadURL + '/api/group-delete').replace(queryParameters: queryParameters);
     final response = await client.delete(
       groupdeleteURL,
       headers: {
@@ -168,7 +166,7 @@ class ApiProvider {
     final queryParameters = {
       "groupKey":groupKey,
     };
-    Uri groupmemberURL = Uri.parse(stageHost+'/api/groupmember-get').replace(queryParameters: queryParameters);
+    Uri groupmemberURL = Uri.parse( uploadURL +'/api/groupmember-get').replace(queryParameters: queryParameters);
     final response = await client.get(
       groupmemberURL,
       headers: {
@@ -264,7 +262,7 @@ class ApiProvider {
       "groupKey":groupKey,
     "username": username,
     };
-    Uri groupmemberdeleteURL = Uri.parse(stageHost+'/api/groupmember-delete').replace(queryParameters: queryParameters);
+    Uri groupmemberdeleteURL = Uri.parse(uploadURL + '/api/groupmember-delete').replace(queryParameters: queryParameters);
     final response = await client.delete(
       groupmemberdeleteURL,
       headers: {
@@ -290,7 +288,7 @@ class ApiProvider {
   Future<List<Task>> getTasks(String groupKey) async {
     final Token = await jwt.read_token();
     final queryParameters = {"group_key": groupKey};
-    Uri taskURL = Uri.parse(stageHost+'/api/tasks-get').replace(queryParameters: queryParameters);
+    Uri taskURL = Uri.parse(uploadURL + '/api/tasks-get').replace(queryParameters: queryParameters);
     final response = await client.get(
       taskURL,
       headers: {
@@ -366,7 +364,7 @@ class ApiProvider {
   Future deleteTask(String taskKey) async {
     final Token = await jwt.read_token();
     final queryParameters = {"task_key":taskKey};
-    Uri taskdeleteURL = Uri.parse(stageHost+'/api/tasks-delete').replace(queryParameters: queryParameters);
+    Uri taskdeleteURL = Uri.parse(uploadURL + '/api/tasks-delete').replace(queryParameters: queryParameters);
     final response = await client.delete(
       taskdeleteURL,
       headers: {
@@ -390,7 +388,7 @@ class ApiProvider {
     final queryParameters = {
       'taskKey':task.taskKey,
     };
-    Uri subtaskURL = Uri.parse(stageHost+'/api/subtasks-get').replace(queryParameters: queryParameters);
+    Uri subtaskURL = Uri.parse(uploadURL + '/api/subtasks-get').replace(queryParameters: queryParameters);
 
     final response = await client.get(
       subtaskURL,
@@ -482,7 +480,7 @@ class ApiProvider {
     final queryParameters = {
       "subtask_key": subtaskKey,
     };
-    Uri subtaskdeleteURL = Uri.parse(stageHost+'/api/subtasks-delete').replace(queryParameters: queryParameters);
+    Uri subtaskdeleteURL = Uri.parse(uploadURL + '/api/subtasks-delete').replace(queryParameters: queryParameters);
     final response = await client.delete(
       subtaskdeleteURL,
       headers: {
@@ -514,6 +512,7 @@ class ApiProvider {
         "search_term": searchTerm,
       }),
     );
+
     final Map result = json.decode(response.body);
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON
@@ -540,7 +539,7 @@ class ApiProvider {
     final Token = await jwt.read_token();
     final queryParameters = {
       "subtask_key": subtaskKey,};
-    Uri assignedtouserhgetURL = Uri.parse(stageHost+'/api/assignedtouserhURL-get').replace( queryParameters: queryParameters);
+    Uri assignedtouserhgetURL = Uri.parse(uploadURL + '/api/assignedtouserhURL-get').replace( queryParameters: queryParameters);
     final response = await client.get(
       assignedtouserhgetURL,
       headers: {
@@ -604,7 +603,7 @@ class ApiProvider {
       "subtask_key": subtaskKey,
     "username":username,
     };
-    Uri assignedtouserhdeleteURL = Uri.parse(stageHost+'/api/assignedtouserhURL-delete').replace(queryParameters: queryParameters);
+    Uri assignedtouserhdeleteURL = Uri.parse(uploadURL + '/api/assignedtouserhURL-delete').replace(queryParameters: queryParameters);
     final response = await client.delete(
       assignedtouserhdeleteURL,
       headers: {
@@ -651,7 +650,7 @@ class ApiProvider {
   Future<List<Message>> getMessages(String subtaskKey) async {
     final Token = await jwt.read_token();
     final queryParameters = {"subtask_key": subtaskKey};
-    Uri messageURL = Uri(scheme: 'http', host: stageHost, path: '/api/message-get',queryParameters: queryParameters);
+    Uri messageURL = Uri(scheme: 'http', host: uploadURL, path: '/api/message-get',queryParameters: queryParameters);
     final response = await client.get(
       messageURL,
       headers: {

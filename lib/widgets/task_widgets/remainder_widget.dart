@@ -14,7 +14,7 @@ class DatePicker extends StatefulWidget {
 class DatePickerState extends State<DatePicker> {
   String selectedDate = '', hour = '',repeat_text='Once';
   late double unitHeightValue, unitWidthValue;
- //NotificationService notificationService = NotificationService();
+  NotificationService notificationService = NotificationService();
   DateTime? eventDate;
   TimeOfDay? eventTime;
   DateTime currentDate = DateTime.now();
@@ -37,7 +37,8 @@ class DatePickerState extends State<DatePicker> {
   }
 
   Future<void> onCreate() async {
-   /* await notificationService.showNotification(
+
+    await notificationService.showNotification(
       0,
       '',
       "A New Remainder has been Created.",
@@ -60,7 +61,7 @@ class DatePickerState extends State<DatePicker> {
         "eventTime": eventTime!.format(context),
       }),
       getDateTimeComponents(),
-    ); */
+    );
 
     resetForm();
   }
@@ -90,13 +91,14 @@ class DatePickerState extends State<DatePicker> {
     if (picked != null)
       setState(() {
         eventDate=picked;
+        print(DateFormat("EEEE, d MMM y").format(eventDate!));
         var Format = DateFormat('dd/MM/yyyy');
         selectedDate = Format.format(picked);
       });
   }
 
   Future<void> cancelAllNotifications() async {
-    //await notificationService.cancelAllNotifications();
+    await notificationService.cancelAllNotifications();
   }
 
   Widget _buildCancelAllButton() {
@@ -188,7 +190,7 @@ class DatePickerState extends State<DatePicker> {
                 await cancelAllNotifications();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text("All Remsinders have been cancelled"),
+                    content: Text("All Remainders have been cancelled"),
                   ),
                 );
               },

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:payment/utility/jwt.dart';
 import 'package:payment/models/user.dart';
+import 'package:payment/constants.dart';
 
 abstract class BaseAuth {
   Future<dynamic> signUp(Map<String,dynamic> user);
@@ -20,7 +21,6 @@ abstract class BaseAuth {
 
 class Auth implements BaseAuth {
   late String Token;
-  String uploadURL = 'http://17db-35-240-131-193.ngrok-free.app';
   JWT jwt= JWT();
 
 

@@ -136,9 +136,9 @@ class historylist extends StatelessWidget {
     return Dismissible(
       key: UniqueKey(),
       direction: DismissDirection.endToStart,
-      onDismissed: (dissm){
-        paymentBloc.deletepayment(payments.payment,mycontroller.date.value, Context, mycontroller1.empidValue.value);
-      },
+      onDismissed: (dissm)async{
+        await paymentBloc.deletepayment(payments.payment,mycontroller.date.value, Context, mycontroller1.empidValue.value);
+        },
       background: Container(
         alignment: AlignmentDirectional.centerEnd,
         color: Colors.red,

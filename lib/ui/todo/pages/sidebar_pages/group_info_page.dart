@@ -100,6 +100,9 @@ class _GroupInfoPageState extends State<GroupInfoPage> {
 
     for (GroupMember member in updatedMembers){
       try {
+        if (member.role==''){
+          member.role='Visitor';
+        }
         await repository.updateGroupMemberrole(groupKey, member.username,member.role);
       } catch (e) {
         throw e;

@@ -38,7 +38,7 @@ class ButtonWidget extends StatelessWidget {
         side: BorderSide(color:Colors.blue,width:1.4),
         borderRadius: BorderRadius.circular(10),
       ),
-      fixedSize: Size(180,60),
+      fixedSize: Size(200,100),
       primary: Color.fromARGB(255, 255, 255, 255),
     ),
     child: Obx(
@@ -46,7 +46,7 @@ class ButtonWidget extends StatelessWidget {
       ()=> FittedBox(
         child: Text(
             mycontroller.date.value,
-            style: TextStyle(fontSize: 10, color: Color.fromARGB(255, 5, 116, 176)),
+            style: TextStyle(fontSize: 30, color: Color.fromARGB(255, 5, 116, 176)),
           ),
 
       ),
@@ -69,7 +69,7 @@ class HeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     margin: EdgeInsets.only(left: 10),
-    width: MediaQuery.of(context).size .width *0.15,
+    width: MediaQuery.of(context).size .width *0.45,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

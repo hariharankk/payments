@@ -142,7 +142,6 @@ class EmpadminBloc {
 
 
   dispose() {
-    print('dispose panni achu da baadu');
     _empadminGetter.close();
   }
 }
@@ -151,6 +150,14 @@ final empadminBloc = EmpadminBloc();
 
 
 class PaymentBloc {
+
+  PaymentBloc._privateConstructor();
+
+  static final PaymentBloc _instance = PaymentBloc._privateConstructor();
+
+  factory PaymentBloc() {
+    return _instance;
+  }
 
   final apiProvider1 = apirepository();
   final PublishSubject<List<dynamic>> _paymentGetter = PublishSubject<List<dynamic>>();
@@ -194,21 +201,19 @@ class PaymentBloc {
 
   Future<void> addpayment(Map<dynamic,dynamic> payments) async {
     await apiProvider1.Payments_adddata(payments);
-    await Future<void>.delayed(const Duration(milliseconds: 50));
-    await Ledger_getdata(DateFormat("MMMM, yyyy").format(DateTime.now()), payments['userid']);
   }
 
   Future<void> deletepayment(String payments, String range, String category ,String userid) async {
     await apiProvider1. payments_delete(payments);
-    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
     await payment_getdata(range, category , userid);
+    await Future<void>.delayed(const Duration(milliseconds: 150));
     await Ledger_getdata(range, userid);
   }
 
 
 
   dispose() {
-    print('dispose panni achu da baadu');
     _paymentGetter.close();
   }
 }
@@ -251,11 +256,6 @@ class ShiftBloc {
     await Shift_getdata(userid);
   }
 
-  Future<void> addleaveShift(DateTime startdate,DateTime enddate ,String userid) async {
-    //await apiProvider1.Shifts_adddata(date,type_of_shift,userid);
-    await Future<void>.delayed(const Duration(milliseconds: 50));
-    await Shift_getdata(userid);
-  }
 
 
   dispose() {

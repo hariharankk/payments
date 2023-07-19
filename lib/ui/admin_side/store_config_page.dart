@@ -93,7 +93,7 @@ class _StoreConfigPageState extends State<StoreConfigPage> {
 
   /// Get Location
   _getLocation() async {
-    Position position = await Geolocator().getCurrentPosition();
+    Position position = await Geolocator.getCurrentPosition();
     print(position);
     lat =  position.latitude.toString();
     longi = position.longitude.toString();

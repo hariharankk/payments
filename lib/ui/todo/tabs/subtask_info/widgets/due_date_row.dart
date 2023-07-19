@@ -78,7 +78,7 @@ class _DueDateRowState extends State<DueDateRow> {
         child: Column(
           children: [
             Container(
-              height: 240 * unitHeightValue,
+              height: 200 * unitHeightValue,
               child: CupertinoDatePicker(
                   initialDateTime: widget.viewmodel.deadline,
                   mode: CupertinoDatePickerMode.date,

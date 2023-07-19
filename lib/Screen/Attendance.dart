@@ -7,9 +7,8 @@ import 'package:intl/intl.dart';
 
 class AttendanceHistoryday extends StatefulWidget {
   final String userId;
-  String date;
 
-  AttendanceHistoryday({ required this.userId , required this.date});
+  AttendanceHistoryday({ required this.userId });
 
   @override
   _AttendanceHistorydayState createState() => _AttendanceHistorydayState();
@@ -20,21 +19,58 @@ class _AttendanceHistorydayState extends State<AttendanceHistoryday> {
   final PublishSubject<dynamic> _historyGetter = PublishSubject<dynamic>();
   List<String> columnNames = ['Check In Time', 'Check Out Time', 'Hours Spent'];
   late List<String> rowNames;
+  DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
     columnNames = ['Check In Time', 'Check Out Time', 'Hours Spent'];
-    widget.date = widget.date == 'Select Date' ? DateFormat('dd/MM/yyyy').format(DateTime.now()) : widget.date;
     fetchDataAndAddToStream(); // Call the new method here
   }
+
 
 // New async method to fetch data and add it to the stream
   Future<void> fetchDataAndAddToStream() async {
     final apiProvider1 = apirepository();
-    var fetchedData = await apiProvider1.history_getdataday(widget.userId, widget.date);
+    var fetchedData = await apiProvider1.history_getdataday(widget.userId, DateFormat('dd/MM/yyyy').format(selectedDate));
     print("Fetched Data: $fetchedData"); // Debug print statement
     _historyGetter.sink.add(fetchedData);
+  }
+
+  Widget _buildDayPicker() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.deepPurple, // background color
+        onPrimary: Colors.white, // text color
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12), // border radius
+        ),
+        padding: EdgeInsets.symmetric(
+            vertical: 12, horizontal: 20), // button padding
+      ),
+      onPressed: () async {
+        final initialDate = DateTime.now();
+        final newDate = await showDatePicker(
+          context: context,
+          initialDate: initialDate,
+          firstDate: DateTime(DateTime.now().year - 5),
+          lastDate: DateTime(DateTime.now().year + 5),
+        );
+        if (newDate != null) {
+          setState(() {
+            selectedDate = newDate;
+          });
+          final apiProvider1 = apirepository();
+          var fetchedData = await apiProvider1.history_getdataday(
+              widget.userId, DateFormat('dd/MM/yyyy').format(newDate));
+          print("Fetched Data: $fetchedData"); // Debug print statement
+          _historyGetter.sink.add(fetchedData);
+        }
+      },
+      child: Text(selectedDate == null
+          ? 'Select date'
+          : '${selectedDate!.day}-${selectedDate!.month}-${selectedDate!.year}'),
+    );
   }
 
   void dispose() {
@@ -95,49 +131,73 @@ class _AttendanceHistorydayState extends State<AttendanceHistoryday> {
     return Scaffold(
       appBar:
       AppBar(title: Text("Attendance History"),),
-      body: StreamBuilder(
-        stream: _historyGetter.stream,//history_soc.getResponse,
+      body: Column(
+        children: [
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                'Search attendance using the filters below',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              )),
+          SizedBox(
+            height: 10,
+          ),
 
-        builder: (context, AsyncSnapshot<dynamic> snapshot) {
-          print("Snapshot data: ${snapshot.data}");
-          if (!snapshot.hasData) {
-            return Center(child: Text('Has no Data'));
-          }
+          _buildDayPicker(),
+          SizedBox(
+            height: 10,
+          ),
 
-          data = _makeData(snapshot.data!);
+          Expanded(
+            child: StreamBuilder(
+              stream: _historyGetter.stream,//history_soc.getResponse,
 
-          return StickyHeadersTable(
-            columnsLength: 3,
-            rowsLength: snapshot.data!.length,
-            columnsTitleBuilder: (i) => TableCell.stickyRow(
-              columnNames[i],
-              onTap: (){},
-              textStyle: TextStyle(fontSize: 18.0),
+              builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                print("Snapshot data: ${snapshot.data}");
+                if (!snapshot.hasData) {
+                  return Center(child: Text('Has no Data'));
+                }
+
+                data = _makeData(snapshot.data!);
+
+                return StickyHeadersTable(
+                  columnsLength: 3,
+                  rowsLength: snapshot.data!.length,
+                  columnsTitleBuilder: (i) => TableCell.stickyRow(
+                    columnNames[i],
+                    onTap: (){},
+                    textStyle: TextStyle(fontSize: 18.0),
+                  ),
+                  rowsTitleBuilder: (i) => TableCell.stickyColumn(
+                    rowNames[i],
+                    onTap: (){},
+                    textStyle: TextStyle(fontSize: 18.0),
+                  ),
+                  contentCellBuilder: (i, j) => TableCell.content(
+                    data[j][i],
+                    onTap: (){},
+                    textStyle: TextStyle(fontSize: 16.0),
+                  ),
+                  legendCell: TableCell.legend(
+                    'Date',
+                    onTap: (){},
+                    textStyle: TextStyle(fontSize: 20.0),
+                  ),
+                  cellFit: BoxFit.cover,
+                  cellDimensions: CellDimensions(
+                    contentCellHeight: 74.0,
+                    contentCellWidth: 100.0,
+                    stickyLegendHeight: 72.0,
+                    stickyLegendWidth: 104.0,
+                  ),
+                );
+              },
             ),
-            rowsTitleBuilder: (i) => TableCell.stickyColumn(
-              rowNames[i],
-              onTap: (){},
-              textStyle: TextStyle(fontSize: 18.0),
-            ),
-            contentCellBuilder: (i, j) => TableCell.content(
-              data[j][i],
-              onTap: (){},
-              textStyle: TextStyle(fontSize: 16.0),
-            ),
-            legendCell: TableCell.legend(
-              'Date',
-              onTap: (){},
-              textStyle: TextStyle(fontSize: 20.0),
-            ),
-            cellFit: BoxFit.cover,
-            cellDimensions: CellDimensions(
-              contentCellHeight: 74.0,
-              contentCellWidth: 100.0,
-              stickyLegendHeight: 72.0,
-              stickyLegendWidth: 104.0,
-            ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }

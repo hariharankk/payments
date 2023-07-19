@@ -1,8 +1,14 @@
 import 'package:get/get.dart';
-
+import 'package:flutter/material.dart';
 
 
 class feautreController extends GetxController {
+
+  TextEditingController rateController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
+  TextEditingController paymnetController = TextEditingController();
+  TextEditingController noteController = TextEditingController();
+
 
   var date = "Select Date".obs;
   var paymenttext = "".obs;

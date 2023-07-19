@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 
 class WeekController extends GetxController {
 
-  var datestart = 'select date'.obs;
-  var datesend = 'select date'.obs;
+  var datestart = 'Select Date'.obs;
+  var datesend = 'Select Date'.obs;
 
 
   void datestartchange(String dates)
