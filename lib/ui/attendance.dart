@@ -116,6 +116,7 @@ class _MarkAttendancePageState extends State<MarkAttendancePage>
     });
 
     var data = await Apirepository.employee_getdata();
+    print((data['lat']));
     double storeLat = double.parse(data['lat']);
     double storeLong = double.parse(data['longi']);
     double storeRadius = double.parse(data['radius'].toString());

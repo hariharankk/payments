@@ -70,9 +70,8 @@ class _HomePageState extends State<HomePage> {
 
   _stopListening() {
     _locationSubscription?.cancel();
-    setState(() {
-      _locationSubscription = null;
-    });
+    _locationSubscription = null;
+
   }
 
   void _requestPermission() async {
